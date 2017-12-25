@@ -1,0 +1,12 @@
+.ui.middle.aligned.grid.container.centered.stackable(style="min-height: 100%")
+  .ui.basic.segment.eight.wide.column
+    | {Header}
+    h1.ui.center.aligned.header
+      .content {$title}
+    | {/}
+    .ui.hidden.divider
+    | {Section}
+    section.ui.segments
+      .ui.segment.raised.very.padded {$Content}
+      | {$Segment}
+    | {/}

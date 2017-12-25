@@ -1,6 +1,6 @@
 <?php
 
-namespace \atk4\login;
+namespace atk4\login;
 
 /**
  * Authentication controller. Add this to your application somewhere
@@ -17,6 +17,10 @@ class Login {
 
     public $form = 'atk4\login\LoginForm';
 
+    public $fieldLogin = 'email';
+
+    public $fieldPassword = 'password';
+
     /**
      * Specify a model for a user check here
      *
@@ -25,11 +29,11 @@ class Login {
     {
         $this->user = $model;
         if ($login_field) {
-            $this->login_field = $login_field;
+            $this->fieldLogin = $login_field;
         }
 
         if ($password_field) {
-            $this->password_field = $password_field;
+            $this->fieldPassword = $password_field;
         }
     }
 
@@ -48,8 +52,8 @@ class Login {
 
 
                 $this->form = $this->factory($this->form);
-                $this->form->addField('login', null, $this->user->getElement($this->login_field));
-                $this->form->addField('password', null, $this->user->getElement($this->password_field));
+                $this->form->addField('login', null, $this->user->getElement($this->fieldLogin));
+                $this->form->addField('password', null, $this->user->getElement($this->fieldPassword));
 
                 if ($build_form_callback) { 
                     call_user_func($build_form_callback, $this->form);
@@ -59,11 +63,11 @@ class Login {
                 $this->form->onSubmit(function($form) {
                     $user = clone $this->user;  //dont want to reset it
 
-                    $user->tryLoadBy($this->login_field, $form->model['login']);
+                    $user->tryLoadBy($this->fieldLogin, $form->model['login']);
                     if ($user->loaded()) {
 
                         // verify if the password matches
-                        if ($user->verify($form->password_field, $form->model['password'])) {
+                        if ($user->verify($form->fieldPassword, $form->model['password'])) {
                             return $form->success('user is correct');
                         }
                         return $form->error('login', 'password incorrect');
@@ -74,6 +78,20 @@ class Login {
         }
 
         return $this;
+    }
+
+    function tryLogin($email, $password) {
+        $user = clone $this->user;  //dont want to reset it
+
+        $user->tryLoadBy($this->fieldLogin, $email);
+        if ($user->loaded()) {
+
+            // verify if the password matches
+            if ($user->compare($this->fieldPassword, $password)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

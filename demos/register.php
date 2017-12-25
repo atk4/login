@@ -1,5 +1,4 @@
 <?php
-
 include '../vendor/autoload.php';
 include 'db.php';
 
@@ -13,12 +12,12 @@ $c->addColumn(4)->add(['Button', 'Back', 'icon'=>'home', 'right floated tiny bas
 $app->add(['ui'=>'hidden divider']);
 
 // form itself
-$app->add([new \atk4\login\LoginForm(), 'auth'=>$app->auth])
-    ->setModel($app->auth->user);
+$app->add(new \atk4\login\RegisterForm())
+    ->setModel(new \atk4\login\Model\User($app->db));
 
 // below the form - signup link
 $seg = $app->add(['ui'=>'secondary segment', 'class'=>['center aligned padded']], 'Segment');
-$seg->add(['Text', 'Don\'t have account? &nbsp;&nbsp;']);
-$l = $seg->add([])->link(['register']);
-$l->add(['Text', 'Sign up']);
-$l->add(['Icon', 'angle right']);
+//$seg->add(['Text', 'Don\'t have account? &nbsp;&nbsp;']);
+$l = $seg->add([])->link(['login']);
+$l->add(['Icon', 'angle left']);
+$l->add(['Text', 'Back to Login']);

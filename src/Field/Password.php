@@ -33,6 +33,7 @@ class Password extends \atk4\data\Field
                 if ($p instanceof \atk4\ui\Persistence\UI) {
                     return $v;
                 }
+                return null;
             },
         ];
     }

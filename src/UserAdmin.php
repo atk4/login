@@ -2,6 +2,9 @@
 namespace atk4\login;
 
 class UserAdmin extends \atk4\ui\View {
+
+    use \atk4\core\DebugTrait;
+
     public $crud = null;
 
     function init() {
@@ -11,26 +14,17 @@ class UserAdmin extends \atk4\ui\View {
 
 
 
-        $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
-            ->set(function($p){ 
-                $console = $p->add(['ui'=>'inverted segment']);
-                $sse = $p->add('jsSSE');
-                $sse->set(function() use($sse, $console) {
-                    $sse->send($console->js()->append('Setting up database<br/>'));
-
-                    $this->migrateDB();
-
-                    $sse->send($console->js()->append('DONE'));
-                });
-                $p->js(true, $sse);
-            })
-            ->show());
     }
 
-    function migrateDB()
+    function migrateDB($model = null)
     {
-        $s = new \atk4\schema\Migration(new \atk4\data\Model($this->app->db));
+        $this->log('notice', 'Running migrations now', ['model'=>$model]);
+        $this->debug('hello');
+
+
+        $s = new \atk4\schema\Migration\MySQL($model ?: $this->model);
         $s->migrate();
+        $this->log('notice', 'Finished now');
     }
 
     /**
@@ -38,7 +32,37 @@ class UserAdmin extends \atk4\ui\View {
      */
     function setModel(\atk4\data\Model $user) {
         parent::setModel($user);
+
+
+        $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
+            ->set(function($p){ 
+
+                $console = $p->add('Console');
+
+                $console->set(function($console){ 
+
+                    //$this->app->logger = $this->app->add('UserNotificationConsole');
+
+                    $this->app->db->debug=true;
+
+                    $this->debug=true;
+                    $this->migrateDB();
+
+                    //$sse->send($console->js()->append('DONE'));
+                });
+                //$p->js(true, $sse);
+            })
+            ->show());
+
+
+
         $this->crud->setModel($user);
+
+
+
+
+
+
 
         // Add new table column used for actions
         $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'User Actions']);
