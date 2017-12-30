@@ -15,10 +15,6 @@ class LoginForm extends \atk4\ui\Form {
         $form->buttonSave->set('Sign in');
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
-    }
-
-    function setModel(\atk4\data\Model $user) {
-        //parent::setModel(clone $user, false);
 
         $form = $this;
 

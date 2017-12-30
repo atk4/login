@@ -31,7 +31,6 @@ class UserAdmin extends \atk4\ui\View {
      * Initialize User Admin and add all the UI pieces
      */
     function setModel(\atk4\data\Model $user) {
-        parent::setModel($user);
 
 
         $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
@@ -68,13 +67,13 @@ class UserAdmin extends \atk4\ui\View {
         $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'User Actions']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $a->addModal(['icon'=>'key'], 'Reset Password', function($v) {
+        $a->addModal(['icon'=>'key'], 'Reset Password', function($v, $id) {
 
-            $this->model->load($this->app->stickyGet('id'));
+            $this->model->load($id);
 
             $form = $v->add('Form');
             $f = $form->addField('visible_password', null, ['required'=>true]);
-            $form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
+            //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
             $f->addAction(['icon'=>'random'])->on('click', function() use ($f) {
                 return $f->jsInput()->val($this->model->getElement('password')->suggestPassword());
@@ -97,8 +96,8 @@ class UserAdmin extends \atk4\ui\View {
 
         })->setAttr('title', 'Change Password');
 
-        $a->addModal(['icon'=>'eye'], 'Details', function($v) {
-            $this->model->load($this->app->stickyGet('id'));
+        $a->addModal(['icon'=>'eye'], 'Details', function($v, $id) {
+            $this->model->load($id);
 
             $c = $v->add('Columns');
             $col = $c->addColumn();
@@ -110,5 +109,7 @@ class UserAdmin extends \atk4\ui\View {
             $col->add(['Message', 'Comming soon', 'yellow']);
 
         })->setAttr('title', 'Change Password');
+
+        return parent::setModel($user);
     }
 }
