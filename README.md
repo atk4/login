@@ -4,7 +4,7 @@ Many projects require some sort of authentication before user can access an appl
 
 ### Installation
 
-Composer require this repository then run the following:
+Composer require this (`composer require atk4\login`) then run the following:
 
 ``` php
 $app->auth = $app->add(new \atk4\login\Login();
