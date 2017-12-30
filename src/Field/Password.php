@@ -20,7 +20,7 @@ class Password extends \atk4\data\Field
      *
      * @var string
      */
-    protected $password_hash = null;
+    public $password_hash = null;
 
     public function init()
     {

@@ -5,13 +5,13 @@ namespace atk4\data\tests;
 use atk4\data\Model;
 use atk4\data\Persistence_Array;
 
-class PasswordTest extends TestCase
+class PasswordTest extends \PHPUnit_Framework_TestCase
 {
     public function testPasswordField()
     {
         $m = new Model(); //$db, 'job');
 
-        $m->addField('p', ['Password']);
+        $m->addField('p', ['\atk4\login\Field\Password']);
 
         $m['p'] = 'mypass';
 
@@ -31,7 +31,7 @@ class PasswordTest extends TestCase
         $p = new Persistence_Array($a);
         $m = new Model($p);
 
-        $m->addField('p', ['Password']);
+        $m->addField('p', ['\atk4\login\Field\Password']);
 
         $m['p'] = 'mypass';
 
@@ -75,7 +75,7 @@ class PasswordTest extends TestCase
         $p = new Persistence_Array($a);
         $m = new Model($p);
 
-        $m->addField('p', ['Password']);
+        $m->addField('p', ['\atk4\login\Field\Password']);
         $m->compare('p', 'mypass');
     }
 }

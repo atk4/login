@@ -11,6 +11,11 @@ class Login {
     use \atk4\core\SessionTrait;
     use \atk4\core\ContainerTrait;
     use \atk4\core\FactoryTrait;
+    use \atk4\core\AppScopeTrait;
+    use \atk4\core\TrackableTrait;
+    use \atk4\core\InitializerTrait {
+        init as _init;   
+    }
 
 
     public $user = null;
@@ -20,6 +25,17 @@ class Login {
     public $fieldLogin = 'email';
 
     public $fieldPassword = 'password';
+
+    function init()
+    {
+        $this->_init();
+        session_start();
+    }
+
+    function getSessonPersistence()
+    {
+        return new \atk4\data\Persistence_Array($_SESSION[$this->name]);
+    }
 
     /**
      * Specify a model for a user check here
@@ -35,6 +51,19 @@ class Login {
         if ($password_field) {
             $this->fieldPassword = $password_field;
         }
+
+        $this->user->data = $this->getSessonPersistence()->tryLoad($this->user, 1);
+        $this->user->id = $this->user->data[$this->user->id_field];
+        $this->user->addHook('afterSave', function($m) {
+            $this->getSessonPersistence()->update($m, 1, $m->get());
+            // update persistence
+
+        });
+    }
+
+    function logout()
+    {
+        $this->getSessonPersistence()->delete($this->user, 1);
     }
 
     /**
@@ -81,13 +110,14 @@ class Login {
     }
 
     function tryLogin($email, $password) {
-        $user = clone $this->user;  //dont want to reset it
+        $user = new Model\User($this->app->db);  //dont want to reset it
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
 
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
+                $this->getSessonPersistence()->update($user, 1, $user->get());
                 return true;
             }
         }

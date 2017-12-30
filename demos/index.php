@@ -7,6 +7,11 @@ $app = new App(false);
  
 $app->add(['Header', 'Welcome to Auth Add-on demo app']);
 $app->add(['Button', 'Run migration wizard'])->link(['wizard']);
+
+$app->add(['ui'=>'divider']);
 $app->add(['Button', 'Log-in'])->link(['login']);
 $app->add(['Button', 'Register'])->link(['register']);
+$app->add(['Button', 'Dashboard'])->link(['dashboard']);
+
+$app->add(['ui'=>'divider']);
 $app->add(['Button', 'Admin'])->link(['admin']);

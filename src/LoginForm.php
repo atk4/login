@@ -18,7 +18,7 @@ class LoginForm extends \atk4\ui\Form {
     }
 
     function setModel(\atk4\data\Model $user) {
-        parent::setModel(clone $user, false);
+        //parent::setModel(clone $user, false);
 
         $form = $this;
 
@@ -32,7 +32,7 @@ class LoginForm extends \atk4\ui\Form {
 
             $this->onSubmit(function($form) {
                 if ($this->auth->tryLogin($form->model['email'], $form->model['password'])) {
-                    return jsExpression('document.location = []', [$this->app->url($this->successLink)]);
+                    return new \atk4\ui\jsExpression('document.location = []', [$this->app->url($this->successLink)]);
                 } else {
                     return $form->error('password', 'Email or Password is incorrect');
                 }
