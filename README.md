@@ -53,6 +53,24 @@ Auth model stores user model data in session, so if you delete user from databas
 
 You may also access user data like this: `$app->auth->model['name']`;
 
+#### Profile Form
+
+This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
+
+``` php
+$app->add('Form')->setModel($app->auth->user);
+```
+
+Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
+
+``` php
+$app->add(['Button', 'Profile', 'primary'])->on('click', $app->add('Modal')->set(function($p) {
+    $p->add('Form')->setModel($p->app->auth->user);
+})->show());
+```
+
+
+
 #### Password
 
 Field 'password' is using a custom field class `Password`.  It appears as a regular password, but will be hashed before storing into the database. You can use this field in any model like this:
