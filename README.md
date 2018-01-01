@@ -171,3 +171,17 @@ Use of migration is optional, but can help by populating initial structure of yo
 Migration relies on https://github.com/atk4/schema. 
 
 When migration is executed it simply checks to make sure that table for 'user' exists and has all required fields. It will not delete or change existing fields or tables.
+
+## Roadmap
+
+Generally we wish to keep this add-on clean, but very extensible, with various tutorials on how to implement various scenarios (noted above under "Things to try"). 
+
+For some of those features we would like to add a better support in next releases:
+
+-   [1.0] - add "$auth->check()" - for Automated authentication checks
+-   [1.1] - add Password Reminder form and tutorial on integration with Email / SMS sending
+-   [1.2] - add Password strength verification (and indicator)
+
+If you would like to propose other features, please suggest them by opening ticket here:
+
+-   https://github.com/atk4/login/issues
