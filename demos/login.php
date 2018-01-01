@@ -7,7 +7,7 @@ $app = new App(false);
 
 // stuff above the form
 $c = $app->add('Columns');
-$c->addColumn(12)->add(['Header', 'Create New Account', 'size'=>2]);
+$c->addColumn(12)->add(['Header', 'Log into your account', 'size'=>2]);
 $c->addColumn(4)->add(['Button', 'Back', 'icon'=>'home', 'right floated tiny basic green'])
     ->link(['index']);
 $app->add(['ui'=>'hidden divider']);

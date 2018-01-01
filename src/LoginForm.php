@@ -18,7 +18,7 @@ class LoginForm extends \atk4\ui\Form {
 
         $form = $this;
 
-        $form->addField('email');
+        $form->addField('email', null, ['required'=>true]);
         $p = $form->addField('password', ['Password'], ['required'=>true]);
         $p->addAction(['icon'=>'question'])
             ->setAttr('title', 'Forgot your password?')
