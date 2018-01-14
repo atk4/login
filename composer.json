@@ -5,6 +5,8 @@
     "keywords": ["user", "acl", "auth", "login", "atk4", "agile", "agile ui", "data", "framework"],
     "homepage": "https://github.com/atk4/login",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Romans Malinovskis",
@@ -13,7 +15,7 @@
         }
     ],
     "require": {
-        "atk4/ui": "^1.1",
+        "atk4/ui": "dev-develop",
         "php": ">=5.6.0"
     },
     "require-dev": {
