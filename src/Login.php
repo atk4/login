@@ -32,8 +32,12 @@ class Login {
         session_start();
     }
 
-    function getSessonPersistence()
+    function getSessionPersistence()
     {
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         return new \atk4\data\Persistence_Array($_SESSION[$this->name]);
     }
 
@@ -52,10 +56,10 @@ class Login {
             $this->fieldPassword = $password_field;
         }
 
-        $this->user->data = $this->getSessonPersistence()->tryLoad($this->user, 1);
+        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1);
         $this->user->id = $this->user->data[$this->user->id_field];
         $this->user->addHook('afterSave', function($m) {
-            $this->getSessonPersistence()->update($m, 1, $m->get());
+            $this->getSessionPersistence()->update($m, 1, $m->get());
             // update persistence
 
         });
@@ -63,7 +67,7 @@ class Login {
 
     function logout()
     {
-        $this->getSessonPersistence()->delete($this->user, 1);
+        $this->getSessionPersistence()->delete($this->user, 1);
     }
 
     /**
@@ -110,14 +114,14 @@ class Login {
     }
 
     function tryLogin($email, $password) {
-        $user = new Model\User($this->app->db);  //dont want to reset it
+        $user = $this->user->newInstance();
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
 
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
-                $this->getSessonPersistence()->update($user, 1, $user->get());
+                $this->getSessionPersistence()->update($user, 1, $user->get());
                 return true;
             }
         }
