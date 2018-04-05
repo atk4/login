@@ -27,7 +27,7 @@ Each component must be manually activated in your project.
 Install through composer (`composer require atk4\login`) then use this code:
 
 ``` php
-$app->auth = $app->add(new \atk4\login\Login();
+$app->auth = $app->add(new \atk4\login\Login());
 $app->auth->setModel(new \atk4\login\User($app->db));
 ```
 
