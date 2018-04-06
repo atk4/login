@@ -1,4 +1,4 @@
-## 1.0 Initial release
+## 1.0.0 Initial release
 
  - initial implementation of Auth class
  - LoginForm works with auth
