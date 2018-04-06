@@ -23,7 +23,7 @@ $app->add('CRUD')->setModel(new Client($app->db));
 
 (If you do not have User model yet, you can extend or use \atk4\login\Model\User).
 
-![Login](./docs/login-demo.png)
+![Login](./docs/login-form.png)
 
 ## Features
 

@@ -11,7 +11,8 @@ class App extends \atk4\ui\App {
         parent::__construct(include('config.php'));
 
         if (!$no_db_connect) {
-            $this->db = \atk4\data\Persistence::connect($this->dsn);
+            $this->dbConnect($this->dsn);
+            //$this->db = \atk4\data\Persistence::connect($this->dsn);
         }
 
 
@@ -19,6 +20,8 @@ class App extends \atk4\ui\App {
             $this->initLayout('Admin');
             $this->layout->leftMenu->addItem(['Demo Index', 'icon'=>'gift'], ['index']);
             $this->layout->leftMenu->addItem(['Admin', 'icon'=>'users'], ['admin']);
+        } elseif ($interface == 'centered') {
+            $this->initLayout('Centered');
         } else {
             $this->initLayout(new \atk4\login\Layout\Narrow());
         }
