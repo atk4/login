@@ -57,6 +57,16 @@ class Auth {
      */
     public $pageExit = 'index';
 
+    /**
+     * Should we add User Menu to Admin layout?
+     */
+    public $hasUserMenu = true;
+
+    /**
+     * Should we display and handle preferences link
+     */
+    public $hasPreferences = true;
+
     function __construct($options = [])
     {
         $this->setDefaults($options);
@@ -117,14 +127,18 @@ class Auth {
     {
         if ($this->user->loaded()) {
 
-            if ($this->app->layout instanceof \atk4\ui\Layout\Admin) {
+            if ($this->hasUserMenu && $this->app->layout instanceof \atk4\ui\Layout\Admin) {
                 $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
-                $m->addItem(['Preferences', 'icon'=>'user'], [$this->pageDashboard, 'preferences'=>true]);
+
+                if ($this->hasPreferences) {
+                    $m->addItem(['Preferences', 'icon'=>'user'], [$this->pageDashboard, 'preferences'=>true]);
+                }
+
                 $m->addItem(['Logout', 'icon'=>'sign out'], [$this->pageDashboard, 'logout'=>true]);
             }
 
 
-            if ($this->app->stickyGet('preferences')) {
+            if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
                 $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
                 $this->app->add('Form')->setModel($this->user);
                 exit;
@@ -134,7 +148,6 @@ class Auth {
                 $this->logout();
                 $this->app->redirect([$this->pageExit]);
             }
-
 
             return;
         }

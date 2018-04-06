@@ -1,11 +1,38 @@
-Many PHP projects require some sort of authentication before user can access certain areas of the application. 
+[ATK UI](https://github.com/atk4/ui) implements a high-level User Interface for Web App - such as **Admin System**. One of the most common things for the Admin system is a log-in screen.
 
-This project implements User Access Control by leveraging [Agile UI](https://github.com/atk4/ui) and [Agile Data](https://github.com/atk4/data) frameworks.
+Although you can implement log-in form easily, this add-on does everything for you!
+
+## Installation
+
+Install through composer `composer require atk4/login`
+
+Then add `Auth` into your app and set appropriate user controller:
+
+```php
+$app = new \atk4\ui\App();
+$app->initLayout('Admin');
+$app->dbConnect($dsn);
+
+// ADD THIS CODE:
+$app->add(new \atk4\login\Auth())
+    ->setModel(new User($app->db));
+
+// The rest of YOUR UI code will now be protected
+$app->add('CRUD')->setModel(new Client($app->db));
+```
+
+(If you do not have User model yet, you can extend or use \atk4\login\Model\User).
 
 ![Login](./docs/login-demo.png)
 
+## Features
+
 Here are all the classes implemented:
 
+-   Full transparent authentication
+    -   Populates user menu with name of current user
+    -   Adds log-out link
+    -   Adds Preferences page
 -   Field\Password - password hashing, safety, generation and validation
 -   Model\User - basic user entity that can be extended
 -   LoginForm - username/password login form
@@ -16,35 +43,46 @@ Here are all the classes implemented:
 -   Templates for forms an messages
 -   Demos for all of the above
 
-Each component must be manually activated in your project. 
+When used default installation, it will relay on various other components (such as LoginForm), however you can also use those components individually.
 
-1.  `$app = new \atk4\ui\App()` - use generic App class or framework-specific integration
-2.  Look up code below to activate certain component
-3.  Integrate with the rest of your project using example code
+## Advanced Usage
 
-### Installation
+There are two modes of operation - Automated and Manual. Automated handles display of forms based on currently logged state automatically. It was already presented in the "Installation" section above.
 
-Install through composer (`composer require atk4\login`) then use this code:
+For a more advanced usage, you can either tweak Automated mode or use individual components manually.
 
-``` php
-$app->auth = $app->add(new \atk4\login\Login();
-$app->auth->setModel(new \atk4\login\User($app->db));
+### Tweaking Automated Mode
+
+When you initialize 'Auth' class you may inject property values:
+
+```php
+$app->auth = $app->add(new \atk4\login\Auth([
+    'hasPreferences' => false, // do not show Preferences page/form
+    'pageDashboard' => 'dashboard', // name of the page, where user arrives after login
+    'pageExit' => 'goodbye', // where to send user after logout
+    
+    // Oter options:
+    // 'hasUserMenu' => false,  // will disable interaction with Admin Layout user menu
+]));
+$app->auth->setModel(new User($app->db));
 ```
 
-See `demos/db.php` for example usage. The above will have no impact, but will enable you to use other components.
+### Using Manual Mode
 
-### Usage
+In the manual mode, no checks will be performed, and you are responsible for authenticating user yourself. This works best if you have a more complex auth logic.
 
-There are two modes of operation - Automated and Manual. Automated handles display of forms based on currently logged state automatically when you run: `auth->check()` - most suitable for protecting "Admin" systems.  **Only MANUAL mode is currently implemented (v0.9)**
+``` php
+$app->auth = $app->add(new \atk4\login\Auth([
+    'check' => false
+]));
+$app->auth->setModel(new User($app->db));
 
-For manual page you would need to manually place some PHP code inside your signup, login, admin and other pages. An extended usage example is offered in `demos/` folder.
 
-1.  Download Agile Toolkit from www.agiletoolkit.org
-2.  From console run `composer require atk4/login`
-3.  Copy "demos" folder into "agiletoolkit" folder
-4.  Copy "demos/config-example.php" to "demos/config.php" then edit
-
-Works with MySQL, SQLite or any other data source supported by Agile Data.
+// Now manually use login logic
+if (!$app->auth->user->loaded()) {
+  $app->add([new \atk4\login\LoginForm(), 'auth'=>$app->auth]);
+}
+```
 
 #### Adding sign-up form
 
