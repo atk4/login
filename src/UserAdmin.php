@@ -108,7 +108,7 @@ class UserAdmin extends \atk4\ui\View {
             $col->add(['Header', 'Activity Log']);
             $col->add(['Message', 'Comming soon', 'yellow']);
 
-        })->setAttr('title', 'Change Password');
+        })->setAttr('title', 'User Details');
 
         return parent::setModel($user);
     }
