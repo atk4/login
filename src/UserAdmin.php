@@ -1,22 +1,27 @@
 <?php
 namespace atk4\login;
 
-class UserAdmin extends \atk4\ui\View {
-
+/**
+ * View for user administration.
+ */
+class UserAdmin extends \atk4\ui\View
+{
     use \atk4\core\DebugTrait;
 
+    /** @var \atk4\ui\CRUD */
     public $crud = null;
 
-    function init() {
+    /**
+     * Initialization.
+     */
+    public function init()
+    {
         parent::init();
+
         $this->crud = $this->add('CRUD');
-
-
-
-
     }
 
-    function migrateDB($model = null)
+    public function migrateDB($model = null)
     {
         $this->log('notice', 'Running migrations now', ['model'=>$model]);
         $this->debug('hello');
@@ -28,11 +33,14 @@ class UserAdmin extends \atk4\ui\View {
     }
 
     /**
-     * Initialize User Admin and add all the UI pieces
+     * Initialize User Admin and add all the UI pieces.
+     *
+     * @param \atk4\data\Model $user
+     *
+     * @return \atk4\data\Model
      */
-    function setModel(\atk4\data\Model $user) {
-
-
+    public function setModel(\atk4\data\Model $user)
+    {
         $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
             ->set(function($p){ 
 
@@ -52,8 +60,6 @@ class UserAdmin extends \atk4\ui\View {
                 //$p->js(true, $sse);
             })
             ->show());
-
-
 
         $this->crud->setModel($user);
 
