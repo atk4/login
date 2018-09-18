@@ -12,6 +12,7 @@ class Password extends \atk4\data\Field
         init as _init;
     }
 
+    /** @var string data field type */
     public $type = 'password';
 
     /**
@@ -20,24 +21,49 @@ class Password extends \atk4\data\Field
      *
      * @var string
      */
-    public $password_hash = null;
+    protected $password_hash = null;
+    
+    /**
+     * Optional callable for encrypting password.
+     * Use it if you need to customize your password encryption algorithm.
+     * Receives parameters - plaintext password
+     *
+     * @var callable
+     */
+    public $encryptMethod;
+    
+    /**
+     * Optional callable for veryfying password.
+     * Use it if you need to customize your password verification algorithm.
+     * Recieves parameters - plaintext password, encrypted password
+     *
+     * @var callable
+     */
+    public $verifyMethod;
 
+    /**
+     * Initialization.
+     */
     public function init()
     {
         $this->_init();
 
+        // set up typecasting
         $this->typecast = [
+            // callback on saving
             [$this, 'encrypt'],
-            function ($v, $f, $p) {
-                $this->password_hash = $v;
-                if ($p instanceof \atk4\ui\Persistence\UI) {
-                    return $v;
-                }
-                return null;
-            },
+            // callback on loading
+            [$this, 'decrypt'],
         ];
     }
 
+    /**
+     * Normalize password - remove hash
+     *
+     * @param string $value password
+     *
+     * @return mixed
+     */
     public function normalize($value)
     {
         $this->password_hash = null;
@@ -53,19 +79,46 @@ class Password extends \atk4\data\Field
      * also update $this->password_hash, in case you'll want to perform
      * verify right after.
      *
-     * @param string $password plaintext password
+     * @param string                 $password plaintext password
+     * @param \atk4\data\Field       $f
+     * @param \atk4\data\Persistence $p
      *
      * @return string encrypted password
      */
-    public function encrypt($password)
+    public function encrypt($password, $f, $p)
     {
         if (is_null($password)) {
             return;
         }
 
-        $this->password_hash = password_hash($password, PASSWORD_DEFAULT);
+        // encrypt password
+        if (is_callable($this->encryptMethod)) {
+            $this->password_hash = call_user_func_array($this->encryptMethod, [$password]);
+        } else {
+            $this->password_hash = password_hash($password, PASSWORD_DEFAULT);
+        }
 
         return $this->password_hash;
+    }
+    
+    /**
+     * DO NOT CALL THIS METHOD. It is automatically invoked when you load
+     * your model.
+     *
+     * @param string                 $password encrypted password
+     * @param \atk4\data\Field       $f
+     * @param \atk4\data\Persistence $p
+     *
+     * @return string encrypted password
+     */
+    public function decrypt($password, $f, $p)
+    {
+        $this->password_hash = $password;
+        if ($p instanceof \atk4\ui\Persistence\UI) {
+            return $password;
+        }
+
+        return null;
     }
 
     /**
@@ -89,7 +142,14 @@ class Password extends \atk4\data\Field
             throw new \atk4\data\Exception(['Password was not set, so verification is not possible', 'field'=>$this->name]);
         }
 
-        return password_verify($password, $this->password_hash);
+        // verify password
+        if (is_callable($this->verifyMethod)) {
+            $v = call_user_func_array($this->verifyMethod, [$password, $this->password_hash]);
+        } else {
+            $v = password_verify($password, $this->password_hash);
+        }
+
+        return $v;
     }
 
     /**
@@ -97,6 +157,9 @@ class Password extends \atk4\data\Field
      * 116985856 unique password combinations with length of 4.
      *
      * To make this more complex, use suggestPasssword(3).' '.suggestPassword(3);
+     *
+     * @param int $length
+     * @param int $words
      *
      * @return string
      */
@@ -122,8 +185,8 @@ class Password extends \atk4\data\Field
 
         $pass = '';
 
-        for ($i=0; $i<$length; $i++) {
-            $pass.=$syl[array_rand($syl)];
+        for ($i = 0; $i < $length; $i++) {
+            $pass .= $syl[array_rand($syl)];
         }
 
         return $pass;
