@@ -229,7 +229,7 @@ class Auth
      */
     public function tryLogin($email, $password)
     {
-        $user = $this->user->newInstance();
+        $user = $this->user;
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
