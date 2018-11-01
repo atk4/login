@@ -29,7 +29,7 @@ class Password extends \atk4\data\Field
         $this->typecast = [
             [$this, 'encrypt'],
             function ($v, $f, $p) {
-                $this->password_hash = $v;
+                $f->password_hash = $v;
                 if ($p instanceof \atk4\ui\Persistence\UI) {
                     return $v;
                 }

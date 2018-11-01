@@ -102,8 +102,8 @@ class Auth {
             $this->fieldPassword = $password_field;
         }
 
-        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1);
-        $this->user->id = $this->user->data[$this->user->id_field];
+        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1) ?: [];
+        $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
         $this->user->addHook('afterSave', function($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
             // update persistence
@@ -113,6 +113,15 @@ class Auth {
         if ($this->check) {
             $this->check();
         }
+        return $this;
+    }
+
+    function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence)
+    {
+        $acl->auth = $this;
+        $acl->applyRestrictions($this->user->persistence, $this->user);
+        $persistence->addHook('afterAdd', [$acl, 'applyRestrictions']);
+        return $this;
     }
 
     function logout()
@@ -174,7 +183,8 @@ class Auth {
     }
 
     function tryLogin($email, $password) {
-        $user = $this->user->newInstance();
+        $user = clone $this->user;
+        $user->unload();
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {

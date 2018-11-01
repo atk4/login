@@ -33,6 +33,9 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
 
         $m->addField('p', ['\atk4\login\Field\Password']);
 
+        # making sure cloning does not break things
+        $m = clone $m;
+
         $m['p'] = 'mypass';
 
         $this->assertEquals('mypass', $m['p']);

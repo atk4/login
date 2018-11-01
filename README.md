@@ -33,6 +33,7 @@ Here are all the classes implemented:
     -   Populates user menu with name of current user
     -   Adds log-out link
     -   Adds Preferences page
+-   [Flexible ACL support](docs/acl.md)
 -   Field\Password - password hashing, safety, generation and validation
 -   Model\User - basic user entity that can be extended
 -   LoginForm - username/password login form
