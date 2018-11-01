@@ -236,12 +236,10 @@ class Auth
      *
      * @return bool
      */
-    function tryLogin($email, $password) {
-        $user = clone $this->user;
-        $user->unload();
     public function tryLogin($email, $password)
     {
-        $user = $this->user;
+        $user = clone $this->user;
+        $user->unload();
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
