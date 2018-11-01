@@ -56,11 +56,10 @@ class App extends \atk4\ui\App {
 
     function __construct($interface = 'front', $no_db_connect = false) {
 
-        parent::__construct(include('config.php'));
+        parent::__construct();
 
         if (!$no_db_connect) {
             $this->dbConnect($this->dsn);
-            //$this->db = \atk4\data\Persistence::connect($this->dsn);
         }
 
 

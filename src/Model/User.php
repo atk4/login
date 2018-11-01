@@ -1,11 +1,14 @@
 <?php
 namespace atk4\login\Model;
 
-
-class User extends \atk4\data\Model {
+/**
+ * Example user data model.
+ */
+class User extends \atk4\data\Model
+{
     public $table = 'user';
 
-    function init()
+    public function init()
     {
         parent::init();
 
