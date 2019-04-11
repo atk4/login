@@ -102,7 +102,9 @@ class Auth
     public function init()
     {
         $this->_init();
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     /**
