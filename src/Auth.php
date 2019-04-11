@@ -102,8 +102,15 @@ class Auth
     public function init()
     {
         $this->_init();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+        switch (session_status()) {
+            case PHP_SESSION_DISABLED:
+                // @codeCoverageIgnoreStart - impossible to test
+                throw new Exception(['Sessions are disabled on server']);
+                // @codeCoverageIgnoreEnd
+                break;
+            case PHP_SESSION_NONE:
+                session_start();
+                break;
         }
     }
 
