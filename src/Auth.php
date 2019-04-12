@@ -102,7 +102,16 @@ class Auth
     public function init()
     {
         $this->_init();
-        session_start();
+        switch (session_status()) {
+            case PHP_SESSION_DISABLED:
+                // @codeCoverageIgnoreStart - impossible to test
+                throw new \atk4\core\Exception(['Sessions are disabled on server']);
+                // @codeCoverageIgnoreEnd
+                break;
+            case PHP_SESSION_NONE:
+                session_start();
+                break;
+        }
     }
 
     /**
