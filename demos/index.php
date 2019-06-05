@@ -1,7 +1,9 @@
 <?php
 
-include '../vendor/autoload.php';
-include 'db.php';
+namespace atk4\login\demo;
+
+require '../vendor/autoload.php';
+require 'db.php';
 
 $app = new App(false);
  

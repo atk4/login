@@ -1,6 +1,6 @@
 [ATK UI](https://github.com/atk4/ui) implements a high-level User Interface for Web App - such as **Admin System**. One of the most common things for the Admin system is a log-in screen.
 
-Although you can implement log-in form easily, this add-on does everything for you!
+Although you can implement log-in form easily, this add-on does everything for you:
 
 ## Installation
 

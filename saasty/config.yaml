@@ -1,0 +1,45 @@
+config: { defaultPasswordLength: 4 }
+Pages:
+  - name: invoice
+    layout:
+
+  - name: otherpage
+
+Components:
+
+
+Models:
+
+  - name: User
+    Fields:
+      - name: name
+      - name: role
+        type: enum
+      - name: email
+        Validation:
+          - name: isEmail
+            condition: is_email
+      - name: password
+        type: password
+
+    Actions:
+      - name: generate_random_password
+        implementation: trait
+        trait: atk4\login\PasswordManagement
+        Arguments:
+          - name: length
+            type: int
+            default: 4
+          - name: words
+            type: int
+            default: 1
+
+Extensions:
+  Fields:
+    - name: rating
+      description: Shows stars users can clink on
+      previewAs:
+        type: list
+        values: [ 1, 2, 3, 4, 5 ]
+      dataFieldClass: \atk4\data\Field\Password
+      formFieldDecorator: \atk4\login\FormField\Password
