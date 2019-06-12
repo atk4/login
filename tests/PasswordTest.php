@@ -3,9 +3,10 @@
 namespace atk4\data\tests;
 
 use atk4\data\Model;
-use atk4\data\Persistence_Array;
+use atk4\login\Field\Password;
+use PHPUnit\Framework\TestCase;
 
-class PasswordTest extends \PHPUnit_Framework_TestCase
+class PasswordTest extends TestCase
 {
     public function testPasswordField()
     {
@@ -31,7 +32,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
         $p = new Persistence_Array($a);
         $m = new Model($p);
 
-        $m->addField('p', ['\atk4\login\Field\Password']);
+        $m->addField('p', [Password::class]);
 
         # making sure cloning does not break things
         $m = clone $m;
@@ -43,6 +44,7 @@ class PasswordTest extends \PHPUnit_Framework_TestCase
         $m->save();
 
         $enc = $a['data'][1]['p'];
+        var_dump($a['data']);
 
         $this->assertTrue(is_string($enc));
         $this->assertNotEquals('mypass', $enc);

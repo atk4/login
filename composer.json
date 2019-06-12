@@ -17,7 +17,7 @@
     "require": {
         "atk4/ui": "^1.5.7",
         "atk4/schema": "^1.1.1",
-        "php": ">=5.6.0"
+        "php": ">=7.1.0"
     },
     "require-dev": {
         "behat/behat": "^3.4",
