@@ -27,6 +27,7 @@ class User extends Model
         $this->addField('password', ['\atk4\login\Field\Password']);
 
         $this->hasOne('role', Role::class);
+        $this->hasMany('AccessRules', [AccessRule::class, 'our_field'=>'role', 'their_field'=>'role']);
 
         $this->initSignup();
         $this->initPasswordManagement();

@@ -23,6 +23,7 @@ class AccessRule extends Model
         $this->addField('action', ['enum'=>['allow', 'deny']]);
 
         $this->containsMany('model_defs', new class extends Model {
+            public $caption='ModelDef';
             function init() {
                 parent::init();
 

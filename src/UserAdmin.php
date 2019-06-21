@@ -1,6 +1,8 @@
 <?php
 namespace atk4\login;
 
+use atk4\ui\CRUD;
+
 /**
  * View for user administration.
  */
@@ -41,31 +43,8 @@ class UserAdmin extends \atk4\ui\View
      */
     public function setModel(\atk4\data\Model $user)
     {
-        $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
-            ->set(function($p){ 
-
-                $console = $p->add('Console');
-
-                $console->set(function($console){ 
-
-                    //$this->app->logger = $this->app->add('UserNotificationConsole');
-
-                    $this->app->db->debug=true;
-
-                    $this->debug=true;
-                    $this->migrateDB();
-
-                    //$sse->send($console->js()->append('DONE'));
-                });
-                //$p->js(true, $sse);
-            })
-            ->show());
 
         $this->crud->setModel($user);
-
-
-
-
 
 
 
@@ -107,12 +86,23 @@ class UserAdmin extends \atk4\ui\View
 
             $c = $v->add('Columns');
             $col = $c->addColumn();
-            $col->add(['Header', 'User Details']);
-            $col->add(['Message', 'Comming soon', 'yellow']);
 
-            $col = $c->addColumn();
-            $col->add(['Header', 'Activity Log']);
-            $col->add(['Message', 'Comming soon', 'yellow']);
+            /** @var \atk4\ui\View $right */
+            $right = $c->addColumn();
+
+            $col->add(['Header', 'Role "'.$this->model['role'].'" Access']);
+            /** @var CRUD $crud */
+            $crud = $col->add(['CRUD']);
+            $crud->setModel($this->model->ref('AccessRules'));
+            $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
+
+            $right->add(['Header', 'Role Details']);
+            $rule = $right->stickyGet('rule');
+            if (!$rule) {
+                $right->add(['Message', 'Select role on the left', 'yellow']);
+            } else {
+                $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule)->ref('model_defs'));
+            }
 
         })->setAttr('title', 'User Details');
 
