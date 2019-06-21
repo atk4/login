@@ -2,7 +2,10 @@
 namespace atk4\login\Model;
 
 use atk4\data\Model;
-use atk4\login\PasswordManagement;
+
+# Features of User model
+use atk4\login\Feature\Signup;
+use atk4\login\Feature\PasswordManagement;
 
 /**
  * Example user data model.
@@ -11,9 +14,9 @@ class User extends Model
 {
 
     use PasswordManagement;
-    use Signups;
+    use Signup;
 
-    public $table = 'user';
+    public $table = 'login_user';
 
     public function init()
     {
@@ -23,8 +26,9 @@ class User extends Model
         $this->addField('email');
         $this->addField('password', ['\atk4\login\Field\Password']);
 
-        $this->addField('role', ['enum'=>['user', 'admin']]);
+        $this->hasOne('role', Role::class);
 
+        $this->initSignup();
         $this->initPasswordManagement();
     }
 }

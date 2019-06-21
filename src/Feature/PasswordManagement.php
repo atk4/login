@@ -1,7 +1,7 @@
 <?php
 
 
-namespace atk4\login;
+namespace atk4\login\Feature;
 
 
 /**

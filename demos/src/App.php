@@ -42,7 +42,6 @@ class App extends \atk4\ui\App {
     {
         $this->auth = $this->add(new \atk4\login\Auth(['check'=>false]));
         $m = new \atk4\login\Model\User($this->db);
-        $m->addCondition('is_admin', false);
 
         $this->auth->setModel(
             new \atk4\login\Model\User($this->db)

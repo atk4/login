@@ -46,8 +46,6 @@ class TestACL extends ACL {
 
         if($m instanceof User && !$this->can('admin')) {
             $m->getElement('email')->read_only = true;
-            $m->getElement('is_admin')->read_only = true;
-            $m->getElement('is_admin')->ui['visible'] = false;
         }
 
         if($m instanceof Admins && !$this->can('admin')) {
