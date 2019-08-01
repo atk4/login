@@ -85,6 +85,13 @@ class Auth
      * @var bool
      */
     public $hasPreferences = true;
+    
+    /**
+     * Page and form title
+     *
+     * @var string
+     */
+    public $title = 'Log-in Required';
 
     /**
      * Constructor.
@@ -209,7 +216,7 @@ class Auth
 
         // if user is not logged in, then show login form
         $l = new \atk4\ui\App();
-        $l->title = 'Log-in Required';
+        $l->title = $this->title;
         $this->app->catch_runaway_callbacks = false;
         $this->app->run_called = true;
         $l->catch_runaway_callbacks = false;
@@ -222,7 +229,7 @@ class Auth
             'linkForgot' => false,
         ]);
 
-        $l->layout->template->set('title', 'Log-in Required');
+        $l->layout->template->set('title', $this->title);
 
         $l->run();
         $this->app->terminate(); 
