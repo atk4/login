@@ -208,7 +208,7 @@ class Auth
         }
 
         // if user is not logged in, then show login form
-        $l = new \atk4\ui\App();
+        $l = new \atk4\ui\App($this->app->title.' - Log-in Required');
         $this->app->catch_runaway_callbacks = false;
         $this->app->run_called = true;
         $l->catch_runaway_callbacks = false;
