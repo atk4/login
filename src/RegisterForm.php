@@ -31,10 +31,11 @@ class RegisterForm extends \atk4\ui\Form
      * Sets user model.
      *
      * @param \atk4\data\Model $user
+     * @param array            $fields
      *
      * @return \atk4\data\Model
      */
-    public function setModel(\atk4\data\Model $user)
+    public function setModel(\atk4\data\Model $user, $fields = null)
     {
         parent::setModel($user, false);
 
@@ -61,10 +62,10 @@ class RegisterForm extends \atk4\ui\Form
 
             // save user
             $form->model->save();
-            
+
             return $form->success('Account has been created');
         });
-        
+
         return $form->model;
     }
 }

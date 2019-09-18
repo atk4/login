@@ -13,7 +13,7 @@ class Role extends Model
 
         $this->addField('name', ['type'=>'string', 'required'=>true]);
 
-        $this->hasMany('Users', User::class);
-        $this->hasMany('AccessRules', AccessRule::class);
+        $this->hasMany('Users', [User::class, 'our_field'=>'id', 'their_field'=>'role_id']);
+        $this->hasMany('AccessRules', [AccessRule::class, 'our_field'=>'id', 'their_field'=>'role_id']);
     }
 }

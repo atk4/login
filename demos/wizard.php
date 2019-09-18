@@ -1,5 +1,4 @@
 <?php
-
 namespace atk4\login\demo;
 
 use atk4\login\Model\AccessRule;
@@ -14,6 +13,7 @@ include '../vendor/autoload.php';
 include 'db.php';
 
 $app = new App('centered');
+
 /** @var Wizard $wizard */
 $wizard=$app->add('Wizard');
 
@@ -32,14 +32,16 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
 $wizard->addStep('Populate Sample Data', function(View $page) {
     $page->add('Console')->set(function(Console $c) {
 
-        $c->output('populating data');
+        $c->debug('Populating data...');
 
+        (new AccessRule($c->app->db))->each('delete');
         (new Role($c->app->db))->each('delete')->import(['user', 'admin']);
         (new User($c->app->db))->each('delete')->import([
             ['name'=>'user', 'role'=>'user', 'password'=>'user'],
             ['name'=>'admin', 'role'=>'admin', 'password'=>'admin'],
         ]);
 
+        $c->debug('Data imported');
     });
 });
 

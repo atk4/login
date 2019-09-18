@@ -1,8 +1,10 @@
 <?php
+namespace atk4\login\demo;
+
 include '../vendor/autoload.php';
 include 'db.php';
 
-class Admin extends App 
+class Admin extends App
 {
     function authenticate()
     {

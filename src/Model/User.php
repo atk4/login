@@ -26,9 +26,9 @@ class User extends Model
         $this->addField('email', ['required' => true]);
         $this->addField('password', [Password::class]);
 
-        $this->hasOne('role_id', Role::class);
+        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id'])->withTitle();
         $this->hasMany('AccessRules', function ($m) {
-            return $m->refLink('role_id')->ref('AccessRules');
+            return $m->ref('role_id')->ref('AccessRules');
         });
 
         $this->initSignup();

@@ -18,7 +18,7 @@ class AccessRule extends Model
     {
         parent::init();
 
-        $this->hasOne('role_id', Role::class);
+        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id']);
 
         $this->addField('model', ['required'=>true]); // model class name
 
@@ -47,32 +47,3 @@ class AccessRule extends Model
         });
     }
 }
-
-        /*
-        $this->addField('priority', ['type'=>'integer', 'default'=>1]);
-        $this->addField('action', ['enum'=>['allow', 'deny']]);
-
-        $this->containsMany('model_defs', new class extends Model {
-            public $caption='ModelDef';
-            function init() {
-                parent::init();
-
-                $this->addField('model');
-
-                // Specify which conditions will be applied on the model, e.g. "status=DRAFT"
-                $this->containsMany('conditions', new class extends Model {
-                    function init() {
-                        parent::init();
-                        $this->addField('field');
-                        $this->addField('value');
-                    }
-                });
-
-                $this->addField('all_fields', ['type'=>'boolean']);
-                $this->addField('fields', ['type'=>'array']); // if all_fields is false
-
-                $this->addField('all_actions', ['type'=>'boolean']);
-                $this->addField('actions', ['type'=>'array']); // if all_actions is false
-            }
-        });
-        */

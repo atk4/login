@@ -1,12 +1,11 @@
 <?php
-
 namespace atk4\login\demo;
 
 require '../vendor/autoload.php';
 require 'db.php';
 
 $app = new App(false);
- 
+
 $app->add(['Header', 'Welcome to Auth Add-on demo app']);
 $app->add(['Button', 'Run migration wizard', 'icon'=>'gift'])->link(['wizard']);
 
