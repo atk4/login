@@ -22,7 +22,7 @@ class Password extends \atk4\data\Field
      * @var string
      */
     protected $password_hash = null;
-    
+
     /**
      * Optional callable for encrypting password.
      * Use it if you need to customize your password encryption algorithm.
@@ -31,11 +31,11 @@ class Password extends \atk4\data\Field
      * @var callable
      */
     public $encryptMethod;
-    
+
     /**
-     * Optional callable for veryfying password.
+     * Optional callable for verifying password.
      * Use it if you need to customize your password verification algorithm.
-     * Recieves parameters - plaintext password, encrypted password
+     * Receives parameters - plaintext password, encrypted password
      *
      * @var callable
      */
@@ -58,7 +58,23 @@ class Password extends \atk4\data\Field
     }
 
     /**
-     * Normalize password - remove hash
+     * Cloning function.
+     */
+    public function __clone()
+    {
+        // IMPORTANT: This is required as workaround in case you clone model.
+        // Otherwise it will use encrypt/decrypt method of old model object.
+        // set up typecasting
+        $this->typecast = [
+            // callback on saving
+            [$this, 'encrypt'],
+            // callback on loading
+            [$this, 'decrypt'],
+        ];
+    }
+
+    /**
+     * Normalize password - remove hash.
      *
      * @param string $value password
      *
@@ -75,7 +91,7 @@ class Password extends \atk4\data\Field
      * DO NOT CALL THIS METHOD. It is automatically invoked when you save
      * your model.
      *
-     * When storing password to persistance, it will be encrypted. We will
+     * When storing password to persistence, it will be encrypted. We will
      * also update $this->password_hash, in case you'll want to perform
      * verify right after.
      *
@@ -83,7 +99,7 @@ class Password extends \atk4\data\Field
      * @param \atk4\data\Field       $f
      * @param \atk4\data\Persistence $p
      *
-     * @return string encrypted password
+     * @return string|null encrypted password
      */
     public function encrypt($password, $f, $p)
     {
@@ -100,7 +116,7 @@ class Password extends \atk4\data\Field
 
         return $this->password_hash;
     }
-    
+
     /**
      * DO NOT CALL THIS METHOD. It is automatically invoked when you load
      * your model.
@@ -109,7 +125,7 @@ class Password extends \atk4\data\Field
      * @param \atk4\data\Field       $f
      * @param \atk4\data\Persistence $p
      *
-     * @return string encrypted password
+     * @return string|null encrypted password
      */
     public function decrypt($password, $f, $p)
     {
@@ -122,7 +138,7 @@ class Password extends \atk4\data\Field
     }
 
     /**
-     * Verify if the password user have suppplied you with is correct.
+     * Verify if the password user have supplied you with is correct.
      *
      * @param string $password plain text password
      *

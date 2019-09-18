@@ -3,6 +3,7 @@
 namespace atk4\data\tests;
 
 use atk4\data\Model;
+use atk4\data\Persistence;
 use atk4\login\Field\Password;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +30,7 @@ class PasswordTest extends TestCase
     public function testPasswordPersistence1()
     {
         $a = [];
-        $p = new Persistence_Array($a);
+        $p = new Persistence\Array_($a);
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
@@ -37,26 +38,23 @@ class PasswordTest extends TestCase
         # making sure cloning does not break things
         $m = clone $m;
 
+
         $m['p'] = 'mypass';
-
         $this->assertEquals('mypass', $m['p']);
-
         $m->save();
 
-        $enc = $a['data'][1]['p'];
-        var_dump($a['data']);
-
+        //var_dump($a['data']);
+        $enc = $a['data'][1]['p']; // stored encoded password
         $this->assertTrue(is_string($enc));
         $this->assertNotEquals('mypass', $enc);
 
         // should have reloaded also
-
         $this->assertNull($m['p']);
 
         $this->assertFalse($m->compare('p', 'badpass'));
         $this->assertTrue($m->compare('p', 'mypass'));
 
-        // password shouldnt be dirty here
+        // password shouldn't be dirty here
         $this->assertFalse($m->isDirty('p'));
 
         $m['p'] = 'newpass';
@@ -74,10 +72,23 @@ class PasswordTest extends TestCase
     /**
      * @expectedException Exception
      */
-    public function testPasswordCompareException1()
+    public function testCanNotCompareEmptyException1()
     {
         $a = [];
-        $p = new Persistence_Array($a);
+        $p = new Persistence\Array_($a);
+        $m = new Model($p);
+
+        $m->addField('p', [Password::class]);
+        $m->compare('p', 'mypass'); // tries to compare empty password field value with value 'mypass'
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testPasswordCompareException2()
+    {
+        $a = [];
+        $p = new Persistence\Array_($a);
         $m = new Model($p);
 
         $m->addField('p', ['\atk4\login\Field\Password']);
