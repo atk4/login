@@ -16,7 +16,7 @@ class Auth
     use \atk4\core\TrackableTrait;
     use \atk4\core\HookTrait;
     use \atk4\core\InitializerTrait {
-        init as _init;   
+        init as _init;
     }
 
     /**
@@ -50,8 +50,8 @@ class Auth
     public $fieldPassword = 'password';
 
     /**
-     * Permorm check automatically and display a Login form when 'setModel' takes place. 
-     * 
+     * Permorm check automatically and display a Login form when 'setModel' takes place.
+     *
      * This is a transparent way to add authentication to an existing application.
      *
      * @var bool
@@ -141,7 +141,7 @@ class Auth
 
         $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1) ?: [];
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
-        
+
         // update session persistence after changes saved in user model
         $this->user->addHook('afterSave', function($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
@@ -154,11 +154,21 @@ class Auth
         return $this;
     }
 
-    function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence)
+    /**
+     * Link ACL object with this Auth controller object, apply restrictions on user model and
+     * also apply ACL restrictions on each model you add to this persistence in future.
+     *
+     * @param \atk4\login\ACL        $acl
+     * @param \atk4\data\Persistence $persistence
+     *
+     * @return $this
+     */
+    public function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence)
     {
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
         $persistence->addHook('afterAdd', [$acl, 'applyRestrictions']);
+
         return $this;
     }
 
@@ -215,8 +225,8 @@ class Auth
         $l->initLayout(new \atk4\login\Layout\Narrow());
 
         $form = $l->add([
-            $this->form, 
-            'auth' => $this, 
+            $this->form,
+            'auth' => $this,
             'linkSuccess' => [$this->pageDashboard],
             'linkForgot' => false,
         ]);
@@ -224,7 +234,7 @@ class Auth
         $l->layout->template->set('title', 'Log-in Required');
 
         $l->run();
-        $this->app->terminate(); 
+        $this->app->terminate();
         exit;
     }
 

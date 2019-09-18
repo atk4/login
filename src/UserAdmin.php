@@ -1,6 +1,8 @@
 <?php
 namespace atk4\login;
 
+use atk4\data\Model;
+use atk4\schema\Migration;
 use atk4\ui\CRUD;
 
 /**
@@ -23,13 +25,17 @@ class UserAdmin extends \atk4\ui\View
         $this->crud = $this->add('CRUD');
     }
 
-    public function migrateDB($model = null)
+    /**
+     * Migrate model to DB.
+     *
+     * @param Model $model
+     */
+    public function migrateDB(Model $model = null)
     {
         $this->log('notice', 'Running migrations now', ['model'=>$model]);
         $this->debug('hello');
 
-
-        $s = new \atk4\schema\Migration\MySQL($model ?: $this->model);
+        $s = new Migration\MySQL($model ?: $this->model);
         $s->migrate();
         $this->log('notice', 'Finished now');
     }
@@ -37,11 +43,11 @@ class UserAdmin extends \atk4\ui\View
     /**
      * Initialize User Admin and add all the UI pieces.
      *
-     * @param \atk4\data\Model $user
+     * @param Model $user
      *
-     * @return \atk4\data\Model
+     * @return Model
      */
-    public function setModel(\atk4\data\Model $user)
+    public function setModel(Model $user)
     {
 
         $this->crud->setModel($user);
@@ -63,7 +69,7 @@ class UserAdmin extends \atk4\ui\View
             $f->addAction(['icon'=>'random'])->on('click', function() use ($f) {
                 return $f->jsInput()->val($this->model->getElement('password')->suggestPassword());
             });
-                
+
             $form->onSubmit(function($form) use ($v) {
                 $this->model['password'] = $form->model['visible_password'];
                 $this->model->save();

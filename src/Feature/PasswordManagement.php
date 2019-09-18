@@ -1,8 +1,7 @@
 <?php
-
-
 namespace atk4\login\Feature;
 
+use atk4\data\UserAction;
 
 /**
  * Enables your User model to perform various actions with the passwords
@@ -15,17 +14,22 @@ trait PasswordManagement
     /**
      * This must be consistent with config.yaml
      */
-    function initPasswordManagement()
+    public function initPasswordManagement()
     {
-        $this->addAction('generate_random_password', ['scope'=>'no_records', 'system'=>true]);
-        $this->addAction('reset_password', ['scope'=>'single_record']);
+        $this->addAction('generate_random_password', ['scope'=>UserAction\Generic::NO_RECORDS, 'system'=>true]);
+        $this->addAction('reset_password', ['scope'=>UserAction\Generic::SINGLE_RECORD]);
         $this->addAction('check_password_strength', ['arguments']);
     }
 
     /**
      * Generate random password for the user, returns it.
+     *
+     * @param int $length
+     * @param int $words
+     *
+     * @return string
      */
-    function generate_random_password($length = 4, $words = 1)
+    public function generate_random_password($length = 4, $words = 1)
     {
         $p5 = ['','k','s','t','n','h','m','r','w','g','z','d','b','p'];
         $p3 = ['y','ky','sh','ch','ny','my','ry','gy','j','py','by'];
@@ -58,8 +62,13 @@ trait PasswordManagement
     /**
      * Assumes that current model has 'password' and 'email' fields. Will set random password
      * and then will email user about it (if $app->outbox is set up correctly)
+     *
+     * @param int $length
+     * @param int $words
+     *
+     * @return string
      */
-    function reset_password($length = null, $words = null)
+    public function reset_password($length = null, $words = null)
     {
         $password = $this->generate_random_password(
             $length ?: $this->app->addonConfig['atk4/login']['defaultPasswordLength'] ?? 4,
@@ -80,8 +89,8 @@ trait PasswordManagement
     /**
      * Will verify password against several verification mechanisms, returns suggestion. Can be used in validation.
      *
-     * @param $password
-     * @param array $settings as below
+     * @param string $password
+     * @param array  $settings as below
      *
      *  - strength=5: uses scale of 1 to 10 to measure how strong password is (see https://howsecureismypassword.net)
      *  https://gist.github.com/xrstf/2926619
@@ -97,14 +106,13 @@ trait PasswordManagement
      *
      * @return string|null
      */
-    function check_password_strength($password, $settings=['strength'=>true])
+    public function check_password_strength($password, $settings = ['strength'=>true])
     {
-        $length    = strlen($password);
-
-        $nUpper    = 0;
-        $nLower    = 0;
-        $nNum      = 0;
-        $nSymbol   = 0;
+        $length  = strlen($password);
+        $nUpper  = 0;
+        $nLower  = 0;
+        $nNum    = 0;
+        $nSymbol = 0;
         for ($i = 0; $i < $length; ++$i) {
             $ch   = $password[$i];
             $code = ord($ch);
@@ -143,8 +151,9 @@ trait PasswordManagement
     /**
      * Calculate score for a password. Credit: https://gist.github.com/xrstf/2926619
      *
-     * @param  string $pw  the password to work on
-     * @return int         score
+     * @param string $pw the password to work on
+     *
+     * @return int       score
      */
     private function calculate_strength($pw) {
         $length    = strlen($pw);
@@ -241,6 +250,7 @@ trait PasswordManagement
         }
         return $score;
     }
+
     /**
      * Find all sequential chars in string $src
      *
@@ -248,9 +258,10 @@ trait PasswordManagement
      * For example if $charLocs is [0,2,3], then only $src[2:3] is a possible
      * substring with sequential chars.
      *
-     * @param  array  $charLocs
-     * @param  string $src
-     * @return array             [[c,c,c,c], [a,a,a], ...]
+     * @param array  $charLocs
+     * @param string $src
+     *
+     * @return array            [[c,c,c,c], [a,a,a], ...]
      */
     private function findSequence($charLocs, $src) {
         $sequences = array();
@@ -281,5 +292,4 @@ trait PasswordManagement
         }
         return $sequences;
     }
-
 }

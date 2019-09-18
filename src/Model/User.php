@@ -2,6 +2,7 @@
 namespace atk4\login\Model;
 
 use atk4\data\Model;
+use atk4\login\Field\Password;
 
 # Features of User model
 use atk4\login\Feature\Signup;
@@ -12,7 +13,6 @@ use atk4\login\Feature\PasswordManagement;
  */
 class User extends Model
 {
-
     use PasswordManagement;
     use Signup;
 
@@ -22,12 +22,14 @@ class User extends Model
     {
         parent::init();
 
-        $this->addField('name');
-        $this->addField('email');
-        $this->addField('password', ['\atk4\login\Field\Password']);
+        $this->addField('name', ['required' => true]);
+        $this->addField('email', ['required' => true]);
+        $this->addField('password', [Password::class]);
 
-        $this->hasOne('role', Role::class);
-        $this->hasMany('AccessRules', [AccessRule::class, 'our_field'=>'role', 'their_field'=>'role']);
+        $this->hasOne('role_id', Role::class);
+        $this->hasMany('AccessRules', function ($m) {
+            return $m->refLink('role_id')->ref('AccessRules');
+        });
 
         $this->initSignup();
         $this->initPasswordManagement();
