@@ -14,16 +14,17 @@ class App extends \atk4\ui\App
     public $auth;
     public $title = 'Auth Demo App';
 
-    public function __construct($interface = 'front', $no_db_connect = false)
+    public function __construct($interface = 'front', $no_db_connect = false, $no_authenticate = false)
     {
         parent::__construct();
-        
+
         $this->readConfig(__DIR__.'/../config.php', 'php-inline');
 
         if ($interface == 'admin') {
             $this->initLayout('Admin');
-            $this->layout->leftMenu->addItem(['Demo Index', 'icon'=>'gift'], ['index']);
-            $this->layout->leftMenu->addItem(['Admin', 'icon'=>'users'], ['admin']);
+            $this->layout->leftMenu->addItem(['Back to Demo Index', 'icon'=>'gift'], ['index']);
+            $this->layout->leftMenu->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
+            $this->layout->leftMenu->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
         } elseif ($interface == 'centered') {
             $this->initLayout('Centered');
         } else {
@@ -34,18 +35,18 @@ class App extends \atk4\ui\App
             $this->dbConnect($this->config['dsn']);
         }
 
-        $this->authenticate();
+        if (!$no_authenticate) {
+            $this->authenticate();
+        }
     }
 
     public function authenticate()
     {
         $this->auth = $this->add(new \atk4\login\Auth(['check'=>false]));
+
         $m = new \atk4\login\Model\User($this->db);
+        $this->auth->setModel($m);
 
-        $this->auth->setModel(
-            new \atk4\login\Model\User($this->db)
-        );
-
-        $this->auth->setACL(new TestACL(), $this->db);
+        $this->auth->setACL(new \atk4\login\ACL(), $this->db);
     }
 }

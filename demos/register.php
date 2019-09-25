@@ -4,7 +4,7 @@ namespace atk4\login\demo;
 include '../vendor/autoload.php';
 include 'db.php';
 
-$app = new App(false);
+$app = new App(false, false, true); // App without authentication to be able to freely create new user
 
 // stuff above the form
 $c = $app->add('Columns');

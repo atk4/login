@@ -2,13 +2,13 @@
 namespace atk4\login;
 
 use atk4\data\Model;
-use atk4\schema\Migration;
 use atk4\ui\CRUD;
+use atk4\ui\View;
 
 /**
  * View for user administration.
  */
-class UserAdmin extends \atk4\ui\View
+class UserAdmin extends View
 {
     use \atk4\core\DebugTrait;
 
@@ -26,21 +26,6 @@ class UserAdmin extends \atk4\ui\View
     }
 
     /**
-     * Migrate model to DB.
-     *
-     * @param Model $model
-     */
-    public function migrateDB(Model $model = null)
-    {
-        $this->log('notice', 'Running migrations now', ['model'=>$model]);
-        $this->debug('hello');
-
-        $s = new Migration\MySQL($model ?: $this->model);
-        $s->migrate();
-        $this->log('notice', 'Finished now');
-    }
-
-    /**
      * Initialize User Admin and add all the UI pieces.
      *
      * @param Model $user
@@ -53,12 +38,11 @@ class UserAdmin extends \atk4\ui\View
         $this->crud->setModel($user);
 
 
-
         // Add new table column used for actions
         $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'User Actions']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $a->addModal(['icon'=>'key'], 'Reset Password', function($v, $id) {
+        $a->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
 
             $this->model->load($id);
 
@@ -67,7 +51,7 @@ class UserAdmin extends \atk4\ui\View
             //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
             $f->addAction(['icon'=>'random'])->on('click', function() use ($f) {
-                return $f->jsInput()->val($this->model->getElement('password')->suggestPassword());
+                return $f->jsInput()->val($this->model->getField('password')->suggestPassword());
             });
 
             $form->onSubmit(function($form) use ($v) {
@@ -91,14 +75,16 @@ class UserAdmin extends \atk4\ui\View
             $this->model->load($id);
 
             $c = $v->add('Columns');
-            $col = $c->addColumn();
+
+            /** @var \atk4\ui\View $left */
+            $left = $c->addColumn();
 
             /** @var \atk4\ui\View $right */
             $right = $c->addColumn();
 
-            $col->add(['Header', 'Role "'.$this->model['role'].'" Access']);
+            $left->add(['Header', 'Role "'.$this->model['role'].'" Access']);
             /** @var CRUD $crud */
-            $crud = $col->add(['CRUD']);
+            $crud = $left->add(['CRUD']);
             $crud->setModel($this->model->ref('AccessRules'));
             $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
 

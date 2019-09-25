@@ -10,6 +10,7 @@ use atk4\data\Model;
 class AccessRule extends Model
 {
     public $table = 'login_access_rule';
+    public $caption = 'Access Rule';
 
     /**
      * @throws Exception
@@ -18,9 +19,9 @@ class AccessRule extends Model
     {
         parent::init();
 
-        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id']);
+        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role']);
 
-        $this->addField('model', ['required'=>true]); // model class name
+        $this->addField('model', ['required'=>true, 'caption'=>'Model Class name']); // model class name
 
         /*
         $this->containsOne('config', new class extends Model {
@@ -31,6 +32,7 @@ class AccessRule extends Model
                 // put all fields which are below in here
                 // And this new class should be separated to let's say AccessRule/Model class so we can
                 // also have AccessRule/Interface or AccessRule/View or AccessRule/Page class in future
+                // with different config properties
 
             }
         });
@@ -38,15 +40,15 @@ class AccessRule extends Model
 
         // which model fields should be visible
         $this->addField('all_visible', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('visible_fields', ['type'=>'array']); // used if all_visible is false
+        //$this->addField('visible_fields', ['type'=>'array']);//, 'ui'=>['form'=>'FormField/MultiLine']]); // used if all_visible is false
 
         // which model fields should be editable
         $this->addField('all_editable', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('editable_fields', ['type'=>'array']); // used if all_editable is false
+        //$this->addField('editable_fields', ['type'=>'array']); // used if all_editable is false
 
         // which model actions are allowed
         $this->addField('all_actions', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('actions', ['type'=>'array']); // used if all_actions is false
+        //$this->addField('actions', ['type'=>'array']); // used if all_actions is false
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT"
         // Conditions are always joined with AND, like status=DRAFT AND sent=false

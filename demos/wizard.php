@@ -12,7 +12,7 @@ use atk4\ui\Wizard;
 include '../vendor/autoload.php';
 include 'db.php';
 
-$app = new App('centered');
+$app = new App('centered', false, true); // App without authentication to be able to freely import data
 
 /** @var Wizard $wizard */
 $wizard=$app->add('Wizard');
@@ -34,12 +34,17 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
 
         $c->debug('Populating data...');
 
-        (new AccessRule($c->app->db))->each('delete');
-        (new Role($c->app->db))->each('delete')->import(['user', 'admin']);
-        (new User($c->app->db))->each('delete')->import([
-            ['name'=>'user', 'role'=>'user', 'password'=>'user'],
-            ['name'=>'admin', 'role'=>'admin', 'password'=>'admin'],
-        ]);
+        (new AccessRule($c->app->db))
+            ->each('delete');
+        (new Role($c->app->db))
+            ->each('delete')
+            ->import(['user', 'admin']);
+        (new User($c->app->db))
+            ->each('delete')
+            ->import([
+                ['name'=>'Standard User', 'email'=>'user', 'role'=>'user', 'password'=>'user'],
+                ['name'=>'Administrator', 'email'=>'admin', 'role'=>'admin', 'password'=>'admin'],
+            ]);
 
         $c->debug('Data imported');
     });
