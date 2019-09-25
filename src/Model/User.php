@@ -26,7 +26,10 @@ class User extends Model
         $this->addField('email', ['required' => true]);
         $this->addField('password', [Password::class]);
 
+        // currently user can have only one role. In future it should be n:n relation
         $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id'])->withTitle();
+
+        // all AccessRules for all user roles merged together
         $this->hasMany('AccessRules', function ($m) {
             return $m->ref('role_id')->ref('AccessRules');
         });

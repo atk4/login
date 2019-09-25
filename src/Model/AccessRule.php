@@ -22,17 +22,31 @@ class AccessRule extends Model
 
         $this->addField('model', ['required'=>true]); // model class name
 
+        /*
+        $this->containsOne('config', new class extends Model {
+            public function init()
+            {
+                parent::init();
+
+                // put all fields which are below in here
+                // And this new class should be separated to let's say AccessRule/Model class so we can
+                // also have AccessRule/Interface or AccessRule/View or AccessRule/Page class in future
+
+            }
+        });
+        */
+
         // which model fields should be visible
         $this->addField('all_visible', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('visible_fields', ['type'=>'array']); // if all_visible is false
+        $this->addField('visible_fields', ['type'=>'array']); // used if all_visible is false
 
         // which model fields should be editable
         $this->addField('all_editable', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('editable_fields', ['type'=>'array']); // if all_editable is false
+        $this->addField('editable_fields', ['type'=>'array']); // used if all_editable is false
 
         // which model actions are allowed
         $this->addField('all_actions', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('actions', ['type'=>'array']); // if all_actions is false
+        $this->addField('actions', ['type'=>'array']); // used if all_actions is false
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT"
         // Conditions are always joined with AND, like status=DRAFT AND sent=false

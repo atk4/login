@@ -9,13 +9,21 @@ namespace atk4\login\Feature;
  */
 trait Signup
 {
+    /**
+     * Adds register_new_user action.
+     */
     public function initSignup()
     {
         $this->addAction('register_new_user', ['fields' => ['login', 'email', 'password']]);
     }
 
-    public function register_new_user()
+    /**
+     * Creates new user record.
+     *
+     * @param array $data Optionally can pass field values of User model
+     */
+    public function register_new_user($data = [])
     {
-        $this->save();
+        $this->save($data);
     }
 }
