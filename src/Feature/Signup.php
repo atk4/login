@@ -1,6 +1,8 @@
 <?php
 namespace atk4\login\Feature;
 
+use atk4\data\UserAction;
+
 /**
  * Adding this trait to your user model will allow users to sign-up for your application. Additionally execute
  * $this->initSignup() from your init() method.
@@ -14,7 +16,7 @@ trait Signup
      */
     public function initSignup()
     {
-        $this->addAction('register_new_user', ['fields' => ['login', 'email', 'password']]);
+        $this->addAction('register_new_user', ['scope'=>UserAction\Generic::NO_RECORDS, 'fields' => ['login', 'email', 'password']]);
     }
 
     /**

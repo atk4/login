@@ -6,7 +6,6 @@ include 'db.php';
 
 use atk4\login\RoleAdmin;
 use atk4\login\Model\Role;
-use atk4\login\Model\AccessRule;
 
 $app = new \atk4\login\demo\App('admin');
 
@@ -16,4 +15,4 @@ $m = $app->add('CRUD')->setModel(new Role($app->db));
 
 // ROLE PERMISSIONS ---------------------------------------
 $app->add('Header')->set('Role Permissions');
-$app->add('CRUD')->setModel(/*$m->refModel('AccessRules'));//*/new AccessRule($app->db));
+$app->add('CRUD')->setModel($m->refModel('AccessRules'));
