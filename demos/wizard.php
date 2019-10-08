@@ -38,12 +38,12 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
             ->each('delete');
         (new Role($c->app->db))
             ->each('delete')
-            ->import(['user', 'admin']);
+            ->import(['User Role', 'Admin Role']);
         (new User($c->app->db))
             ->each('delete')
             ->import([
-                ['name'=>'Standard User', 'email'=>'user', 'role'=>'user', 'password'=>'user'],
-                ['name'=>'Administrator', 'email'=>'admin', 'role'=>'admin', 'password'=>'admin'],
+                ['name'=>'Standard User', 'email'=>'user', 'role'=>'User Role', 'password'=>'user'],
+                ['name'=>'Administrator', 'email'=>'admin', 'role'=>'Admin Role', 'password'=>'admin'],
             ]);
 
         $c->debug('Data imported');

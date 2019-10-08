@@ -21,7 +21,7 @@ class AccessRule extends Model
 
         $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role']);
 
-        $this->addField('model', ['required'=>true, 'caption'=>'Model Class name']); // model class name
+        $this->addField('model', ['required'=>true, 'caption'=>'Model Class']); // model class name
 
         /*
         $this->containsOne('config', new class extends Model {
@@ -38,6 +38,22 @@ class AccessRule extends Model
         });
         */
 
+        /**
+         * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
+         *      '*' - equals all_fields=true
+         *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo','bar']
+         *
+         *      This way it also will be easier to merge permissions from multiple roles together (in future). For example:
+         *          role_1 = 'f1,f2';
+         *          role_2 = 'f2,f4';
+         *          role_3 = '*';
+         *          $actual_permissions = array_merge(explode(',',$role_1),explode(',',$role_2),explode(',',$role_3));
+         *          $actual_permissions = ['f1','f2','f4','*'];
+         *          and then apply array_search() to find if we allow all fields (*) or not
+         *          $all_visible = array_search('*', $actual_permissions) !== false
+         *          $visible_fields = array_diff($actual_fields,['*']);
+         */
+
         // which model fields should be visible
         $this->addField('all_visible', ['type'=>'boolean', 'default'=>true]);
         //$this->addField('visible_fields', ['type'=>'array']);//, 'ui'=>['form'=>'FormField/MultiLine']]); // used if all_visible is false
@@ -52,6 +68,7 @@ class AccessRule extends Model
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT"
         // Conditions are always joined with AND, like status=DRAFT AND sent=false
+        /*
         $this->containsMany('conditions', new class extends Model {
             public function init()
             {
@@ -61,5 +78,8 @@ class AccessRule extends Model
                 $this->addField('value');
             }
         });
+        */
+        // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
+        $this->addField('conditions', ['type' => 'text']);
     }
 }

@@ -93,7 +93,7 @@ class UserAdmin extends View
             if (!$rule) {
                 $right->add(['Message', 'Select role on the left', 'yellow']);
             } else {
-                $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule)->ref('model_defs'));
+                $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule));
             }
 
         })->setAttr('title', 'User Details');
