@@ -32,7 +32,7 @@ class User extends Model
         $this->addField('name', ['required' => true]);
         $this->addField('email', ['required' => true]);
         $this->setUnique('email');
-        $this->addField('password', [Password::class]); // required only when inserting (see beforeSave hook)
+        $this->addField('password', [Password::class, 'ui'=>['visible'=>false]]); // required only when inserting (see beforeSave hook)
 
         // currently user can have only one role. In future it should be n:n relation
         $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role'])->withTitle();
