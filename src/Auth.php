@@ -159,12 +159,13 @@ class Auth
      * also apply ACL restrictions on each model you add to this persistence in future.
      *
      * @param \atk4\login\ACL        $acl
-     * @param \atk4\data\Persistence $persistence
+     * @param \atk4\data\Persistence $persistence Optional persistence, use User model persistence by default
      *
      * @return $this
      */
-    public function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence)
+    public function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence = null)
     {
+        $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
         $persistence->addHook('afterAdd', [$acl, 'applyRestrictions']);

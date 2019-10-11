@@ -2,6 +2,9 @@
 
 namespace atk4\login;
 
+use atk4\data\Model;
+use atk4\data\Persistence;
+
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
  */
@@ -16,33 +19,52 @@ class ACL
     public $auth;
 
     /**
-     * Given a model, this will apply some restrictions on it.
+     * Returns AccessRules model for logged in user and in model scope.
      *
-     * @param \atk4\data\Persistence $p
-     * @param \atk4\data\Model       $m
+     * @param Model $model
+     *
+     * @return \atk4\login\Model\AccessRule
      */
-    public function applyRestrictions(\atk4\data\Persistence $p, \atk4\data\Model $m)
+    public function getRules(Model $model)
     {
-        // Extend this method
-        // if($m instanceof Model\User && !$this->auth->user['is_admin']) {
-        //      $m->getField('is_admin')->read_only = true;
-        // }
-    }
+        /** @var \atk4\login\Model\User*/
+        $user = $this->auth->user;
 
-    /*
-    protected $permissions = [];
+        if (!$user->loaded()) {
+            throw new Exception('User model should be loaded!');
+        }
+
+        return $user->ref('AccessRules')->addCondition('model', get_class($model));
+    }
 
     /**
-     * Gather permissions of currently logged in users for faster access
+     * Given a model, this will apply some restrictions on it.
+     *
+     * Extend this method if you wish.
+     *
+     * @param Persistence $p
+     * @param Model       $m
      */
-    /*
-    public function cachePermissions()
+    public function applyRestrictions(Persistence $p, Model $m)
     {
-        $this->permissions = [
-            //'admin' => $this->auth->user->loaded() && $this->auth->user['is_admin'] // Imants: disabled this to not fail miserably
-        ];
+        $rules = $this->getRules($m);
+
+        foreach ($rules as $junk) {
+
+            // remove not allowed actions
+            if (!$rules['all_actions'] && $rules['actions']) {
+                $actions_to_remove = array_diff(array_keys($m->getActions()), $rules['actions']);
+                foreach ($actions_to_remove as $action) {
+                    $m->_removeFromCollection($action, 'actions');
+                }
+            }
+
+            // add conditions on model
+            if ($rules['conditions']) {
+                $m->addCondition($rules['conditions']);
+            }
+        }
     }
-    */
 
     /**
      * Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.

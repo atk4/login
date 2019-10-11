@@ -9,10 +9,7 @@ use atk4\login\Model\Role;
 
 $app = new \atk4\login\demo\App('admin');
 
-// ROLES --------------------------------------------------
+// USERS --------------------------------------------------
 $app->add('Header')->set('Roles');
-$m = $app->add('CRUD')->setModel(new Role($app->db));
-
-// ROLE PERMISSIONS ---------------------------------------
-$app->add('Header')->set('Role Permissions');
-$app->add('CRUD')->setModel($m->refModel('AccessRules'));
+$app->add(new RoleAdmin())
+    ->setModel(new Role($app->db));

@@ -29,7 +29,7 @@ class AccessRule extends Model
             {
                 parent::init();
 
-                // put all fields which are below in here
+                // We can put all fields which are below in here.
                 // And this new class should be separated to let's say AccessRule/Model class so we can
                 // also have AccessRule/Interface or AccessRule/View or AccessRule/Page class in future
                 // with different config properties
@@ -66,19 +66,7 @@ class AccessRule extends Model
         $this->addField('all_actions', ['type'=>'boolean', 'default'=>true]);
         //$this->addField('actions', ['type'=>'array']); // used if all_actions is false
 
-        // Specify which conditions will be applied on the model, e.g. "status=DRAFT"
-        // Conditions are always joined with AND, like status=DRAFT AND sent=false
-        /*
-        $this->containsMany('conditions', new class extends Model {
-            public function init()
-            {
-                parent::init();
-                $this->addField('field', ['required'=>true]);
-                $this->addField('cond'); // condition
-                $this->addField('value');
-            }
-        });
-        */
+        // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"
         // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
         $this->addField('conditions', ['type' => 'text']);
     }

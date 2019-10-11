@@ -6,7 +6,8 @@ use atk4\ui\CRUD;
 use atk4\ui\View;
 
 /**
- * View for user administration.
+ * View for User administration.
+ * Includes User association with Role.
  */
 class UserAdmin extends View
 {
@@ -34,12 +35,12 @@ class UserAdmin extends View
      */
     public function setModel(Model $user)
     {
-
+        // set model for CRUD
         $this->crud->setModel($user);
 
 
         // Add new table column used for actions
-        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'User Actions']);
+        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
 
         // Pop-up for resetting password. Will display button for generating random password
         $a->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
@@ -71,19 +72,15 @@ class UserAdmin extends View
 
         })->setAttr('title', 'Change Password');
 
+        /*
         $a->addModal(['icon'=>'eye'], 'Details', function($v, $id) {
             $this->model->load($id);
 
             $c = $v->add('Columns');
-
-            /** @var \atk4\ui\View $left */
             $left = $c->addColumn();
-
-            /** @var \atk4\ui\View $right */
             $right = $c->addColumn();
 
             $left->add(['Header', 'Role "'.$this->model['role'].'" Access']);
-            /** @var CRUD $crud */
             $crud = $left->add(['CRUD']);
             $crud->setModel($this->model->ref('AccessRules'));
             $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
@@ -95,8 +92,8 @@ class UserAdmin extends View
             } else {
                 $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule));
             }
-
         })->setAttr('title', 'User Details');
+        */
 
         return parent::setModel($user);
     }
