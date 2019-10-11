@@ -42,7 +42,7 @@ class App extends \atk4\ui\App
 
     public function authenticate()
     {
-        $this->auth = $this->add(new \atk4\login\Auth(['check'=>false]));
+        $this->auth = $this->add(new \atk4\login\Auth(['check'=>true]));
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);

@@ -2,6 +2,7 @@
 
 namespace atk4\login;
 
+use atk4\core\Exception;
 use atk4\data\Model;
 use atk4\data\Persistence;
 
@@ -31,7 +32,9 @@ class ACL
         $user = $this->auth->user;
 
         if (!$user->loaded()) {
-            throw new Exception('User model should be loaded!');
+            // user is not logged in - let's force him to do so. Alternative is to throw exception, but that's ugly.
+            $this->auth->check();
+            //throw new Exception('User should be logged in!');
         }
 
         return $user->ref('AccessRules')->addCondition('model', get_class($model));
@@ -50,6 +53,12 @@ class ACL
         $rules = $this->getRules($m);
 
         foreach ($rules as $junk) {
+
+            // set visible and editable fields
+            foreach ($m->getFields() as $name => $field) {
+                $field['ui']['visible'] = $rules['all_visible'] || (array_search($name, $rules['visible_fields']) !== false);
+                $field['ui']['editable'] = $rules['all_editable'] || (array_search($name, $rules['editable_fields']) !== false);
+            }
 
             // remove not allowed actions
             if (!$rules['all_actions'] && $rules['actions']) {
