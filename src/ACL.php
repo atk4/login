@@ -50,29 +50,39 @@ class ACL
      */
     public function applyRestrictions(Persistence $p, Model $m)
     {
-        $rules = $this->getRules($m);
-
-        foreach ($rules as $junk) {
+        foreach ($this->getRules($m) as $rule) {
 
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                $field['ui']['visible'] = $rules['all_visible'] || (array_search($name, $rules['visible_fields']) !== false);
-                $field['ui']['editable'] = $rules['all_editable'] || (array_search($name, $rules['editable_fields']) !== false);
+                $field['ui']['visible'] = $rule['all_visible'] || (array_search($name, $rule['visible_fields']) !== false);
+                $field['ui']['editable'] = $rule['all_editable'] || (array_search($name, $rule['editable_fields']) !== false);
             }
 
             // remove not allowed actions
-            if (!$rules['all_actions'] && $rules['actions']) {
-                $actions_to_remove = array_diff(array_keys($m->getActions()), $rules['actions']);
+            if (!$rule['all_actions'] && $rule['actions']) {
+                $actions_to_remove = array_diff(array_keys($m->getActions()), $rule['actions']);
                 foreach ($actions_to_remove as $action) {
-                    $m->_removeFromCollection($action, 'actions');
+                    $m->getAction($action)->enabled = false;
                 }
             }
 
             // add conditions on model
-            if ($rules['conditions']) {
-                $m->addCondition($rules['conditions']);
+            if ($rule['conditions']) {
+                $this->applyConditions($p, $m, $rule['conditions']);
             }
         }
+    }
+    
+    /**
+     * Apply conditions on model.
+     *
+     * @param Persistence $p
+     * @param Model       $m
+     * @param mixed       $conditions
+     */
+    public function applyConditions(Persistence $p, Model $m, $conditions)
+    {
+        $m->addCondition($conditions);
     }
 
     /**
