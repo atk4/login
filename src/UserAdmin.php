@@ -1,10 +1,15 @@
 <?php
 namespace atk4\login;
 
+use atk4\data\Model;
+use atk4\ui\CRUD;
+use atk4\ui\View;
+
 /**
- * View for user administration.
+ * View for User administration.
+ * Includes User association with Role.
  */
-class UserAdmin extends \atk4\ui\View
+class UserAdmin extends View
 {
     use \atk4\core\DebugTrait;
 
@@ -21,59 +26,24 @@ class UserAdmin extends \atk4\ui\View
         $this->crud = $this->add('CRUD');
     }
 
-    public function migrateDB($model = null)
-    {
-        $this->log('notice', 'Running migrations now', ['model'=>$model]);
-        $this->debug('hello');
-
-
-        $s = new \atk4\schema\Migration\MySQL($model ?: $this->model);
-        $s->migrate();
-        $this->log('notice', 'Finished now');
-    }
-
     /**
      * Initialize User Admin and add all the UI pieces.
      *
-     * @param \atk4\data\Model $user
+     * @param Model $user
      *
-     * @return \atk4\data\Model
+     * @return Model
      */
-    public function setModel(\atk4\data\Model $user)
+    public function setModel(Model $user)
     {
-        $this->crud->menu->addItem(['Upgrade Database', 'icon'=>'database'], $this->add(['Modal', 'Upgrade Database'])
-            ->set(function($p){ 
-
-                $console = $p->add('Console');
-
-                $console->set(function($console){ 
-
-                    //$this->app->logger = $this->app->add('UserNotificationConsole');
-
-                    $this->app->db->debug=true;
-
-                    $this->debug=true;
-                    $this->migrateDB();
-
-                    //$sse->send($console->js()->append('DONE'));
-                });
-                //$p->js(true, $sse);
-            })
-            ->show());
-
+        // set model for CRUD
         $this->crud->setModel($user);
 
 
-
-
-
-
-
         // Add new table column used for actions
-        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'User Actions']);
+        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $a->addModal(['icon'=>'key'], 'Reset Password', function($v, $id) {
+        $a->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
 
             $this->model->load($id);
 
@@ -82,9 +52,9 @@ class UserAdmin extends \atk4\ui\View
             //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
             $f->addAction(['icon'=>'random'])->on('click', function() use ($f) {
-                return $f->jsInput()->val($this->model->getElement('password')->suggestPassword());
+                return $f->jsInput()->val($this->model->getField('password')->suggestPassword());
             });
-                
+
             $form->onSubmit(function($form) use ($v) {
                 $this->model['password'] = $form->model['visible_password'];
                 $this->model->save();
@@ -102,19 +72,28 @@ class UserAdmin extends \atk4\ui\View
 
         })->setAttr('title', 'Change Password');
 
+        /*
         $a->addModal(['icon'=>'eye'], 'Details', function($v, $id) {
             $this->model->load($id);
 
             $c = $v->add('Columns');
-            $col = $c->addColumn();
-            $col->add(['Header', 'User Details']);
-            $col->add(['Message', 'Comming soon', 'yellow']);
+            $left = $c->addColumn();
+            $right = $c->addColumn();
 
-            $col = $c->addColumn();
-            $col->add(['Header', 'Activity Log']);
-            $col->add(['Message', 'Comming soon', 'yellow']);
+            $left->add(['Header', 'Role "'.$this->model['role'].'" Access']);
+            $crud = $left->add(['CRUD']);
+            $crud->setModel($this->model->ref('AccessRules'));
+            $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
 
+            $right->add(['Header', 'Role Details']);
+            $rule = $right->stickyGet('rule');
+            if (!$rule) {
+                $right->add(['Message', 'Select role on the left', 'yellow']);
+            } else {
+                $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule));
+            }
         })->setAttr('title', 'User Details');
+        */
 
         return parent::setModel($user);
     }

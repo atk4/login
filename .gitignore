@@ -3,3 +3,4 @@ docs/build
 /build
 /vendor
 .DS_Store
+demos/config.php
