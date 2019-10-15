@@ -67,9 +67,13 @@ class ACL
             }
 
             // add conditions on model
+            /*
+             *  this will work in future when we will have json encoded condition structure stored in here
+             *  for now let's comment this out
             if ($rule['conditions']) {
                 $this->applyConditions($p, $m, $rule['conditions']);
             }
+            */
         }
     }
     
