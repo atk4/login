@@ -11,7 +11,7 @@ use atk4\ui\View;
  */
 class RoleAdmin extends View
 {
-    // Imants: This class needs implementation. We can take some ideas from UserAdmin view.
+    // Imants: This class needs better implementation. We can take some ideas from UserAdmin view.
     //         On other hand UserAdmin view will be simplified when RoleAdmin will be developed,
     //         because it's role which have permissions set not User. UserAdmin should just show
     //         permissions it get from roles and nothing more. Maybe not even that!
@@ -28,7 +28,7 @@ class RoleAdmin extends View
     {
         parent::init();
 
-        $this->crud = $this->add('CRUD');
+        $this->crud = $this->add('CRUD', ['formDefault' => ['Form', 'layout' => 'Columns']]); // @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
     }
 
     /**

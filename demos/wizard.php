@@ -47,8 +47,8 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
             ]);
         (new AccessRule($c->app->db))
             ->import([
-                ['role'=>'Admin Role', 'model'=>'foo', 'all_visible'=>true, 'all_editable'=>true],
-                ['role'=>'User Role', 'model'=>'bar', 'all_visible'=>true, 'all_editable'=>false, /*'editable_fields'=>['a','b']*/],
+                ['role'=>'Admin Role', 'model'=>'\\atk4\login\\Model\\User', 'all_visible'=>true, 'all_editable'=>true],
+                ['role'=>'User Role', 'model'=>'\\atk4\login\\Model\\Role', 'all_visible'=>true, 'all_editable'=>false, /*'editable_fields'=>['a','b']*/],
             ]);
 
         $c->debug('Data imported');

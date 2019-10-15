@@ -3,6 +3,7 @@ namespace atk4\login\Model;
 
 use atk4\core\Exception;
 use atk4\data\Model;
+use atk4\login\FormField;
 
 /**
  * White-list access control rules.
@@ -56,15 +57,24 @@ class AccessRule extends Model
 
         // which model fields should be visible
         $this->addField('all_visible', ['type'=>'boolean', 'default'=>true]);
-        //$this->addField('visible_fields', ['type'=>'array']);//, 'ui'=>['form'=>'FormField/MultiLine']]); // used if all_visible is false
+        $this->addField('visible_fields', [ // used if all_visible is false
+            'type' => 'string',
+            'ui' => ['form' => FormField\FieldsDropDown::class],
+        ]);
 
         // which model fields should be editable
         $this->addField('all_editable', ['type'=>'boolean', 'default'=>true]);
-        //$this->addField('editable_fields', ['type'=>'array']); // used if all_editable is false
+        $this->addField('editable_fields', [ // used if all_editable is false
+            'type' => 'string',
+            'ui' => ['form' => FormField\FieldsDropDown::class],
+        ]);
 
         // which model actions are allowed
         $this->addField('all_actions', ['type'=>'boolean', 'default'=>true]);
-        //$this->addField('actions', ['type'=>'array']); // used if all_actions is false
+        $this->addField('actions', [ // used if all_actions is false
+            'type' => 'string',
+            'ui' => ['form' => FormField\ActionsDropDown::class],
+        ]);
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"
         // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
