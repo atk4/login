@@ -18,7 +18,14 @@ class App extends \atk4\ui\App
     {
         parent::__construct();
 
-        $this->readConfig(__DIR__.'/../config.php', 'php-inline');
+        $config_file = __DIR__.'/../config.php';
+
+        if(!file_exists($config_file)) {
+            $this->redirect('wizard.php');
+            $this->callExit();
+        }
+
+        $this->readConfig($config_file, 'php-inline');
 
         if ($interface == 'admin') {
             $this->initLayout('Admin');
