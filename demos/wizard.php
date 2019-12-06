@@ -7,6 +7,7 @@ use atk4\data\ValidationException;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
+use atk4\schema\Migration;
 use atk4\schema\MigratorConsole;
 use atk4\ui\Console;
 use atk4\ui\Exception;
@@ -128,7 +129,7 @@ EOD;
 
 $wizard->addStep('Quickly checking if database is OK', function(View $page) {
 
-    $console = $page->add(MigratorConsole::class);
+    $console = $page->add(Console::class);
 
     /*
     $button = $page->add(['Button', '<< Back', 'huge wide blue'])
@@ -137,7 +138,30 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
     */
     $page->app->dbConnectFromWizard();
 
-    $console->migrateModels([User::class, Role::class, AccessRule::class]);
+    //@todo migrateModels Is broken and need a fix
+    //$console->migrateModels([User::class, Role::class, AccessRule::class]);
+
+    //@todo imported code from migratedModels function - START
+    $console->app->db = $page->app->db;
+
+    $console->set(function($console) {
+
+        $console->notice('Preparing to migrate models');
+
+        $models = [User::class, Role::class, AccessRule::class];
+
+        foreach ($models as $model) {
+
+            $m = Migration::getMigration(new $model($console->app->db));
+            $result = $m->migrate();
+
+            $console->debug('  '.get_class($m).'.. '.$result);
+        }
+
+        $console->notice('Done with migration');
+    });
+
+    //@todo imported code from migratedModels function - END
 });
 
 $wizard->addStep('Populate Sample Data', function(View $page) {
