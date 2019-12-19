@@ -13,7 +13,7 @@ class UserAdmin extends View
 {
     use \atk4\core\DebugTrait;
 
-    /** @var \atk4\ui\CRUD */
+    /** @var CRUD */
     public $crud = null;
 
     /**
@@ -31,13 +31,19 @@ class UserAdmin extends View
      *
      * @param Model $user
      *
+     * @throws \atk4\core\Exception
+     * @throws \atk4\ui\Exception
+     * @throws \atk4\ui\Exception\NoRenderTree
+     *
      * @return Model
      */
     public function setModel(Model $user)
     {
+        //$user->getAction('register_new_user')->system = true;
+        $user->getAction('add')->system = true;
+
         // set model for CRUD
         $this->crud->setModel($user);
-
 
         // Add new table column used for actions
         $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
@@ -70,7 +76,7 @@ class UserAdmin extends View
                 //return 'Setting '.$form->model['visible_password'].' for '.$this->model['name'];
             });
 
-        })->setAttr('title', 'Change Password');
+        });
 
         /*
         $a->addModal(['icon'=>'eye'], 'Details', function($v, $id) {

@@ -33,7 +33,7 @@ class Auth
      *
      * @var string|\atk4\ui\Form
      */
-    public $form = '\atk4\login\LoginForm';
+    public $form = \atk4\login\LoginForm::class;
 
     /**
      * Which field to look up user by.
@@ -117,24 +117,26 @@ class Auth
     /**
      * Return session persistence object.
      *
-     * @return \atk4\data\Persistence_Array
+     * @return \atk4\data\Persistence\Array_
      */
     public function getSessionPersistence()
     {
-        if (session_status() == PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        return new \atk4\data\Persistence_Array($_SESSION[$this->name]);
+        return new \atk4\data\Persistence\Array_($_SESSION[$this->name]);
     }
 
     /**
      * Specify a model for a user check here.
      *
      * @param \atk4\data\Model $model
-     * @param string           $login_field
-     * @param string           $password_field
+     * @param string $login_field
+     * @param string $password_field
      *
-     * @return \atk4\data\Model
+     * @throws \atk4\core\Exception
+     *
+     * @return $this
      */
     public function setModel($model, $login_field = null, $password_field = null)
     {
@@ -160,6 +162,7 @@ class Auth
         if ($this->check) {
             $this->check();
         }
+
         return $this;
     }
 
@@ -167,8 +170,10 @@ class Auth
      * Link ACL object with this Auth controller object, apply restrictions on user model and
      * also apply ACL restrictions on each model you add to this persistence in future.
      *
-     * @param \atk4\login\ACL        $acl
+     * @param \atk4\login\ACL $acl
      * @param \atk4\data\Persistence $persistence Optional persistence, use User model persistence by default
+     *
+     * @throws \atk4\core\Exception
      *
      * @return $this
      */
@@ -253,6 +258,8 @@ class Auth
      *
      * @param string $email
      * @param string $password
+     *
+     * @throws \atk4\core\Exception
      *
      * @return bool
      */

@@ -31,7 +31,9 @@ class RegisterForm extends \atk4\ui\Form
      * Sets user model.
      *
      * @param \atk4\data\Model $user
-     * @param array            $fields
+     * @param array $fields
+     *
+     * @throws \atk4\core\Exception
      *
      * @return \atk4\data\Model
      */

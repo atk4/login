@@ -1,8 +1,12 @@
 <?php
+
 namespace atk4\login;
 
+use atk4\core\DebugTrait;
+use atk4\core\Exception;
 use atk4\data\Model;
 use atk4\ui\CRUD;
+use atk4\ui\Exception\NoRenderTree;
 use atk4\ui\View;
 
 /**
@@ -16,19 +20,22 @@ class RoleAdmin extends View
     //         because it's role which have permissions set not User. UserAdmin should just show
     //         permissions it get from roles and nothing more. Maybe not even that!
 
-    use \atk4\core\DebugTrait;
+    use DebugTrait;
 
-    /** @var \atk4\ui\CRUD */
+    /** @var CRUD */
     public $crud = null;
 
     /**
      * Initialization.
+     * @throws Exception
      */
     public function init()
     {
         parent::init();
 
-        $this->crud = $this->add('CRUD', ['formDefault' => ['Form', 'layout' => 'Columns']]); // @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
+        //$this->crud = $this->add('CRUD', ['formDefault' => ['Form', 'layout' => 'Columns']]);
+        //// @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
+        $this->crud = $this->add('CRUD');
     }
 
     /**
@@ -37,6 +44,10 @@ class RoleAdmin extends View
      * @param Model $role
      *
      * @return Model
+     * @throws \atk4\ui\Exception
+     * @throws NoRenderTree
+     *
+     * @throws Exception
      */
     public function setModel(Model $role)
     {
@@ -44,18 +55,19 @@ class RoleAdmin extends View
         $this->crud->setModel($role);
 
         // Add new table column used for actions
-        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
+        /** @var \atk4\ui\TableColumn\Generic $a */
+        $a = $this->crud->table->addColumn(null, ['Actions', 'caption' => '']);
 
-        $a->addModal(['icon'=>'cogs'], 'Role Permissions', function($v, $id) {
+        $a->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
+
             $this->model->load($id);
 
-            $v->add(['Header', $this->model->getTitle().'" Permissions']);
+            $v->add(['Header', $this->model->getTitle() . ' Permissions']);
 
             /** @var CRUD $crud */
             $crud = $v->add(['CRUD']);
             $crud->setModel($this->model->ref('AccessRules'));
-
-        })->setAttr('title', 'Permissions');
+        });
 
         return parent::setModel($role);
     }
