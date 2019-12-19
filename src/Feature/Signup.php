@@ -16,7 +16,7 @@ trait Signup
      */
     public function initSignup()
     {
-        $this->addAction('register_new_user', ['scope'=>UserAction\Generic::NO_RECORDS, 'fields' => ['login', 'email', 'password']]);
+        $this->addAction('register_new_user', ['scope'=>UserAction\Generic::NO_RECORDS, 'fields' => ['name', 'email', 'password']]);
     }
 
     /**
