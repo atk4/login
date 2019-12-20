@@ -24,6 +24,8 @@ class ACL
      *
      * @param Model $model
      *
+     * @throws Exception
+     *
      * @return \atk4\login\Model\AccessRule
      */
     public function getRules(Model $model)
@@ -46,7 +48,10 @@ class ACL
      * Extend this method if you wish.
      *
      * @param Persistence $p
-     * @param Model       $m
+     * @param Model $m
+     *
+     * @throws Exception
+     * @throws \atk4\data\Exception
      */
     public function applyRestrictions(Persistence $p, Model $m)
     {

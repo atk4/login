@@ -16,6 +16,8 @@ abstract class AbstractDropDown extends DropDown
     /**
      * Get AccessRule->model and initialize it
      *
+     * @throws Exception
+     *
      * @return Model
      */
     public function getModel()

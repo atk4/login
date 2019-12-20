@@ -78,6 +78,8 @@ class Password extends \atk4\data\Field
      *
      * @param string $value password
      *
+     * @throws \atk4\data\ValidationException
+     *
      * @return mixed
      */
     public function normalize($value)
@@ -141,6 +143,8 @@ class Password extends \atk4\data\Field
      * Verify if the password user have supplied you with is correct.
      *
      * @param string $password plain text password
+     *
+     * @throws \atk4\data\Exception
      *
      * @return bool true if passwords match
      */
