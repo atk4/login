@@ -78,7 +78,7 @@ trait PasswordManagement
         $this['password'] = $password;
         $this->save();
 
-        if ($this->hasField('email') && $this->app->outbox) {
+        if ($this->hasField('email') && isset($this->app->outbox)) {
             $this->app->outbox->sendEmail($this['email'], 'password_reset', ['new_password'=>$password]);
             return 'Password was emailed to '.$this['email'];
         }

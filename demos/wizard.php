@@ -151,11 +151,11 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
         $models = [User::class, Role::class, AccessRule::class];
 
         foreach ($models as $model) {
-
-            $m = Migration::getMigration(new $model($console->app->db));
+            $model = new $model($console->app->db);
+            $m = Migration::getMigration($model);
             $result = $m->migrate();
 
-            $console->debug('  '.get_class($m).'.. '.$result);
+            $console->debug('  '.get_class($m).': '.$model->table.' - '.$result);
         }
 
         $console->notice('Done with migration');
@@ -170,7 +170,7 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
 
     $page->add('Console')->set(function(Console $c) {
 
-        $c->debug('Populating data...');
+        $c->notice('Populating data...');
 
         (new AccessRule($c->app->db))
             ->each('delete');
@@ -189,15 +189,15 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
                 ['role'=>'User Role', 'model'=>'\\atk4\login\\Model\\Role', 'all_visible'=>true, 'all_editable'=>false, /*'editable_fields'=>['a','b']*/],
             ]);
 
-        $c->debug('Data imported');
-
-        $c->debug('User role access created!');
+        $c->notice('User created!');
         $c->debug('Username : user');
         $c->debug('Password : user');
 
-        $c->debug('User role access created!');
+        $c->notice('User created!');
         $c->debug('Username : admin');
         $c->debug('Password : admin');
+
+        $c->notice('Data imported');
     });
 });
 
