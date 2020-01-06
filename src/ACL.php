@@ -107,21 +107,4 @@ class ACL
         return $this->permissions[$feature] ?? false;
     }
     */
-
-    /**
-     * Will apply per-model modifications (after it's initialized) which will take permissions
-     * into account.
-     */
-    /*
-    public function applyRestrictions(Persistence $p, Model $m)
-    {
-        if($m instanceof User && !$this->can('admin')) {
-            $m->getField('email')->read_only = true;
-        }
-
-        if($m instanceof Admins && !$this->can('admin')) {
-            throw Exception();
-        }
-    }
-    */
 }
