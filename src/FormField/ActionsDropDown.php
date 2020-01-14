@@ -6,10 +6,8 @@ namespace atk4\login\FormField;
  */
 class ActionsDropDown extends AbstractDropDown
 {
-    public function init()
+    public function setModel($model, $fields = null)
     {
-        parent::init();
-
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($action) {
             return [
@@ -18,6 +16,8 @@ class ActionsDropDown extends AbstractDropDown
                 'icon' => ($action->ui['icon'] ?? null),
             ];
         };
+
+        return parent::setModel($model, $fields);
     }
 
     /**
