@@ -29,7 +29,9 @@ class FieldsDropDown extends AbstractDropDown
         if (!$model) {
             return parent::renderView();
         }
-        $this->values = $model->getFields();
+        
+        $fields = array_keys($model->getFields());
+        $this->values = array_combine($fields, $fields);
 
         parent::renderView();
     }
