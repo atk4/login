@@ -18,7 +18,7 @@ abstract class AbstractDropDown extends DropDown
      *
      * @throws Exception
      *
-     * @return Model
+     * @return Model|null
      */
     public function getModel()
     {
@@ -28,7 +28,9 @@ abstract class AbstractDropDown extends DropDown
             return;
         }
         if (!class_exists($class)) {
-            throw new Exception('Can not create model with class name: '.$class);
+            // ignore if model object can't be created because in some situations model class can be outside of this scope
+            //throw new Exception('Can not create model with class name: '.$class);
+            return;
         }
 
         $model = new $class($this->form->model->persistence);
