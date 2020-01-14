@@ -6,10 +6,8 @@ namespace atk4\login\FormField;
  */
 class FieldsDropDown extends AbstractDropDown
 {
-    public function init()
+    public function setModel($model, $fields = null)
     {
-        parent::init();
-
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($field) {
             return [
@@ -18,6 +16,8 @@ class FieldsDropDown extends AbstractDropDown
                 //'icon' => ($field->short_name == $field->model->id_field ? 'key' : null), // can not get field->model here :(
             ];
         };
+
+        parent::setModel($model, $fields);
     }
 
     /**
