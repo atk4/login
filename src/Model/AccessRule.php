@@ -79,5 +79,12 @@ class AccessRule extends Model
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"
         // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
         $this->addField('conditions', ['type' => 'text']);
+        
+        // cleanup data
+        $this->addHook('beforeSave', function ($m) {
+            if ($m['all_visible']) $m['visible_fields'] = null;
+            if ($m['all_editable']) $m['editable_fields'] = null;
+            if ($m['all_actions']) $m['actions'] = null;
+        });
     }
 }
