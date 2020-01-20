@@ -14,7 +14,7 @@ jobs:
       - run: echo ${{ github.ref }}
       - name: Update to stable dependencies
         run: |
-          jq 'del(.require["atk4/core"])' < composer.json | sed 's/require-release/require' > tmp && mv tmp composer.json
+          jq 'del(.require["atk4/core"])' < composer.json | sed 's/require-release/require/' > tmp && mv tmp composer.json
 
       - uses: teaminkling/autocommit@master
         with:
