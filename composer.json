@@ -1,38 +1,47 @@
 {
-    "name": "atk4/login",
-    "type": "library",
-    "description": "Login and User module for Agile UI",
-    "keywords": ["user", "acl", "auth", "login", "atk4", "agile", "agile ui", "data", "framework"],
-    "homepage": "https://github.com/atk4/login",
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "Romans Malinovskis",
-            "email": "romans@agiletoolkit.org",
-            "homepage": "https://nearly.guru/"
-        }
-    ],
-    "require": {
-        "atk4/ui": "*",
-        "atk4/schema": "^1.1.1",
-        "php": ">=5.6.0"
-    },
-    "require-dev": {
-        "behat/behat": "^3.4",
-        "behat/mink-extension": "^2.2",
-        "fzaninotto/faker": "*",
-        "behat/mink-zombie-driver": "^1.4",
-        "atk4/schema": "*",
-        "phpunit/phpcov": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {"atk4\\login\\":"src/"}
-    },
-    "autoload-dev": {
-        "psr-4": {
-          "atk4\\audit\\tests\\":"tests/"
-        }
+  "name": "atk4/login",
+  "type": "library",
+  "description": "Login and User module for Agile UI",
+  "keywords": [
+    "user",
+    "acl",
+    "auth",
+    "login",
+    "atk4",
+    "agile",
+    "agile ui",
+    "data",
+    "framework"
+  ],
+  "homepage": "https://github.com/atk4/login",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Romans Malinovskis",
+      "email": "romans@agiletoolkit.org",
+      "homepage": "https://nearly.guru/"
     }
+  ],
+  "require": {
+    "atk4/ui": "^2.0",
+    "atk4/data": "^2.0",
+    "atk4/schema": "^1.1",
+    "php": ">=7.2.0"
+  },
+  "require-dev": {
+    "phpunit/phpcov": "^3.0",
+    "phpunit/phpunit": "<6"
+  },
+  "autoload": {
+    "psr-4": {
+      "atk4\\login\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "atk4\\audit\\tests\\": "tests/"
+    }
+  }
 }

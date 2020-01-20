@@ -1,6 +1,10 @@
 <?php
+namespace atk4\login\demo;
 
-$app = new \atk4\ui\App('Auth Test');
+require '../vendor/autoload.php';
+require 'db.php';
+
+$app = new App(false);
 
 $app->add(new \atk4\login\Auth\Temporary('demo', 'demo'));
 
