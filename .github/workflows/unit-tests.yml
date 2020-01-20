@@ -40,3 +40,8 @@ jobs:
 
       - name: Merge coverage logs
         run: vendor/bin/phpcov merge build/logs/ --clover build/logs/cc.xml;
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: build/logs/cc.xml
