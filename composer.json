@@ -20,12 +20,15 @@
         "atk4/schema": "dev-develop",
         "php": ">=7.2.0"
     },
+    "require-release": {
+        "atk4/ui": "^2.0",
+        "atk4/data": "^2.0",
+        "atk4/schema": "^1.1",
+        "php": ">=7.2.0"
+    },
     "require-dev": {
-        "behat/behat": "^3.4",
-        "behat/mink-extension": "^2.2",
-        "fzaninotto/faker": "*",
-        "behat/mink-zombie-driver": "^1.4",
-        "phpunit/phpcov": "^3.0"
+        "phpunit/phpcov": "^3.0",
+        "phpunit/phpunit": "<6"
     },
     "autoload": {
         "psr-4": {"atk4\\login\\":"src/"}
