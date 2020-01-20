@@ -27,10 +27,6 @@
         "php": ">=7.2.0"
     },
     "require-dev": {
-        "behat/behat": "^3.4",
-        "behat/mink-extension": "^2.2",
-        "fzaninotto/faker": "*",
-        "behat/mink-zombie-driver": "^1.4",
         "phpunit/phpcov": "^3.0"
     },
     "autoload": {
