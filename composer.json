@@ -26,9 +26,6 @@
         "atk4/schema": "^1.1",
         "php": ">=7.2.0"
     },
-    "require-dev": {
-        "phpunit/phpcov": "^3.0"
-    },
     "autoload": {
         "psr-4": {"atk4\\login\\":"src/"}
     },
