@@ -5,11 +5,15 @@ use atk4\core\Exception;
 use atk4\data\Model;
 use atk4\login\FormField;
 
+use atk4\login\Feature\SetupModel;
+
 /**
  * White-list access control rules.
  */
 class AccessRule extends Model
 {
+    use SetupModel;
+
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
 
@@ -22,22 +26,7 @@ class AccessRule extends Model
 
         $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role'])->withTitle();
 
-        $this->addField('model', ['required'=>true, 'caption'=>'Model Class']); // model class name
-
-        /*
-        $this->containsOne('config', new class extends Model {
-            public function init()
-            {
-                parent::init();
-
-                // We can put all fields which are below in here.
-                // And this new class should be separated to let's say AccessRule/Model class so we can
-                // also have AccessRule/Interface or AccessRule/View or AccessRule/Page class in future
-                // with different config properties
-
-            }
-        });
-        */
+        $this->addField('model'); // model class name
 
         /**
          * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
@@ -56,35 +45,21 @@ class AccessRule extends Model
          */
 
         // which model fields should be visible
-        $this->addField('all_visible', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('visible_fields', [ // used if all_visible is false
-            'type' => 'string',
-            'ui' => ['form' => FormField\FieldsDropDown::class],
-        ]);
+        $this->addField('all_visible', ['type'=>'boolean']);
+        $this->addField('visible_fields'); // used if all_visible is false
 
         // which model fields should be editable
-        $this->addField('all_editable', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('editable_fields', [ // used if all_editable is false
-            'type' => 'string',
-            'ui' => ['form' => FormField\FieldsDropDown::class],
-        ]);
+        $this->addField('all_editable', ['type'=>'boolean']);
+        $this->addField('editable_fields'); // used if all_editable is false
 
         // which model actions are allowed
-        $this->addField('all_actions', ['type'=>'boolean', 'default'=>true]);
-        $this->addField('actions', [ // used if all_actions is false
-            'type' => 'string',
-            'ui' => ['form' => FormField\ActionsDropDown::class],
-        ]);
+        $this->addField('all_actions', ['type'=>'boolean']);
+        $this->addField('actions'); // used if all_actions is false
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"
         // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
-        $this->addField('conditions', ['type' => 'text']);
+        $this->addField('conditions');
         
-        // cleanup data
-        $this->addHook('beforeSave', function ($m) {
-            if ($m['all_visible']) $m['visible_fields'] = null;
-            if ($m['all_editable']) $m['editable_fields'] = null;
-            if ($m['all_actions']) $m['actions'] = null;
-        });
+        $this->setupModel();
     }
 }
