@@ -35,7 +35,8 @@ class User extends Model
         // currently user can have only one role. In future it should be n:n relation
         $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role'])->withTitle();
 
-        $this->setupModel();
+        // traits
+        $this->setupUserModel();
         $this->initSignup();
         $this->initPasswordManagement();
     }
