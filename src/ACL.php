@@ -56,16 +56,20 @@ class ACL
     public function applyRestrictions(Persistence $p, Model $m)
     {
         foreach ($this->getRules($m) as $rule) {
-
+            // extract as arrays
+            $visible = is_array($rule['visible_fields']) ? $rule['visible_fields'] : explode(',', $rule['visible_fields']);
+            $editable = is_array($rule['editable_fields']) ? $rule['editable_fields'] : explode(',', $rule['editable_fields']);
+            $actions = is_array($rule['actions']) ? $rule['actions'] : explode(',', $rule['actions']);
+        
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                $field['ui']['visible'] = $rule['all_visible'] || (array_search($name, $rule['visible_fields']) !== false);
-                $field['ui']['editable'] = $rule['all_editable'] || (array_search($name, $rule['editable_fields']) !== false);
+                $field->ui['visible'] = $rule['all_visible'] || (array_search($name, $visible) !== false);
+                $field->ui['editable'] = $rule['all_editable'] || (array_search($name, $editable) !== false);
             }
 
             // remove not allowed actions
             if (!$rule['all_actions'] && $rule['actions']) {
-                $actions_to_remove = array_diff(array_keys($m->getActions()), $rule['actions']);
+                $actions_to_remove = array_diff(array_keys($m->getActions()), $actions);
                 foreach ($actions_to_remove as $action) {
                     $m->getAction($action)->enabled = false;
                 }
