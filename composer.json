@@ -34,7 +34,7 @@
     "php": ">=7.2.0",
     "atk4/ui": "^2.0",
     "atk4/data": "^2.0",
-    "atk4/schema": "^1.1"
+    "atk4/schema": "^2.0"
   },
   "require-dev": {
     "phpunit/phpcov": "^3.0",
