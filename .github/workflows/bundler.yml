@@ -14,7 +14,8 @@ jobs:
       - run: echo ${{ github.ref }}
       - name: Update to stable dependencies
         run: |
-          jq 'del(.require)' < composer.json | sed 's/require-release/require/' > tmp && mv tmp composer.json
+          # replaces X keys with X-release keys
+          jq '. as $in | reduce (keys_unsorted[] | select(endswith("-release")|not)) as $k ({}; . + {($k) : (($k + "-release") as $kr | $in | if has($kr) then .[$kr] else .[$k] end) } )' < composer.json > tmp && mv tmp composer.json
           v=$(echo ${{ github.ref }} | cut -d / -f 4)
           echo "::set-env name=version::$v"
 
@@ -25,7 +26,6 @@ jobs:
         with:
           branch: ${{ github.ref }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
 
       - name: pull-request
         uses: romaninsh/pull-request@master
@@ -41,6 +41,3 @@ jobs:
           pr_reviewer: "romaninsh"
           pr_assignee: "romaninsh"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
-
