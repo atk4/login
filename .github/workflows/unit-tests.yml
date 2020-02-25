@@ -18,7 +18,8 @@ jobs:
       matrix:
         php: ['7.2', '7.3', 'latest']
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - run: php --version
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
