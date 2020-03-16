@@ -26,8 +26,8 @@ trait SendEmailAction
             'args' => [
                 'subject' => ['caption' => 'Subject', 'type' => 'string'],
                 'message' => ['caption' => 'Message', 'type' => 'text'],
-            ]
-        );
+            ],
+        ]);
     }
 
     /**
