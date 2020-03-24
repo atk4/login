@@ -46,7 +46,7 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
-        $a = $this->crud->table->addColumn(null, ['ActionButtons', 'caption'=>'']);
+        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
 
         // Pop-up for resetting password. Will display button for generating random password
         $a->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
