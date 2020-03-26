@@ -19,7 +19,7 @@ trait SendEmailAction
     public function initSendEmailAction(): UserAction\Generic
     {
         return $this->addAction('sendEmail', [
-            'callback' => [$this, 'sendEmail'],
+            'callback' => 'sendEmail',
             'scope' => UserAction\Generic::SINGLE_RECORD,
             'description' => 'Send e-mail to user',
             'ui' => ['icon' => 'mail'],
