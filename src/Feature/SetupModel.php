@@ -10,6 +10,7 @@ namespace atk4\login\Feature;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
+use atk4\login\Model\UserLDAP;
 
 use atk4\login\FormField;
 
@@ -73,7 +74,7 @@ trait SetupModel
         $this->getField('email')->required = true;
         $this->setUnique('email');
         $this->getField('password')->ui['visible'] = false;
-    
+
         // all AccessRules for all user roles
         // @TODO in future when there can be multiple, then merge them together
         $this->hasMany('AccessRules', [
@@ -85,7 +86,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->addHook('beforeSave', function ($m){
+        $this->onHook('beforeSave', function ($m){
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {
@@ -93,4 +94,27 @@ trait SetupModel
             }
         });
     }
+
+  /**
+   * Setup User model LDAP.
+   */
+  public function setupUserModelLDAP()
+  {
+    $this->getField('username')->required = true;
+
+    // all AccessRules for all user roles
+    // @TODO in future when there can be multiple, then merge them together
+    $this->hasMany('AccessRules', [
+      function ($m) {
+        return $m->ref('role_id')->ref('AccessRules');
+      },
+      'our_field' => 'role_id',
+      'their_field' => 'role_id',
+    ]);
+
+    // add some validations
+    $this->onHook('beforeSave', function ($m){
+      // nothing for now
+    });
+  }
 }

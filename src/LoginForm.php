@@ -19,8 +19,11 @@ class LoginForm extends \atk4\ui\Form
     /** @var false|string show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
+    /** @var string The field caption of the main user identifier */
+    public $fieldLoginCaption = 'Email';
+
     /**
-     * Intialization.
+     * Initialization.
      */
     public function init()
     {
@@ -32,7 +35,7 @@ class LoginForm extends \atk4\ui\Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addField('email', null, ['required' => true]);
+        $form->addField('email', null, ['required' => true, 'caption' => $this->fieldLoginCaption]);
         $p = $form->addField('password', ['Password'], ['required' => true]);
 
         if ($this->linkForgot) {
@@ -53,7 +56,7 @@ class LoginForm extends \atk4\ui\Form
                 if ($this->auth->tryLogin($form->model['email'], $form->model['password'])) {
                     return $this->app->jsRedirect($this->linkSuccess);
                 } else {
-                    return $form->error('password', 'Email or Password is incorrect');
+                    return $form->error('password', $this->fieldLoginCaption.' or Password is incorrect');
                 }
             });
         }

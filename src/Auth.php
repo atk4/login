@@ -43,6 +43,13 @@ class Auth
     public $fieldLogin = 'email';
 
     /**
+     * Caption of the first field on the Login Form.
+     *
+     * @var string
+     */
+    public $fieldLoginCaption = 'Email';
+
+    /**
      * Password to be verified when authenticating.
      *
      * @var string
@@ -216,10 +223,9 @@ class Auth
                 $m->addItem(['Logout', 'icon'=>'sign out'], [$this->pageDashboard, 'logout'=>true]);
             }
 
-            // add preferences menu item
+            // add User Preferences view
             if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-                $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
-                $this->app->add('Form')->setModel($this->user);
+                $this->app->add('atk4\login\UserPreferences')->setModel($this->user);
                 exit;
             }
 
@@ -244,6 +250,7 @@ class Auth
             'auth' => $this,
             'linkSuccess' => [$this->pageDashboard],
             'linkForgot' => false,
+            'fieldLoginCaption' => $this->fieldLoginCaption,
         ]);
 
         $l->layout->template->set('title', 'Log-in Required');

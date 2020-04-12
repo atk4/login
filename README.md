@@ -23,7 +23,16 @@ $app->add('CRUD')->setModel(new Client($app->db));
 
 (If you do not have User model yet, you can extend or use \atk4\login\Model\User).
 
-![Login](./docs/login-form.png)
+The login form will look like follows at first:
+
+![Login](./docs/login-form1.png)
+
+In order to get started, add users by loading the User Admin page instead Auth() in the example above, see [User Admin](#User-Admin) 
+```php
+$app->add(new \atk4\login\UserAdmin())
+          ->setModel(new \atk4\login\Model\User($app->db));
+```
+That page of course should not be publicly accessible.
 
 ## Features
 
@@ -138,7 +147,7 @@ You may also access user data like this: `$app->auth->model['name']`; Things to 
 -   Store last login / last access time in database
 -   Move auth cache to MemCache
 
-#### Profile Form
+#### Preferences Form
 
 This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
 
@@ -146,7 +155,7 @@ This form would allow user to change user data (including password) but only if 
 $app->add('Form')->setModel($app->auth->user);
 ```
 
-Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
+Demos open preferences form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
 $app->add(['Button', 'Profile', 'primary'])->on('click', $app->add('Modal')->set(function($p) {
@@ -210,6 +219,45 @@ Use of migration is optional, but can help by populating initial structure of yo
 Migration relies on https://github.com/atk4/schema. 
 
 When migration is executed it simply checks to make sure that table for 'user' exists and has all required fields. It will not delete or change existing fields or tables.
+
+## LDAP authentication
+
+In order to authenticate against an LDAP directory, use AuthLDAP():
+```php
+  $app->add(new \atk4\login\AuthLDAP([
+    'ldapUrl' => 'ldap://ldap.acme.org/',
+    'ldapBaseDn' => 'o=acme',
+    'ldapObjFilter' => ['objectClass', 'Person'],
+    'ldapFullNameAttr' => 'fullname',
+    'ldapEmailAttr' => 'mail',
+  ]))->setModel(new \atk4\login\Model\UserLDAP($app->db));
+```
+Note that to be able to use this, your PHP installation must support LDAP and the server running ATK needs access to your directory server.
+
+Also please note that with this authentication method, it will not be possible for the user (or the admin) to change the password in ATK app.
+
+The following parameters exist:
+* $ldapUrl: LDAP URL of the connection
+* $ldapProxyUser: If you require a proxy user to look up the actual user, use this
+* $ldapProxyPassword: If you use a proxy user (above), then you probably require a password, set it here
+* $ldapBaseDn: Where to look for users in the directory tree
+* $ldapObjFilter: Object Attributes to filter for  
+* $ldapCnAttr: Attribute name containing the usernames
+* $ldapFullNameAttr: Attribute name containing the full name of the user
+* $ldapEmailAttr: Attribute name containing the email address of the user
+* $ldapAtkRoleAttr: Attribute name containing the ATK role id of the user, this is experimental
+* $ldapUserDefaultRole: The default role to assign to an LDAP user never before seen by your app
+
+In order to find the appropriate configuration, ask your system administrator.
+
+As can be seen in the example from the introduction above, we still need persistent storage which is provided by the UserLDAP Model. Notably we need to locally record:
+* username
+* role_id
+
+To other user properties (full name, email address, ATK role id, ...) the following applies:
+If attribute is provided by LDAP (Example: ```$ldapEmailAttr``` is set and LDAP exposes the attribute containing the email address), then the local DB is updated with that value.
+If this is not the case, then the value may be locally set in [Preferences form](#preferences-form) available from the App menu (in Admin layout at least).
+If local data has been set and directory is later modified to expose data and ```$ldap___Attr``` properties are enabled, then local data is overwritten with contents of the directory. 
 
 ## Roadmap
 
