@@ -19,6 +19,7 @@ class LoginForm extends \atk4\ui\Form
     /** @var false|string show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
+    /** @var string The field caption of the main user identifier */
     public $fieldLoginCaption = 'Email';
 
     /**

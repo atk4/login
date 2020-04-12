@@ -2,6 +2,8 @@
 
 namespace atk4\login;
 
+use atk4\core\Exception;
+
 /**
  * Authentication controller for LDAP authentication.
  */
@@ -88,27 +90,27 @@ class AuthLDAP extends Auth
    *
    * @var string
    */
-  public $ldapAtkRoleAttr = null; // TODO
+  public $ldapAtkRoleAttr = null;
 
   /**
    * Default role assigned to the user upon first login into ATK
    *
    * @var string
    */
-  public $ldapUserDefaultRole = null; // TODO
+  public $ldapUserDefaultRole = null;
 
   /**
    * Constructor.
    *
    * @param array $options
    *
-   * @throws \atk4\core\Exception
+   * @throws Exception
    */
   public function __construct($options = [])
   {
     parent::__construct($options);
     if (!extension_loaded('ldap')) {
-      throw new \atk4\core\Exception(['Maybe you should enable PHP LDAP extension before using LDAP authentication']);
+      throw new Exception(['Maybe you should enable PHP LDAP extension before using LDAP authentication']);
     }
   }
 
@@ -116,6 +118,8 @@ class AuthLDAP extends Auth
    * Call this method to verify credentials.
    *
    * In this child class of User, we first set a few values and then let the parent class do its job.
+   *
+   * @throws Exception
    */
   public function check()
   {
@@ -130,6 +134,9 @@ class AuthLDAP extends Auth
       if ($this->ldapEmailAttr) {
         $this->user->getField('email')->read_only = true;
       }
+      if ($this->ldapAtkRoleAttr) {
+        $this->user->getField('role_id')->read_only = true;
+      }
     }
 
     parent::check();
@@ -142,7 +149,7 @@ class AuthLDAP extends Auth
    * @param string $username
    * @param string $password
    *
-   * @throws \atk4\core\Exception
+   * @throws Exception
    *
    * @return bool
    */
@@ -160,31 +167,37 @@ class AuthLDAP extends Auth
      * 2) With the found DN try to bind using the password specified by the user.
      */
 
-    $ldapconn = ldap_connect($this->ldapUrl); 
+    $ldapConn = ldap_connect($this->ldapUrl);
     if ($this->ldapProxyUser) {
-      ldap_bind($ldapconn, $this->ldapProxyUser, utf8_encode($this->ldapProxyPassword));
+      ldap_bind($ldapConn, $this->ldapProxyUser, utf8_encode($this->ldapProxyPassword));
     }
-    $sr = ldap_search($ldapconn, 
+    $sr = ldap_search($ldapConn,
       $this->ldapBaseDn,
       sprintf('(&(%s=%s)(%s=%s))', $this->ldapCnAttr, $username, $this->ldapObjFilter[0], $this->ldapObjFilter[1]),
       array("dn", $this->ldapFullNameAttr, $this->ldapEmailAttr, $this->ldapAtkRoleAttr));
-    $info = ldap_get_entries($ldapconn, $sr); 
+    $info = ldap_get_entries($ldapConn, $sr);
     if ($this->ldapProxyUser) {
-      ldap_unbind($ldapconn);
+      ldap_unbind($ldapConn);
     }
     if ($info['count']==1) {
-      if (ldap_bind($ldapconn, $info[0]['dn'], utf8_encode($password))) {
-        ldap_unbind($ldapconn);
+      if (ldap_bind($ldapConn, $info[0]['dn'], utf8_encode($password))) {
+        ldap_unbind($ldapConn);
 
         $user = clone $this->user;
         $user->unload();
         $user->tryLoadBy($this->fieldLogin, $username);
         if (!$user->loaded()) {
           $user->insert([
-            'username' => $username,
-            'name' => isset($this->ldapFullNameAttr) ? $info[0][$this->ldapFullNameAttr][0] : '',
-            'email' => isset($this->ldapEmailAttr) ? $info[0][$this->ldapEmailAttr][0] : '',
-            'role'=> isset($this->ldapAtkRoleAttr) ? $info[0][$this->ldapAtkRoleAttr][0] : $this->ldapUserDefaultRole, // TODO default role
+            $this->fieldLogin => $username,
+            'name' => isset($this->ldapFullNameAttr)
+              ? $info[0][$this->ldapFullNameAttr][0] ?? ''
+              : '',
+            'email' => isset($this->ldapEmailAttr)
+              ? $info[0][$this->ldapEmailAttr][0] ?? ''
+              : '',
+            'role_id'=> isset($this->ldapAtkRoleAttr)
+              ? $info[0][$this->ldapAtkRoleAttr][0] ?? $this->ldapUserDefaultRole
+              : $this->ldapUserDefaultRole,
           ]);
           $user->tryLoadBy($this->fieldLogin, $username);
         } else {
@@ -195,17 +208,14 @@ class AuthLDAP extends Auth
             $user['email'] = $info[0][$this->ldapEmailAttr][0];
           }
           if (isset($this->ldapAtkRoleAttr) && $info[0][$this->ldapAtkRoleAttr][0]) {
-            $user['role'] = $info[0][$this->ldapAtkRoleAttr][0]; // TODO default role
+            $user['role'] = $info[0][$this->ldapAtkRoleAttr][0];
           } else {
-            $user['role'] = $this->ldapUserDefaultRole; // TODO default role
+            $user['role'] = $this->ldapUserDefaultRole;
           }
           $user->save();
         }
         $this->hook('loggedIn', [$user]);
         $this->getSessionPersistence()->update($user, 1, $user->get());
-        if (isset($info[0][$this->ldapEmailAttr])) {
-          $this->getSessionPersistence()->update($user, 1, ['email' => $info[0][$this->ldapEmailAttr][0]]);
-        }
         return true;
       }
     }
