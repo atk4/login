@@ -22,7 +22,7 @@ class RegisterForm extends \atk4\ui\Form
 
         $form = $this;
 
-        $form->buttonSave->set('Sign in');
+        $form->buttonSave->set('Register');
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
     }
@@ -42,6 +42,7 @@ class RegisterForm extends \atk4\ui\Form
         parent::setModel($user, false);
 
         $form = $this;
+        $form->addField('name', null, ['required' => 'true']);
         $form->addField('email', null, ['required' => 'true']);
         $f = $form->addField('password', ['Password'], ['required' => true]);
         $form->addField('password2', ['Password'], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true]);
