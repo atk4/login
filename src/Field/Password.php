@@ -148,7 +148,7 @@ class Password extends \atk4\data\Field
      *
      * @return bool true if passwords match
      */
-    public function compare($password)
+    public function compare($password): bool
     {
         if (is_null($this->password_hash)) {
 

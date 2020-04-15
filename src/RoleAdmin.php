@@ -29,7 +29,7 @@ class RoleAdmin extends View
      * Initialization.
      * @throws Exception
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

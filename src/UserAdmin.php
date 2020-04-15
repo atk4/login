@@ -19,7 +19,7 @@ class UserAdmin extends View
     /**
      * Initialization.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

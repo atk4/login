@@ -22,7 +22,7 @@ class LoginForm extends \atk4\ui\Form
     /**
      * Intialization.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

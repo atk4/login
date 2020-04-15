@@ -12,7 +12,7 @@ class Role extends Model
     public $table = 'login_role';
     public $caption = 'Role';
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 

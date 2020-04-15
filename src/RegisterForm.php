@@ -16,7 +16,7 @@ class RegisterForm extends \atk4\ui\Form
     /**
      * Initialization.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
