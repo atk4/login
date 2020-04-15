@@ -56,10 +56,10 @@ class RoleAdmin extends View
         $this->crud->setModel($role);
 
         // Add new table column used for actions
-        /** @var \atk4\ui\TableColumn\Generic $a */
-        $a = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
+        /** @var \atk4\ui\TableColumn\Generic $column */
+        $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
-        $a->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
+        $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
 
             $this->model->load($id);
 
