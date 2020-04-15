@@ -131,23 +131,23 @@ class Auth
      * Specify a model for a user check here.
      *
      * @param \atk4\data\Model $model
-     * @param string $login_field
-     * @param string $password_field
+     * @param string $fieldLogin
+     * @param string $fieldPassword
      *
      * @throws \atk4\core\Exception
      *
      * @return $this
      */
-    public function setModel($model, $login_field = null, $password_field = null)
+    public function setModel($model, $fieldLogin = null, $fieldPassword = null)
     {
         $this->user = $model;
 
-        if ($login_field) {
-            $this->fieldLogin = $login_field;
+        if ($fieldLogin) {
+            $this->fieldLogin = $fieldLogin;
         }
 
-        if ($password_field) {
-            $this->fieldPassword = $password_field;
+        if ($fieldPassword) {
+            $this->fieldPassword = $fieldPassword;
         }
 
         $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1) ?: [];
