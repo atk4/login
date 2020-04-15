@@ -4,6 +4,7 @@ namespace atk4\login;
 use atk4\data\Model;
 use atk4\ui\CRUD;
 use atk4\ui\View;
+use atk4\ui\TableColumn\ActionButtons;
 
 /**
  * View for User administration.
@@ -46,7 +47,7 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
-        $a = $this->crud->table->addColumn(null, ['Actions', 'caption'=>'']);
+        $a = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption'=>'']);
 
         // Pop-up for resetting password. Will display button for generating random password
         $a->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
