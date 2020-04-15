@@ -20,7 +20,7 @@ class AccessRule extends Model
     /**
      * @throws Exception
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
