@@ -176,13 +176,8 @@ class AuthLDAP extends Auth
       sprintf('(&(%s=%s)(%s=%s))', $this->ldapCnAttr, $username, $this->ldapObjFilter[0], $this->ldapObjFilter[1]),
       array("dn", $this->ldapFullNameAttr, $this->ldapEmailAttr, $this->ldapAtkRoleAttr));
     $info = ldap_get_entries($ldapConn, $sr);
-    if ($this->ldapProxyUser) {
-      ldap_unbind($ldapConn);
-    }
     if ($info['count']==1) {
       if (ldap_bind($ldapConn, $info[0]['dn'], utf8_encode($password))) {
-        ldap_unbind($ldapConn);
-
         $user = clone $this->user;
         $user->unload();
         $user->tryLoadBy($this->fieldLogin, $username);
