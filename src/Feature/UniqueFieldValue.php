@@ -1,8 +1,8 @@
 <?php
+
 namespace atk4\login\Feature;
 
 use atk4\data\ValidationException;
-
 
 /**
  * Adding this trait to your model will allow it to set fields which should be unique.
@@ -20,13 +20,13 @@ trait UniqueFieldValue
      */
     public function setUnique($field)
     {
-        $this->addHook('beforeSave', function ($m) use ($field){
+        $this->addHook('beforeSave', function ($m) use ($field) {
             if ($m->isDirty($field)) {
                 $a = new static($m->persistence);
                 $a->addCondition($m->id_field, '<>', $m->id);
                 $a->tryLoadBy($field, $m[$field]);
                 if ($a->loaded()) {
-                    throw new ValidationException([$field => ucwords($field).' with such value already exists'], $this);
+                    throw new ValidationException([$field => ucwords($field) . ' with such value already exists'], $this);
                 }
             }
         });

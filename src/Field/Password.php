@@ -191,15 +191,15 @@ class Password extends \atk4\data\Field
         $a3 = ['a','u','o'];
         $syl=['n'];
 
-        foreach($p5 as $p) {
-            foreach($a5 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p5 as $p) {
+            foreach ($a5 as $a) {
+                $syl[] = $p . $a;
             }
         }
 
-        foreach($p3 as $p) {
-            foreach($a3 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p3 as $p) {
+            foreach ($a3 as $a) {
+                $syl[] = $p . $a;
             }
         }
 

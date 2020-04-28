@@ -60,7 +60,7 @@ class ACL
             $visible = is_array($rule['visible_fields']) ? $rule['visible_fields'] : explode(',', $rule['visible_fields']);
             $editable = is_array($rule['editable_fields']) ? $rule['editable_fields'] : explode(',', $rule['editable_fields']);
             $actions = is_array($rule['actions']) ? $rule['actions'] : explode(',', $rule['actions']);
-        
+
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
                 $field->ui['visible'] = $rule['all_visible'] || (array_search($name, $visible) !== false);
@@ -85,7 +85,7 @@ class ACL
             */
         }
     }
-    
+
     /**
      * Apply conditions on model.
      *

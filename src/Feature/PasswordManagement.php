@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\Feature;
 
 use atk4\data\UserAction;
@@ -37,15 +38,15 @@ trait PasswordManagement
         $a3 = ['a','u','o'];
         $syl=['n'];
 
-        foreach($p5 as $p) {
-            foreach($a5 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p5 as $p) {
+            foreach ($a5 as $a) {
+                $syl[] = $p . $a;
             }
         }
 
-        foreach($p3 as $p) {
-            foreach($a3 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p3 as $p) {
+            foreach ($a3 as $a) {
+                $syl[] = $p . $a;
             }
         }
 
@@ -80,7 +81,7 @@ trait PasswordManagement
 
         if ($this->hasField('email') && isset($this->app->outbox)) {
             $this->app->outbox->sendEmail($this['email'], 'password_reset', ['new_password'=>$password]);
-            return 'Password was emailed to '.$this['email'];
+            return 'Password was emailed to ' . $this['email'];
         }
 
         return $password;
@@ -116,10 +117,18 @@ trait PasswordManagement
         for ($i = 0; $i < $length; ++$i) {
             $ch   = $password[$i];
             $code = ord($ch);
-            /* [0-9] */ if     ($code >= 48 && $code <= 57)  { $nNum++;     }
-            /* [A-Z] */ elseif ($code >= 65 && $code <= 90)  { $nUpper++;   }
-            /* [a-z] */ elseif ($code >= 97 && $code <= 122) { $nLower++;   }
-            /* .     */ else                                 { $nSymbol++;  }
+            /* [0-9] */ if ($code >= 48 && $code <= 57) {
+                $nNum++;
+            }
+            /* [A-Z] */ elseif ($code >= 65 && $code <= 90) {
+                $nUpper++;
+            }
+            /* [a-z] */ elseif ($code >= 97 && $code <= 122) {
+                $nLower++;
+            }
+            /* .     */ else {
+                $nSymbol++;
+            }
         }
 
         $strength = intdiv($this->calculate_strength($password), 10);
@@ -130,19 +139,19 @@ trait PasswordManagement
         }
 
         if (isset($settings['symbols']) && $nSymbol < $settings['symbols']) {
-            return 'Password requires at least '.$settings['symbols'].' symbols';
+            return 'Password requires at least ' . $settings['symbols'] . ' symbols';
         }
 
         if (isset($settings['symbols']) && $nSymbol < $settings['symbols']) {
-            return 'Password requires at least '.$settings['symbols'].' symbols';
+            return 'Password requires at least ' . $settings['symbols'] . ' symbols';
         }
 
         if (isset($settings['numbers']) && $nNum < $settings['numbers']) {
-            return 'Password requires at least '.$settings['numbers'].' numbers';
+            return 'Password requires at least ' . $settings['numbers'] . ' numbers';
         }
 
         if (isset($settings['upper']) && $nUpper < $settings['upper']) {
-            return 'Password requires at least '.$settings['upper'].' uppercase characters';
+            return 'Password requires at least ' . $settings['upper'] . ' uppercase characters';
         }
 
         return null;
@@ -155,7 +164,8 @@ trait PasswordManagement
      *
      * @return int       score
      */
-    private function calculate_strength($pw) {
+    private function calculate_strength($pw)
+    {
         $length    = strlen($pw);
         $score     = $length * 4;
         $nUpper    = 0;
@@ -171,14 +181,25 @@ trait PasswordManagement
         for ($i = 0; $i < $length; ++$i) {
             $ch   = $pw[$i];
             $code = ord($ch);
-            /* [0-9] */ if     ($code >= 48 && $code <= 57)  { $nNum++;    $locNum[]    = $i; }
-            /* [A-Z] */ elseif ($code >= 65 && $code <= 90)  { $nUpper++;  $locUpper[]  = $i; }
-            /* [a-z] */ elseif ($code >= 97 && $code <= 122) { $nLower++;  $locLower[]  = $i; }
-            /* .     */ else                                 { $nSymbol++; $locSymbol[] = $i; }
+            /* [0-9] */ if ($code >= 48 && $code <= 57) {
+                $nNum++;
+                $locNum[]    = $i;
+            }
+            /* [A-Z] */ elseif ($code >= 65 && $code <= 90) {
+                $nUpper++;
+                $locUpper[]  = $i;
+            }
+            /* [a-z] */ elseif ($code >= 97 && $code <= 122) {
+                $nLower++;
+                $locLower[]  = $i;
+            }
+            /* .     */ else {
+                $nSymbol++;
+                $locSymbol[] = $i;
+            }
             if (!isset($charDict[$ch])) {
                 $charDict[$ch] = 1;
-            }
-            else {
+            } else {
                 $charDict[$ch]++;
             }
         }
@@ -263,7 +284,8 @@ trait PasswordManagement
      *
      * @return array            [[c,c,c,c], [a,a,a], ...]
      */
-    private function findSequence($charLocs, $src) {
+    private function findSequence($charLocs, $src)
+    {
         $sequences = array();
         $sequence  = array();
         for ($i = 0; $i < count($charLocs)-1; ++$i) {
@@ -277,12 +299,10 @@ trait PasswordManagement
                 // We find a pair of sequential chars!
                 if (empty($sequence)) {
                     $sequence = array($charHere, $charNext);
-                }
-                else {
+                } else {
                     $sequence[] = $charNext;
                 }
-            }
-            elseif (!empty($sequence)) {
+            } elseif (!empty($sequence)) {
                 $sequences[] = $sequence;
                 $sequence    = array();
             }

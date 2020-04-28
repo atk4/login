@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login;
 
 /**
@@ -9,7 +10,7 @@ class LoginForm extends \atk4\ui\Form
 {
     /** @var array "Forgot password" page */
     public $linkForgot = ['forgot'];
-    
+
     /** @var array "Dashboard" page */
     public $linkSuccess = ['dashboard'];
 
@@ -48,7 +49,7 @@ class LoginForm extends \atk4\ui\Form
         }
 
         if ($this->auth) {
-            $this->onSubmit(function($form) {
+            $this->onSubmit(function ($form) {
                 // try to log user in
                 if ($this->auth->tryLogin($form->model['email'], $form->model['password'])) {
                     return $this->app->jsRedirect($this->linkSuccess);

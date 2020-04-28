@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\demo;
 
 /**
@@ -18,9 +19,9 @@ class App extends \atk4\ui\App
     {
         parent::__construct();
 
-        $config_file = __DIR__.'/../config.php';
+        $config_file = __DIR__ . '/../config.php';
 
-        if(!file_exists($config_file)) {
+        if (!file_exists($config_file)) {
             $this->redirect('wizard.php');
             $this->callExit();
         }

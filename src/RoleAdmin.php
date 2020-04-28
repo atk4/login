@@ -60,7 +60,6 @@ class RoleAdmin extends View
         $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
-
             $this->model->load($id);
 
             $v->add(['Header', $this->model->getTitle() . ' Permissions']);
@@ -69,7 +68,7 @@ class RoleAdmin extends View
             $crud = $v->add(['CRUD']);
             $crud->setModel($this->model->ref('AccessRules'));
         });
-        
+
         //@todo remove this line. It's just a workaround while CRUD edit action button will be fixed in modal windows
         $this->crud->owner->add(['CRUD'])->setModel($this->crud->model->ref('AccessRules'));
 

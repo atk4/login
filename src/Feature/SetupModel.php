@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\Feature;
 
 /**
@@ -22,7 +23,7 @@ trait SetupModel
     {
         $this->getField('model')->required = true;
         $this->getField('model')->caption = 'Model Class';
-    
+
         /*
         $this->containsOne('config', new class extends Model {
             public function init()
@@ -37,11 +38,11 @@ trait SetupModel
             }
         });
         */
-        
+
         $this->getField('all_visible')->default = true;
         $this->getField('all_editable')->default = true;
         $this->getField('all_actions')->default = true;
-        
+
         $this->getField('visible_fields')->ui['form'] = FormField\FieldsDropDown::class;
         $this->getField('editable_fields')->ui['form'] = FormField\FieldsDropDown::class;
         $this->getField('actions')->ui['form'] = FormField\ActionsDropDown::class;
@@ -49,9 +50,15 @@ trait SetupModel
 
         // cleanup data
         $this->addHook('beforeSave', function ($m) {
-            if ($m['all_visible']) $m['visible_fields'] = null;
-            if ($m['all_editable']) $m['editable_fields'] = null;
-            if ($m['all_actions']) $m['actions'] = null;
+            if ($m['all_visible']) {
+                $m['visible_fields'] = null;
+            }
+            if ($m['all_editable']) {
+                $m['editable_fields'] = null;
+            }
+            if ($m['all_actions']) {
+                $m['actions'] = null;
+            }
         });
     }
 
@@ -73,7 +80,7 @@ trait SetupModel
         $this->getField('email')->required = true;
         $this->setUnique('email');
         $this->getField('password')->ui['visible'] = false;
-    
+
         // all AccessRules for all user roles
         // @TODO in future when there can be multiple, then merge them together
         $this->hasMany('AccessRules', [
@@ -85,7 +92,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->addHook('beforeSave', function ($m){
+        $this->addHook('beforeSave', function ($m) {
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {

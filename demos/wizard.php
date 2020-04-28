@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\demo;
 
 use atk4\core\ConfigTrait;
@@ -24,11 +25,12 @@ use atk4\ui\App;
 include '../vendor/autoload.php';
 //include 'db.php';
 
-class AppWizard extends App {
-
+class wizard extends App
+{
     use ConfigTrait;
 
-    public function dbConnectFromWizard() {
+    public function dbConnectFromWizard()
+    {
         $this->readConfig('config.php', 'php-inline');
         $this->dbConnect($this->config['dsn']);
     }
@@ -40,11 +42,10 @@ $app->initLayout('Centered');
 /** @var Wizard $wizard */
 $wizard=$app->add('Wizard');
 
-$wizard->addStep('Setup DB Credentials', function(View $page) {
-
-    $getFormData = function(Form $form) {
+$wizard->addStep('Setup DB Credentials', function (View $page) {
+    $getFormData = function (Form $form) {
         $jsFieldValues = [];
-        foreach($form->fields as $k => $f) {
+        foreach ($form->fields as $k => $f) {
             $jsFieldValues[$k] = $f->jsInput()->val();
         }
         return $jsFieldValues;
@@ -82,16 +83,14 @@ $wizard->addStep('Setup DB Credentials', function(View $page) {
     $form->model->set('user', 'root');
     $form->model->set('pass', 'root');
 
-    $form->onSubmit(function($f) use ($page) {
-
+    $form->onSubmit(function ($f) use ($page) {
         try {
-
             $dsn = $f->model->get('type') . '://';
             $dsn.= $f->model->get('user');
             $dsn.= ':';
             $dsn.= $f->model->get('pass');
             $dsn.= '@';
-            $dsn.= '' . $f->model->get('host').':'.$f->model->get('port');
+            $dsn.= '' . $f->model->get('host') . ':' . $f->model->get('port');
             $dsn.= '/';
             $dsn.= $f->model->get('name');
 
@@ -104,22 +103,20 @@ return [
 ];
 EOD;
             file_put_contents('config.php', $string_config);
-
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             return new Message('Error on connection : ' . $e->getMessage(), 'negative');
         }
 
         return $page->jsNext();
     });
 
-    $loader->set(function(Loader $loader) {
-
+    $loader->set(function (Loader $loader) {
         $dsn = $loader->app->stickyGet('type') . ':';
         $dsn.= $loader->app->stickyGet('user');
         $dsn.= ':';
         $dsn.= $loader->app->stickyGet('pass');
         $dsn.= '@';
-        $dsn.= $loader->app->stickyGet('host').':'.$loader->app->stickyGet('port');
+        $dsn.= $loader->app->stickyGet('host') . ':' . $loader->app->stickyGet('port');
         $dsn.= '/';
         $dsn.= $loader->app->stickyGet('name');
 
@@ -127,8 +124,7 @@ EOD;
     });
 });
 
-$wizard->addStep('Quickly checking if database is OK', function(View $page) {
-
+$wizard->addStep('Quickly checking if database is OK', function (View $page) {
     $console = $page->add(Console::class);
 
     /*
@@ -144,8 +140,7 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
     //@todo imported code from migratedModels function - START
     $console->app->db = $page->app->db;
 
-    $console->set(function($console) {
-
+    $console->set(function ($console) {
         $console->notice('Preparing to migrate models');
 
         $models = [User::class, Role::class, AccessRule::class];
@@ -155,7 +150,7 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
             $m = Migration::getMigration($model);
             $result = $m->migrate();
 
-            $console->debug('  '.get_class($m).': '.$model->table.' - '.$result);
+            $console->debug('  ' . get_class($m) . ': ' . $model->table . ' - ' . $result);
         }
 
         $console->notice('Done with migration');
@@ -164,12 +159,10 @@ $wizard->addStep('Quickly checking if database is OK', function(View $page) {
     //@todo imported code from migratedModels function - END
 });
 
-$wizard->addStep('Populate Sample Data', function(View $page) {
-
+$wizard->addStep('Populate Sample Data', function (View $page) {
     $page->app->dbConnectFromWizard();
 
-    $page->add('Console')->set(function(Console $c) {
-
+    $page->add('Console')->set(function (Console $c) {
         $c->notice('Populating data...');
 
         (new AccessRule($c->app->db))
@@ -201,6 +194,6 @@ $wizard->addStep('Populate Sample Data', function(View $page) {
     });
 });
 
-$wizard->addFinish(function($p) {
+$wizard->addFinish(function ($p) {
     $p->app->redirect(['index']);
 });

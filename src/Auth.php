@@ -154,7 +154,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->addHook('afterSave', function($m) {
+        $this->user->addHook('afterSave', function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -201,60 +201,59 @@ class Auth
      * It will show login form in case user is not already logged in.
      */
     public function check()
-    {        
+    {
         if ($this->user->loaded()) {
             // if user is already logged in
             $this->addUserMenu();
-        }
-        else {
+        } else {
             // if user is not logged in, then show login form
             $this->displayLoginForm();
         }
     }
-    
+
     public function addUserMenu()
     {
         // add admin menu
         if ($this->hasUserMenu && $this->app->layout instanceof \atk4\ui\Layout\Admin) {
             $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
-            
+
             if ($this->hasPreferences) {
                 $m->addItem(['Preferences', 'icon'=>'user'], [$this->pageDashboard, 'preferences'=>true]);
             }
-            
+
             $m->addItem(['Logout', 'icon'=>'sign out'], [$this->pageDashboard, 'logout'=>true]);
         }
-        
+
         // add preferences menu item
         if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
             $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
             $this->app->add('Form')->setModel($this->user);
             exit;
         }
-        
+
         if (isset($_GET['logout'])) {
             $this->logout();
             $this->app->redirect([$this->pageExit]);
         }
     }
-    
+
     public function displayLoginForm()
     {
-        $login = new \atk4\ui\App($this->app->title.' - Log-in Required');
+        $login = new \atk4\ui\App($this->app->title . ' - Log-in Required');
         $this->app->catch_runaway_callbacks = false;
         $this->app->run_called = true;
         $login->catch_runaway_callbacks = false;
         $login->initLayout(new \atk4\login\Layout\Narrow());
-        
+
         $login->add([
                 $this->form,
                 'auth' => $this,
                 'linkSuccess' => [$this->pageDashboard],
                 'linkForgot' => false,
         ]);
-        
+
         $login->layout->template->set('title', 'Log-in Required');
-        
+
         $login->run();
         $this->app->terminate();
         exit;

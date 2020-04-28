@@ -11,5 +11,4 @@ class BasicTest extends \atk4\core\PHPUnit_AgileTestCase
     {
         $this->assertEquals('foo', 'foo');
     }
-
 }
