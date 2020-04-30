@@ -255,8 +255,7 @@ class Auth
         $login->layout->template->set('title', 'Log-in Required');
 
         $login->run();
-        $this->app->terminate();
-        exit;
+        $this->app->callExit();
     }
 
     /**
