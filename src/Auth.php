@@ -255,23 +255,18 @@ class Auth
 
     public function displayLoginForm()
     {
-        $login = new \atk4\ui\App($this->app->title . ' - Log-in Required');
         $this->app->catch_runaway_callbacks = false;
-        $this->app->run_called = true;
-        $login->catch_runaway_callbacks = false;
-        $login->initLayout(new \atk4\login\Layout\Narrow());
-
-        $login->add([
-                $this->form,
-                'auth' => $this,
-                'linkSuccess' => [$this->pageDashboard],
-                'linkForgot' => false,
+        $this->app->html = null;
+        $this->app->initLayout(new Narrow());
+        $this->app->title = $this->app->title . ' - Log-in Required';
+        $this->app->add([
+            $this->form,
+            'auth' => $this,
+            'linkSuccess' => [$this->pageDashboard],
+            'linkForgot' => false,
         ]);
-
-        $login->layout->template->set('title', 'Log-in Required');
-
-        $login->run();
-        $this->app->callExit();
+        $this->app->layout->template->set('title', $this->app->title);
+        $this->app->run();
     }
 
     /**
