@@ -21,7 +21,7 @@ $c->addColumn(4)->add(['Button', 'Back', 'icon'=>'home', 'right floated tiny bas
 $app->add(['ui'=>'hidden divider']);
 
 // form itself
-LoginForm::addTo($app,['auth'=>$app->auth]);
+LoginForm::addTo($app, ['auth'=>$app->auth]);
 
 // below the form - signup link
 $seg = $app->add(['ui'=>'secondary segment', 'class'=>['center aligned padded']], 'Segment');

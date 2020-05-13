@@ -21,7 +21,7 @@ include '../vendor/autoload.php';
 
 //include 'db.php';
 
-class AppWizard extends App
+class wizard extends App
 {
     use ConfigTrait;
 
@@ -107,8 +107,10 @@ return [
 EOD;
             file_put_contents('config.php', $string_config);
         } catch (Throwable $e) {
-            return new Message('Error on connection : ' . $e->getMessage(),
-                'negative');
+            return new Message(
+                'Error on connection : ' . $e->getMessage(),
+                'negative'
+            );
         }
 
         return $page->jsNext();
