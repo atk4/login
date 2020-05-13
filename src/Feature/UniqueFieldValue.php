@@ -20,7 +20,7 @@ trait UniqueFieldValue
      */
     public function setUnique($field)
     {
-        $this->addHook('beforeSave', function ($m) use ($field) {
+        $this->onHook('beforeSave', function ($m) use ($field) {
             if ($m->isDirty($field)) {
                 $a = new static($m->persistence);
                 $a->addCondition($m->id_field, '<>', $m->id);

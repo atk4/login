@@ -30,9 +30,9 @@ class App extends \atk4\ui\App
 
         if ($interface == 'admin') {
             $this->initLayout('Admin');
-            $this->layout->leftMenu->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
-            $this->layout->leftMenu->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
-            $this->layout->leftMenu->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
+            $this->layout->menuLeft->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
+            $this->layout->menuLeft->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
+            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
         } elseif ($interface == 'centered') {
             $this->initLayout('Centered');
         } else {

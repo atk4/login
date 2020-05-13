@@ -2,20 +2,36 @@
 
 namespace atk4\login;
 
+use atk4\core\AppScopeTrait;
+use atk4\core\ContainerTrait;
+use atk4\core\DIContainerTrait;
+use atk4\core\Exception;
+use atk4\core\FactoryTrait;
+use atk4\core\HookTrait;
+use atk4\core\InitializerTrait;
+use atk4\core\SessionTrait;
+use atk4\core\TrackableTrait;
+use atk4\data\Model;
+use atk4\data\Persistence;
+use atk4\data\Persistence\Array_;
+use atk4\login\Layout\Narrow;
+use atk4\ui\Form;
+use atk4\ui\Layout\Admin;
+
 /**
  * Authentication controller. Add this to your application somewhere
  * and it will work wonders
  */
 class Auth
 {
-    use \atk4\core\SessionTrait;
-    use \atk4\core\ContainerTrait;
-    use \atk4\core\FactoryTrait;
-    use \atk4\core\AppScopeTrait;
-    use \atk4\core\DIContainerTrait;
-    use \atk4\core\TrackableTrait;
-    use \atk4\core\HookTrait;
-    use \atk4\core\InitializerTrait {
+    use SessionTrait;
+    use ContainerTrait;
+    use FactoryTrait;
+    use AppScopeTrait;
+    use DIContainerTrait;
+    use TrackableTrait;
+    use HookTrait;
+    use InitializerTrait {
         init as _init;
     }
 
@@ -23,7 +39,7 @@ class Auth
      * Contains information about a current user. Unlike Model this will
      * contain a record loaded from session cache.
      *
-     * @var \atk4\data\Model
+     * @var Model
      */
     public $user = null;
 
@@ -31,9 +47,9 @@ class Auth
      * Login Form. If you want to use a different LoginForm you can pass
      * a seed or object here.
      *
-     * @var string|\atk4\ui\Form
+     * @var string|Form
      */
-    public $form = \atk4\login\LoginForm::class;
+    public $form = LoginForm::class;
 
     /**
      * Which field to look up user by.
@@ -105,7 +121,7 @@ class Auth
         switch (session_status()) {
             case PHP_SESSION_DISABLED:
                 // @codeCoverageIgnoreStart - impossible to test
-                throw new \atk4\core\Exception(['Sessions are disabled on server']);
+                throw new Exception(['Sessions are disabled on server']);
                 // @codeCoverageIgnoreEnd
                 break;
             case PHP_SESSION_NONE:
@@ -117,24 +133,24 @@ class Auth
     /**
      * Return session persistence object.
      *
-     * @return \atk4\data\Persistence\Array_
+     * @return Array_
      */
     public function getSessionPersistence()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        return new \atk4\data\Persistence\Array_($_SESSION[$this->name]);
+        return new Array_($_SESSION[$this->name]);
     }
 
     /**
      * Specify a model for a user check here.
      *
-     * @param \atk4\data\Model $model
+     * @param Model $model
      * @param string $fieldLogin
      * @param string $fieldPassword
      *
-     * @throws \atk4\core\Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -154,7 +170,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->addHook('afterSave', function ($m) {
+        $this->user->onHook('afterSave', function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -170,19 +186,19 @@ class Auth
      * Link ACL object with this Auth controller object, apply restrictions on user model and
      * also apply ACL restrictions on each model you add to this persistence in future.
      *
-     * @param \atk4\login\ACL $acl
-     * @param \atk4\data\Persistence $persistence Optional persistence, use User model persistence by default
+     * @param ACL         $acl
+     * @param Persistence $persistence Optional persistence, use User model persistence by default
      *
-     * @throws \atk4\core\Exception
+     * @throws Exception
      *
      * @return $this
      */
-    public function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence = null)
+    public function setACL(ACL $acl, Persistence $persistence = null)
     {
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
-        $persistence->addHook('afterAdd', [$acl, 'applyRestrictions']);
+        $persistence->onHook('afterAdd', [$acl, 'applyRestrictions']);
 
         return $this;
     }
@@ -214,7 +230,7 @@ class Auth
     public function addUserMenu()
     {
         // add admin menu
-        if ($this->hasUserMenu && $this->app->layout instanceof \atk4\ui\Layout\Admin) {
+        if ($this->hasUserMenu && $this->app->layout instanceof Admin) {
             $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
@@ -264,7 +280,7 @@ class Auth
      * @param string $email
      * @param string $password
      *
-     * @throws \atk4\core\Exception
+     * @throws Exception
      *
      * @return bool
      */

@@ -7,10 +7,10 @@ include 'db.php';
 
 use atk4\login\RoleAdmin;
 use atk4\login\Model\Role;
+use atk4\ui\Header;
 
 $app = new \atk4\login\demo\App('admin');
 
 // USERS --------------------------------------------------
-$app->add('Header')->set('Roles');
-$app->add(new RoleAdmin())
-    ->setModel(new Role($app->db));
+Header::addTo($app)->set('Roles');
+RoleAdmin::addTo($app)->setModel(new Role($app->db));
