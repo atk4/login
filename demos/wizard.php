@@ -15,13 +15,14 @@ use atk4\ui\FormField\DropDown;
 use atk4\ui\Loader;
 use atk4\ui\Message;
 use atk4\ui\View;
+use atk4\ui\Wizard;
 use Throwable;
 
 include '../vendor/autoload.php';
 
 //include 'db.php';
 
-class wizard extends App
+class AppWizard extends App
 {
     use ConfigTrait;
 
@@ -35,8 +36,7 @@ class wizard extends App
 $app = new AppWizard(['title' => 'Agile Toolkit - Wizard setup']); // App without authentication to be able to freely import data
 $app->initLayout('Centered');
 
-/** @var Wizard $wizard */
-$wizard = $app->add('Wizard');
+$wizard = Wizard::addTo($app);
 
 $wizard->addStep('Setup DB Credentials', function (View $page) {
     $getFormData = function (Form $form) {
@@ -48,10 +48,9 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
         return $jsFieldValues;
     };
 
-    /** @var Form $form */
-    $form = $page->add('Form');
-    /** @var Loader $loader */
-    $loader = $page->add(['Loader', 'loadEvent' => 'false']);
+    $form = Form::addTo($page);
+
+    $loader = Loader::addTo($page,['loadEvent' => 'false']);
     $form->addField('type', [
         DropDown::class,
         'values' => [
@@ -126,12 +125,12 @@ EOD;
         $dsn .= '/';
         $dsn .= $loader->app->stickyGet('name');
 
-        $loader->add('View')->set('DSN : ' . $dsn);
+        View::addTo($loader)->set('DSN : ' . $dsn);
     });
 });
 
 $wizard->addStep('Quickly checking if database is OK', function (View $page) {
-    $console = $page->add(Console::class);
+    $console = Console::addTo($page);
 
     /*
     $button = $page->add(['Button', '<< Back', 'huge wide blue'])
@@ -168,7 +167,8 @@ $wizard->addStep('Quickly checking if database is OK', function (View $page) {
 $wizard->addStep('Populate Sample Data', function (View $page) {
     $page->app->dbConnectFromWizard();
 
-    $page->add('Console')->set(function (Console $c) {
+    Console::addTo($page)->set(function (Console $c) {
+
         $c->notice('Populating data...');
 
         (new AccessRule($c->app->db))
