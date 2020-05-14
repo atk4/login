@@ -22,7 +22,7 @@ include '../vendor/autoload.php';
 
 //include 'db.php';
 
-class AppWizard extends App
+class wizard extends App
 {
     use ConfigTrait;
 
@@ -50,7 +50,7 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
 
     $form = Form::addTo($page);
 
-    $loader = Loader::addTo($page,['loadEvent' => 'false']);
+    $loader = Loader::addTo($page, ['loadEvent' => 'false']);
     $form->addField('type', [
         DropDown::class,
         'values' => [
@@ -168,7 +168,6 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
     $page->app->dbConnectFromWizard();
 
     Console::addTo($page)->set(function (Console $c) {
-
         $c->notice('Populating data...');
 
         (new AccessRule($c->app->db))
