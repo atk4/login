@@ -22,7 +22,8 @@ include '../vendor/autoload.php';
 
 //include 'db.php';
 
-class wizard extends App
+// App without authentication to be able to freely import data
+$app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App
 {
     use ConfigTrait;
 
@@ -31,9 +32,7 @@ class wizard extends App
         $this->readConfig('config.php', 'php-inline');
         $this->dbConnect($this->config['dsn']);
     }
-}
-
-$app = new AppWizard(['title' => 'Agile Toolkit - Wizard setup']); // App without authentication to be able to freely import data
+}; 
 $app->initLayout('Centered');
 
 $wizard = Wizard::addTo($app);
