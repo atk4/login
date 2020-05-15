@@ -2,7 +2,7 @@
 
 namespace atk4\ui\tests;
 
-class BasicTest extends \atk4\core\PHPUnit_AgileTestCase
+class BasicTest extends \atk4\core\AtkPhpunit\TestCase
 {
     /**
      * Test constructor.
