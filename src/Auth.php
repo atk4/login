@@ -227,8 +227,8 @@ class Auth
         
         // add preferences menu item
         if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
-            $this->app->add('Form')->setModel($this->user);
+            $this->app->add([\atk4\ui\Header::class, 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
+            $this->app->add(\atk4\ui\Form::class)->setModel($this->user);
             exit;
         }
         
@@ -255,8 +255,9 @@ class Auth
         
         $login->layout->template->set('title', 'Log-in Required');
         
-        $login->run();
-        $this->app->terminate();
+        // The following commands cause an ATK4 UI exception error which I could not resolve:
+        //$login->run();
+        //$this->app->terminate();
         exit;
     }
 
