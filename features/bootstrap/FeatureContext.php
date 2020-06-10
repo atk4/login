@@ -41,7 +41,7 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function iSee($arg1)
     {
-        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="'.$arg1.'"]');
+        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($element->getAttribute('style')) {
             throw new \Exception("Element with text \"$arg1\" must be invisible");
         }
@@ -52,7 +52,7 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function dump($arg1)
     {
-        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="'.$arg1.'"]');
+        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         var_dump($element->getOuterHtml());
     }
 
@@ -61,7 +61,7 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function iDontSee($arg1)
     {
-        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="'.$arg1.'"]');
+        $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if (strpos('display: none', $element->getAttribute('style')) !== false) {
             throw new \Exception("Element with text \"$arg1\" must be invisible");
         }
@@ -83,7 +83,7 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function modalOpensWithText($arg1)
     {
-        $modal = $this->getSession()->getPage()->find('xpath', '//div[text()="'.$arg1.'"]');
+        $modal = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($modal->getAttribute('class') != 'ui modal scrolling') {
             throw new \Exception('No such modal');
         }

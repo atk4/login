@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login;
 
 use atk4\data\Model;
@@ -24,7 +25,7 @@ class UserAdmin extends View
     {
         parent::init();
 
-        $this->crud = $this->add('CRUD');
+        $this->crud = \atk4\ui\CRUD::addTo($this);
     }
 
     /**
@@ -50,33 +51,31 @@ class UserAdmin extends View
         $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption'=>'']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $column->addModal(['icon'=>'key'], 'Change Password', function($v, $id) {
-
+        $column->addModal(['icon'=>'key'], 'Change Password', function ($v, $id) {
             $this->model->load($id);
 
             $form = $v->add('Form');
             $f = $form->addField('visible_password', null, ['required'=>true]);
             //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
-            $f->addAction(['icon'=>'random'])->on('click', function() use ($f) {
+            $f->addAction(['icon'=>'random'])->on('click', function () use ($f) {
                 return $f->jsInput()->val($this->model->getField('password')->suggestPassword());
             });
 
-            $form->onSubmit(function($form) use ($v) {
+            $form->onSubmit(function ($form) use ($v) {
                 $this->model['password'] = $form->model['visible_password'];
                 $this->model->save();
 
                 return [
                     $v->owner->hide(),
                     $this->notify = new \atk4\ui\jsNotify([
-                        'content' => 'Password for '.$this->model[$this->model->title_field].' is changed!',
+                        'content' => 'Password for ' . $this->model[$this->model->title_field] . ' is changed!',
                         'color'   => 'green',
                     ])
                 ];
 
                 //return 'Setting '.$form->model['visible_password'].' for '.$this->model['name'];
             });
-
         });
 
         /*

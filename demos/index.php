@@ -1,18 +1,22 @@
 <?php
+
 namespace atk4\login\demo;
+
+use atk4\ui\Button;
+use atk4\ui\Header;
+use atk4\ui\View;
 
 require '../vendor/autoload.php';
 require 'db.php';
 
 $app = new App('centered', false, true);
+Header::addTo($app, ['Welcome to Auth Add-on demo app']);
+Button::addTo($app, ['Run migration wizard', 'icon'=>'gift'])->link(['wizard']);
 
-$app->add(['Header', 'Welcome to Auth Add-on demo app']);
-$app->add(['Button', 'Run migration wizard', 'icon'=>'gift'])->link(['wizard']);
+View::addTo($app, ['ui'=>'divider']);
+Button::addTo($app, ['Log-in', 'icon'=>'sign in'])->link(['login']);
+Button::addTo($app, ['Register', 'icon'=>'edit'])->link(['register']);
+Button::addTo($app, ['Dashboard', 'icon'=>'dashboard'])->link(['dashboard']);
 
-$app->add(['ui'=>'divider']);
-$app->add(['Button', 'Log-in', 'icon'=>'sign in'])->link(['login']);
-$app->add(['Button', 'Register', 'icon'=>'edit'])->link(['register']);
-$app->add(['Button', 'Dashboard', 'icon'=>'dashboard'])->link(['dashboard']);
-
-$app->add(['ui'=>'divider']);
-$app->add(['Button', 'Admin', 'icon'=>'lock open'])->link(['admin-users']);
+View::addTo($app, ['ui'=>'divider']);
+Button::addTo($app, ['Admin', 'icon'=>'lock open'])->link(['admin-users']);

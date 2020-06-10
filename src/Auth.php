@@ -154,7 +154,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->addHook('afterSave', function($m) {
+        $this->user->onHook(\atk4\data\Model::HOOK_AFTER_SAVE, function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -182,7 +182,7 @@ class Auth
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
-        $persistence->addHook('afterAdd', [$acl, 'applyRestrictions']);
+        $persistence->onHook(\atk4\data\Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
 
         return $this;
     }
