@@ -65,7 +65,7 @@ class RoleAdmin extends View
             $v->add(['Header', $this->model->getTitle() . ' Permissions']);
 
             /** @var CRUD $crud */
-            $crud = $v->add(['CRUD']);
+            $crud = CRUD::addTo($v);
             $crud->setModel($this->model->ref('AccessRules'));
         });
 

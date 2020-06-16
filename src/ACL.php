@@ -57,18 +57,18 @@ class ACL
     {
         foreach ($this->getRules($m) as $rule) {
             // extract as arrays
-            $visible = is_array($rule['visible_fields']) ? $rule['visible_fields'] : explode(',', $rule['visible_fields']);
-            $editable = is_array($rule['editable_fields']) ? $rule['editable_fields'] : explode(',', $rule['editable_fields']);
-            $actions = is_array($rule['actions']) ? $rule['actions'] : explode(',', $rule['actions']);
+            $visible = is_array($rule->get('visible_fields')) ? $rule->get('visible_fields') : explode(',', $rule->get('visible_fields'));
+            $editable = is_array($rule->get('editable_fields')) ? $rule->get('editable_fields') : explode(',', $rule->get('editable_fields'));
+            $actions = is_array($rule->get('actions')) ? $rule->get('actions') : explode(',', $rule->get('actions'));
 
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                $field->ui['visible'] = $rule['all_visible'] || (array_search($name, $visible) !== false);
-                $field->ui['editable'] = $rule['all_editable'] || (array_search($name, $editable) !== false);
+                $field->ui['visible'] = $rule->get('all_visible') || (array_search($name, $visible) !== false);
+                $field->ui['editable'] = $rule->get('all_editable') || (array_search($name, $editable) !== false);
             }
 
             // remove not allowed actions
-            if (!$rule['all_actions'] && $rule['actions']) {
+            if (!$rule->get('all_actions') && $rule->get('actions')) {
                 $actions_to_remove = array_diff(array_keys($m->getActions()), $actions);
                 foreach ($actions_to_remove as $action) {
                     $m->getAction($action)->enabled = false;

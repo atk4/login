@@ -14,10 +14,10 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 
         $m->addField('p', ['\atk4\login\Field\Password']);
 
-        $m['p'] = 'mypass';
+        $m->set('p', 'mypass');
 
         // when setting password, you cannot retrieve it back
-        $this->assertEquals('mypass', $m['p']);
+        $this->assertEquals('mypass', $m->get('p'));
 
         // password changed, so it's dirty.
         $this->assertEquals(true, $m->isDirty('p'));
@@ -37,18 +37,21 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         # making sure cloning does not break things
         $m = clone $m;
 
-
-        $m['p'] = 'mypass';
-        $this->assertEquals('mypass', $m['p']);
+        $m->set('p', 'mypass');
+        $this->assertEquals('mypass', $m->get('p'));
         $m->save();
 
-        //var_dump($a['data']);
-        $enc = $a['data'][1]['p']; // stored encoded password
+        $reflection = new \ReflectionClass($p);
+        $reflection_property = $reflection->getProperty('data');
+        $reflection_property->setAccessible(true);
+
+        //var_dump($reflection_property->getValue($p)['data']);
+        $enc = $reflection_property->getValue($p)['data'][1]['p']; // stored encoded password
         $this->assertTrue(is_string($enc));
         $this->assertNotEquals('mypass', $enc);
 
         // should have reloaded also
-        $this->assertNull($m['p']);
+        $this->assertNull($m->get('p'));
 
         $this->assertFalse($m->compare('p', 'badpass'));
         $this->assertTrue($m->compare('p', 'mypass'));
@@ -56,7 +59,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         // password shouldn't be dirty here
         $this->assertFalse($m->isDirty('p'));
 
-        $m['p'] = 'newpass';
+        $m->set('p', 'newpass');
 
         $this->assertTrue($m->isDirty('p'));
         $this->assertFalse($m->compare('p', 'mypass'));
@@ -65,7 +68,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m->save();
 
         // will have new hash
-        $this->assertNotEquals($enc, $a['data'][1]['p']);
+        $this->assertNotEquals($enc, $reflection_property->getValue($p)['data'][1]['p']);
     }
 
     public function testCanNotCompareEmptyException1()

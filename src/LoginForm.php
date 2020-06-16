@@ -51,7 +51,7 @@ class LoginForm extends \atk4\ui\Form
         if ($this->auth) {
             $this->onSubmit(function ($form) {
                 // try to log user in
-                if ($this->auth->tryLogin($form->model['email'], $form->model['password'])) {
+                if ($this->auth->tryLogin($form->model->get('email'), $form->model->get('password'))) {
                     return $this->app->jsRedirect($this->linkSuccess);
                 } else {
                     return $form->error('password', 'Email or Password is incorrect');

@@ -267,6 +267,7 @@ class Auth
         ]);
         $this->app->layout->template->set('title', $this->app->title);
         $this->app->run();
+        $this->app->callExit();
     }
 
     /**
