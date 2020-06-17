@@ -31,7 +31,7 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function iPressButton($arg1)
     {
-        $button = $this->getSession()->getPage()->find('xpath', '//div[text()="'.$arg1.'"]');
+        $button = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         $this->button_id = $button->getAttribute('id');
         $button->click();
     }

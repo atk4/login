@@ -5,9 +5,8 @@ namespace atk4\data\tests;
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\login\Field\Password;
-use PHPUnit\Framework\TestCase;
 
-class PasswordTest extends TestCase
+class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 {
     public function testPasswordField()
     {
@@ -69,11 +68,9 @@ class PasswordTest extends TestCase
         $this->assertNotEquals($enc, $a['data'][1]['p']);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testCanNotCompareEmptyException1()
     {
+        $this->expectException(\atk4\data\Exception::class);
         $a = [];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
@@ -82,11 +79,10 @@ class PasswordTest extends TestCase
         $m->compare('p', 'mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testPasswordCompareException2()
     {
+        $this->expectException(\atk4\data\Exception::class);
+
         $a = [];
         $p = new Persistence\Array_($a);
         $m = new Model($p);

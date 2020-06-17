@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\Feature;
 
 use atk4\data\UserAction;
@@ -43,7 +44,7 @@ trait SendEmailAction
         $to = $this['email'];
         $message = str_replace(["\r\n", "\r", "\n"], PHP_EOL, $message);
         $message = wordwrap($message, 70, PHP_EOL);
-    
+
         return mail($to, $subject, $message);
     }
 }

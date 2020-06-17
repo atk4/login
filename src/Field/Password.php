@@ -5,8 +5,13 @@
 namespace atk4\login\Field;
 
 use atk4\core\InitializerTrait;
+use atk4\data\Exception;
+use atk4\data\Field;
+use atk4\data\Persistence;
+use atk4\data\ValidationException;
+use atk4\ui\Persistence\UI;
 
-class Password extends \atk4\data\Field
+class Password extends Field
 {
     use InitializerTrait {
         init as _init;
@@ -78,7 +83,7 @@ class Password extends \atk4\data\Field
      *
      * @param string $value password
      *
-     * @throws \atk4\data\ValidationException
+     * @throws ValidationException
      *
      * @return mixed
      */
@@ -98,15 +103,15 @@ class Password extends \atk4\data\Field
      * verify right after.
      *
      * @param string                 $password plaintext password
-     * @param \atk4\data\Field       $f
-     * @param \atk4\data\Persistence $p
+     * @param Field       $f
+     * @param Persistence $p
      *
      * @return string|null encrypted password
      */
     public function encrypt($password, $f, $p)
     {
         if (is_null($password)) {
-            return;
+            return null;
         }
 
         // encrypt password
@@ -124,15 +129,15 @@ class Password extends \atk4\data\Field
      * your model.
      *
      * @param string                 $password encrypted password
-     * @param \atk4\data\Field       $f
-     * @param \atk4\data\Persistence $p
+     * @param Field       $f
+     * @param Persistence $p
      *
      * @return string|null encrypted password
      */
     public function decrypt($password, $f, $p)
     {
         $this->password_hash = $password;
-        if ($p instanceof \atk4\ui\Persistence\UI) {
+        if ($p instanceof UI) {
             return $password;
         }
 
@@ -144,7 +149,7 @@ class Password extends \atk4\data\Field
      *
      * @param string $password plain text password
      *
-     * @throws \atk4\data\Exception
+     * @throws Exception
      *
      * @return bool true if passwords match
      */
@@ -159,7 +164,7 @@ class Password extends \atk4\data\Field
                 return $v === $password;
             }
 
-            throw new \atk4\data\Exception(['Password was not set, so verification is not possible', 'field'=>$this->name]);
+            throw new Exception(['Password was not set, so verification is not possible', 'field'=>$this->name]);
         }
 
         // verify password
@@ -191,15 +196,15 @@ class Password extends \atk4\data\Field
         $a3 = ['a','u','o'];
         $syl=['n'];
 
-        foreach($p5 as $p) {
-            foreach($a5 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p5 as $p) {
+            foreach ($a5 as $a) {
+                $syl[] = $p . $a;
             }
         }
 
-        foreach($p3 as $p) {
-            foreach($a3 as $a) {
-                $syl[] = $p.$a;
+        foreach ($p3 as $p) {
+            foreach ($a3 as $a) {
+                $syl[] = $p . $a;
             }
         }
 

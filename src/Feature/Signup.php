@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\Feature;
 
 use atk4\data\UserAction;

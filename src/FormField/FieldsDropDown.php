@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login\FormField;
 
 /**
@@ -29,7 +30,7 @@ class FieldsDropDown extends AbstractDropDown
         if (!$model) {
             return parent::renderView();
         }
-        
+
         $fields = array_keys($model->getFields());
         $this->values = array_combine($fields, $fields);
 

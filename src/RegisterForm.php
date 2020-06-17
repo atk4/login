@@ -1,4 +1,5 @@
 <?php
+
 namespace atk4\login;
 
 /**
@@ -44,11 +45,11 @@ class RegisterForm extends \atk4\ui\Form
         $form = $this;
         $form->addField('name', null, ['required' => 'true']);
         $form->addField('email', null, ['required' => 'true']);
-        $f = $form->addField('password', ['Password'], ['required' => true]);
-        $form->addField('password2', ['Password'], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true]);
+        $f = $form->addField('password', ['Password'], ['required' => true])->setInputAttr('autocomplete', 'new-password');
+        $form->addField('password2', ['Password'], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
-        $form->onSubmit(function($form) {
+        $form->onSubmit(function ($form) {
 
             // Look if user already exist?
             $c = clone $this->model;
