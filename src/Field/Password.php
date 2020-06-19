@@ -164,7 +164,8 @@ class Password extends Field
                 return $v === $password;
             }
 
-            throw new Exception(['Password was not set, so verification is not possible', 'field'=>$this->name]);
+            throw (new Exception('Password was not set, so verification is not possible'))
+                ->addMoreInfo('field', $this->name);
         }
 
         // verify password

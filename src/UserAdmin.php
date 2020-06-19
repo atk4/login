@@ -63,13 +63,13 @@ class UserAdmin extends View
             });
 
             $form->onSubmit(function ($form) use ($v) {
-                $this->model['password'] = $form->model['visible_password'];
+                $this->model->set('password', $form->model->get('visible_password'));
                 $this->model->save();
 
                 return [
                     $v->owner->hide(),
                     $this->notify = new \atk4\ui\jsNotify([
-                        'content' => 'Password for ' . $this->model[$this->model->title_field] . ' is changed!',
+                        'content' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
                         'color'   => 'green',
                     ])
                 ];

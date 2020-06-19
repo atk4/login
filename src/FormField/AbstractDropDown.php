@@ -24,7 +24,6 @@ abstract class AbstractDropDown extends DropDown
     {
         // prepare values for this dropdown - these will be fields from model of AccessRule->model
         $class = $this->form->model->get('model');
-
         if (!$class) {
             return;
         }

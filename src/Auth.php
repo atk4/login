@@ -265,13 +265,9 @@ class Auth
             'linkSuccess' => [$this->pageDashboard],
             'linkForgot' => false,
         ]);
-
-        $login->layout->template->set('title', 'Log-in Required');
-        
-        // The following commands cause an ATK4 UI exception error which I could not resolve:
-        //$login->run();
-        //$this->app->terminate();
-        exit;
+        $this->app->layout->template->set('title', $this->app->title);
+        $this->app->run();
+        $this->app->callExit();
     }
 
     /**

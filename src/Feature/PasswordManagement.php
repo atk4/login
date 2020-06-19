@@ -76,12 +76,12 @@ trait PasswordManagement
             $words
         );
 
-        $this['password'] = $password;
+        $this->set('password', $password);
         $this->save();
 
         if ($this->hasField('email') && isset($this->app->outbox)) {
-            $this->app->outbox->sendEmail($this['email'], 'password_reset', ['new_password'=>$password]);
-            return 'Password was emailed to ' . $this['email'];
+            $this->app->outbox->sendEmail($this->get('email'), 'password_reset', ['new_password'=>$password]);
+            return 'Password was emailed to ' . $this->get('email');
         }
 
         return $password;

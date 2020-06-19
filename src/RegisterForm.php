@@ -54,13 +54,13 @@ class RegisterForm extends \atk4\ui\Form
             // Look if user already exist?
             $c = clone $this->model;
             $c->unload();
-            $c->tryLoadBy($this->fieldLogin, strtolower($form->model['email']));
+            $c->tryLoadBy($this->fieldLogin, strtolower($form->model->get('email')));
             if ($c->loaded()) {
                 return $form->error('email', 'User with this email already exist');
             }
 
             // check if passwords match
-            if ($form->model['password'] != $form->model['password2']) {
+            if ($form->model->get('password') != $form->model->get('password2')) {
                 return $form->error('password2', 'Passwords does not match');
             }
 

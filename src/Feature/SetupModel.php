@@ -50,14 +50,14 @@ trait SetupModel
 
         // cleanup data
         $this->onHook('beforeSave', function ($m) {
-            if ($m['all_visible']) {
-                $m['visible_fields'] = null;
+            if ($m->get('all_visible')) {
+                $m->setNull('visible_fields');
             }
-            if ($m['all_editable']) {
-                $m['editable_fields'] = null;
+            if ($m->get('all_editable')) {
+                $m->setNull('editable_fields');
             }
-            if ($m['all_actions']) {
-                $m['actions'] = null;
+            if ($m->get('all_actions')) {
+                $m->setNull('actions');
             }
         });
     }
