@@ -1,6 +1,8 @@
 ignore:
   - docs
-  - examples
+  - features
+  - saasty
+  - template
 comment: false
 coverage:
   status:

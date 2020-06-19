@@ -1,4 +1,4 @@
-<phpunit bootstrap="vendor/autoload.php" stderr="true">
+<phpunit colors="true" bootstrap="vendor/autoload.php" printerClass="atk4\core\AtkPhpunit\ResultPrinter">
     <php>
         <var name="DB_DSN" value="sqlite::memory:" />
         <var name="DB_USER" value="" />
@@ -7,23 +7,16 @@
     </php>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-            <exclude>
-              <file>src/AtkPhpunit/ResultPrinter.php</file>
-              <file>src/AtkPhpunit/ExceptionWrapper.php</file>
-              <file>src/AtkPhpunit/TestCase.php</file>
-              <file>src/AtkPhpunit/phpunit_polyfill.php</file>
-              <file>src/AtkPhpunit/phpunit5_polyfill.php</file>
-              <file>src/AtkPhpunit/phpunit8_polyfill.php</file>
-            </exclude>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
     <testsuites>
-        <testsuite name="core">
+        <testsuite name="dsql">
             <directory>tests</directory>
+            <exclude>tests/OracleTest.php</exclude>
         </testsuite>
     </testsuites>
     <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-php" target="build/logs/clover.cov"/>
     </logging>
 </phpunit>
