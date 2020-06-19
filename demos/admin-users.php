@@ -11,6 +11,6 @@ use atk4\login\Model\User;
 $app = new \atk4\login\demo\App('admin');
 
 // USERS --------------------------------------------------
-$app->add('Header')->set('Users');
+\atk4\ui\Header::addTo($app)->set('Users');
 $app->add(new UserAdmin())
     ->setModel(new User($app->db));

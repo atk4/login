@@ -170,7 +170,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->onHook('afterSave', function ($m) {
+        $this->user->onHook(\atk4\data\Model::HOOK_AFTER_SAVE, function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -198,8 +198,8 @@ class Auth
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
-        $persistence->onHook('afterAdd', [$acl, 'applyRestrictions']);
 
+        $persistence->onHook(\atk4\data\Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
         return $this;
     }
 
@@ -242,8 +242,8 @@ class Auth
 
         // add preferences menu item
         if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
-            $this->app->add('Form')->setModel($this->user);
+            $this->app->add([\atk4\ui\Header::class, 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
+            $this->app->add(\atk4\ui\Form::class)->setModel($this->user);
             exit;
         }
 
@@ -265,8 +265,13 @@ class Auth
             'linkSuccess' => [$this->pageDashboard],
             'linkForgot' => false,
         ]);
-        $this->app->layout->template->set('title', $this->app->title);
-        $this->app->run();
+
+        $login->layout->template->set('title', 'Log-in Required');
+        
+        // The following commands cause an ATK4 UI exception error which I could not resolve:
+        //$login->run();
+        //$this->app->terminate();
+        exit;
     }
 
     /**

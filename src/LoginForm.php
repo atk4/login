@@ -34,7 +34,7 @@ class LoginForm extends \atk4\ui\Form
         $form->buttonSave->iconRight = 'right arrow';
 
         $form->addField('email', null, ['required' => true]);
-        $p = $form->addField('password', ['Password'], ['required' => true]);
+        $p = $form->addField('password', new \atk4\ui\FormField\Password(), ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])
@@ -43,7 +43,7 @@ class LoginForm extends \atk4\ui\Form
         }
 
         if ($this->cookieWarning) {
-            $form->add(['element' => 'p'])
+            \atk4\ui\View::addTo($form,['element' => 'p'])
                 ->addStyle('font-style', 'italic')
                 ->set($this->cookieWarning);
         }
@@ -51,12 +51,12 @@ class LoginForm extends \atk4\ui\Form
         if ($this->auth) {
             $this->onSubmit(function ($form) {
                 // try to log user in
-                if ($this->auth->tryLogin($form->model['email'], $form->model['password'])) {
+                if ($this->auth->tryLogin($form->model->get('email'), $form->model->get('password'))) {
                     return $this->app->jsRedirect($this->linkSuccess);
                 } else {
                     return $form->error('password', 'Email or Password is incorrect');
                 }
             });
-        }
+        } 
     }
 }
