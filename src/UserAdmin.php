@@ -7,7 +7,7 @@ namespace atk4\login;
 use atk4\data\Model;
 use atk4\ui\CRUD;
 use atk4\ui\Form;
-use atk4\ui\jsNotify;
+use atk4\ui\jsToast;
 use atk4\ui\TableColumn\ActionButtons;
 use atk4\ui\View;
 
@@ -66,9 +66,9 @@ class UserAdmin extends View
 
                 return [
                     $v->owner->hide(),
-                    $this->notify = new jsNotify([
-                        'content' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
-                        'color' => 'green',
+                    new jsToast([
+                        'message' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
+                        'class' => 'success',
                     ]),
                 ];
 
