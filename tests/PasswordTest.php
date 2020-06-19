@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\data\tests;
 
 use atk4\data\Model;
@@ -17,13 +19,13 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m->set('p', 'mypass');
 
         // when setting password, you cannot retrieve it back
-        $this->assertEquals('mypass', $m->get('p'));
+        $this->assertSame('mypass', $m->get('p'));
 
         // password changed, so it's dirty.
-        $this->assertEquals(true, $m->isDirty('p'));
+        $this->assertTrue($m->isDirty('p'));
 
-        $this->assertEquals(false, $m->compare('p', 'badpass'));
-        $this->assertEquals(true, $m->compare('p', 'mypass'));
+        $this->assertFalse($m->compare('p', 'badpass'));
+        $this->assertTrue($m->compare('p', 'mypass'));
     }
 
     public function testPasswordPersistence1()
@@ -34,11 +36,11 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 
         $m->addField('p', [Password::class]);
 
-        # making sure cloning does not break things
+        // making sure cloning does not break things
         $m = clone $m;
 
         $m->set('p', 'mypass');
-        $this->assertEquals('mypass', $m->get('p'));
+        $this->assertSame('mypass', $m->get('p'));
         $m->save();
 
         $reflection = new \ReflectionClass($p);
@@ -48,7 +50,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         //var_dump($reflection_property->getValue($p)['data']);
         $enc = $reflection_property->getValue($p)['data'][1]['p']; // stored encoded password
         $this->assertTrue(is_string($enc));
-        $this->assertNotEquals('mypass', $enc);
+        $this->assertNotSame('mypass', $enc);
 
         // should have reloaded also
         $this->assertNull($m->get('p'));
@@ -68,7 +70,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m->save();
 
         // will have new hash
-        $this->assertNotEquals($enc, $reflection_property->getValue($p)['data'][1]['p']);
+        $this->assertNotSame($enc, $reflection_property->getValue($p)['data'][1]['p']);
     }
 
     public function testCanNotCompareEmptyException1()

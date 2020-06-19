@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace atk4\login\FormField;
 
 use atk4\data\Model;
@@ -14,9 +17,7 @@ abstract class AbstractDropDown extends DropDown
     public $isMultiple = true;
 
     /**
-     * Get AccessRule->model and initialize it
-     *
-     * @throws Exception
+     * Get AccessRule->model and initialize it.
      *
      * @return Model|null
      */

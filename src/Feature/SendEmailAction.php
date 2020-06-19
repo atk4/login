@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login\Feature;
 
 use atk4\data\UserAction;
@@ -7,15 +9,11 @@ use atk4\data\UserAction;
 /**
  * Adding this trait to your user model will allow users to send emails. Additionally execute
  * $this->initSendEmailAction() from your init() method.
- *
- * @package atk4\login\Feature
  */
 trait SendEmailAction
 {
     /**
      * Adds sendEmail action.
-     *
-     * @return UserAction\Generic
      */
     public function initSendEmailAction(): UserAction\Generic
     {
@@ -36,8 +34,6 @@ trait SendEmailAction
      *
      * @param string $subject Email subject
      * @param string $message Email body
-     *
-     * @return bool
      */
     public function sendEmail(string $subject, string $message): bool
     {

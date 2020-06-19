@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login\Feature;
 
-/**
+/*
  * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
  * $this->setupModel() from your models init() method after you define model fields.
  *
  * @package atk4\login\Feature
  */
+use atk4\data\Model;
+use atk4\login\FormField;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
-
-use atk4\login\FormField;
 
 trait SetupModel
 {
@@ -49,7 +51,7 @@ trait SetupModel
         $this->getField('conditions')->type = 'text';
 
         // cleanup data
-        $this->onHook('beforeSave', function ($m) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
             if ($m->get('all_visible')) {
                 $m->setNull('visible_fields');
             }
@@ -92,7 +94,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->onHook('beforeSave', function ($m) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {

@@ -15,8 +15,6 @@
   ],
   "homepage": "https://github.com/atk4/login",
   "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "authors": [
     {
       "name": "Romans Malinovskis",
@@ -24,21 +22,32 @@
       "homepage": "https://nearly.guru/"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  },
   "require": {
     "php": ">=7.2.0",
     "atk4/ui": "dev-develop",
-    "atk4/data": "dev-develop",
-    "atk4/schema": "dev-develop"
+    "atk4/data": "dev-develop"
   },
   "require-release": {
     "php": ">=7.2.0",
     "atk4/ui": "^2.0",
-    "atk4/data": "^2.0",
-    "atk4/schema": "^2.0"
+    "atk4/data": "^2.0"
   },
   "require-dev": {
-    "phpunit/phpcov": "^3.0",
-    "phpunit/phpunit": "<6"
+    "atk4/schema": "dev-develop",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "phpunit/phpunit": "*",
+    "symfony/contracts": ">=1.1"
+  },
+  "require-dev-release": {
+    "atk4/schema": "^2.0",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "phpunit/phpunit": "*",
+    "symfony/contracts": ">=1.1"
   },
   "autoload": {
     "psr-4": {

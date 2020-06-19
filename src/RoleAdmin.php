@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login;
 
 use atk4\core\DebugTrait;
-use atk4\core\Exception;
 use atk4\data\Model;
 use atk4\ui\CRUD;
-use atk4\ui\Exception\NoRenderTree;
-use atk4\ui\View;
+use atk4\ui\Header;
 use atk4\ui\TableColumn\ActionButtons;
+use atk4\ui\View;
 
 /**
  * View for Role administration.
@@ -24,31 +25,24 @@ class RoleAdmin extends View
     use DebugTrait;
 
     /** @var CRUD */
-    public $crud = null;
+    public $crud;
 
     /**
      * Initialization.
-     * @throws Exception
      */
     public function init(): void
     {
         parent::init();
 
-        //$this->crud = $this->add('CRUD', ['formDefault' => ['Form', 'layout' => 'Columns']]);
+        //$this->crud = $this->add(CRUD::class, ['formDefault' => ['Form', 'layout' => 'Columns']]);
         //// @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
-        $this->crud = \atk4\ui\CRUD::addTo($this);
+        $this->crud = CRUD::addTo($this);
     }
 
     /**
      * Initialize User Admin and add all the UI pieces.
      *
-     * @param Model $role
-     *
      * @return Model
-     * @throws \atk4\ui\Exception
-     * @throws NoRenderTree
-     *
-     * @throws Exception
      */
     public function setModel(Model $role)
     {
@@ -62,7 +56,7 @@ class RoleAdmin extends View
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
             $this->model->load($id);
 
-            $v->add([\atk4\ui\Header::class, $this->model->getTitle() . ' Permissions']);
+            $v->add([Header::class, $this->model->getTitle() . ' Permissions']);
 
             /** @var CRUD $crud */
             $crud = CRUD::addTo($v);
@@ -70,7 +64,7 @@ class RoleAdmin extends View
         });
 
         //@todo remove this line. It's just a workaround while CRUD edit action button will be fixed in modal windows
-            $this->crud->owner->add([\atk4\ui\CRUD::class])->setModel($this->crud->model->ref('AccessRules'));
+        $this->crud->owner->add([CRUD::class])->setModel($this->crud->model->ref('AccessRules'));
 
         return parent::setModel($role);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\ui\tests;
 
 class BasicTest extends \atk4\core\AtkPhpunit\TestCase
@@ -9,6 +11,6 @@ class BasicTest extends \atk4\core\AtkPhpunit\TestCase
      */
     public function testTesting()
     {
-        $this->assertEquals('foo', 'foo');
+        $this->assertSame('foo', 'foo');
     }
 }
