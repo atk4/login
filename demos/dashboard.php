@@ -20,11 +20,11 @@ if ($app->auth->user->loaded()) {
 
     $app->add(['Button', 'Logout'])->on('click', function () use ($app) {
         $app->auth->logout();
+
         return new \atk4\ui\jsExpression('document.location.reload()');
     });
 } else {
     $t->addParagraph('no user logged');
 }
-
 
 $app->add(['Button', 'Back'])->link(['index']);

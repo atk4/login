@@ -33,10 +33,7 @@ class RegisterForm extends \atk4\ui\Form
     /**
      * Sets user model.
      *
-     * @param \atk4\data\Model $user
      * @param array $fields
-     *
-     * @throws \atk4\core\Exception
      *
      * @return \atk4\data\Model
      */
@@ -52,7 +49,6 @@ class RegisterForm extends \atk4\ui\Form
 
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
-
             // Look if user already exist?
             $c = clone $this->model;
             $c->unload();
@@ -62,7 +58,7 @@ class RegisterForm extends \atk4\ui\Form
             }
 
             // check if passwords match
-            if ($form->model->get('password') != $form->model->get('password2')) {
+            if ($form->model->get('password') !== $form->model->get('password2')) {
                 return $form->error('password2', 'Passwords does not match');
             }
 

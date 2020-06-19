@@ -55,10 +55,10 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
         DropDown::class,
         'values' => [
             'sqlite' => 'SQLite',
-            'mysql'  => 'MySQL',
-            'pgsql'  => 'PostgresSQL',
+            'mysql' => 'MySQL',
+            'pgsql' => 'PostgresSQL',
         ],
-        'width'  => 'four',
+        'width' => 'four',
     ])->on('change', $loader->jsLoad($getFormData($form)));
 
     $line = $form->addGroup();
@@ -178,29 +178,29 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
         (new User($c->app->db))
             ->each('delete')
             ->import([
-                ['name'     => 'Standard User',
-                 'email'    => 'user',
-                 'role'     => 'User Role',
-                 'password' => 'user',
+                ['name' => 'Standard User',
+                    'email' => 'user',
+                    'role' => 'User Role',
+                    'password' => 'user',
                 ],
-                ['name'     => 'Administrator',
-                 'email'    => 'admin',
-                 'role'     => 'Admin Role',
-                 'password' => 'admin',
+                ['name' => 'Administrator',
+                    'email' => 'admin',
+                    'role' => 'Admin Role',
+                    'password' => 'admin',
                 ],
             ]);
         (new AccessRule($c->app->db))
             ->import([
-                ['role'         => 'Admin Role',
-                 'model'        => '\\atk4\login\\Model\\User',
-                 'all_visible'  => true,
-                 'all_editable' => true,
+                ['role' => 'Admin Role',
+                    'model' => '\\atk4\login\\Model\\User',
+                    'all_visible' => true,
+                    'all_editable' => true,
                 ],
-                ['role'         => 'User Role',
-                 'model'        => '\\atk4\login\\Model\\Role',
-                 'all_visible'  => true,
-                 'all_editable' => false,
-                 /*'editable_fields'=>['a','b']*/
+                ['role' => 'User Role',
+                    'model' => '\\atk4\login\\Model\\Role',
+                    'all_visible' => true,
+                    'all_editable' => false,
+                    // 'editable_fields'=>['a','b']
                 ],
             ]);
 

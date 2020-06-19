@@ -24,15 +24,11 @@ class ACL
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @param Model $model
-     *
-     * @throws Exception
-     *
      * @return \atk4\login\Model\AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var \atk4\login\Model\User*/
+        /** @var \atk4\login\Model\User */
         $user = $this->auth->user;
 
         if (!$user->loaded()) {
@@ -48,12 +44,6 @@ class ACL
      * Given a model, this will apply some restrictions on it.
      *
      * Extend this method if you wish.
-     *
-     * @param Persistence $p
-     * @param Model $m
-     *
-     * @throws Exception
-     * @throws \atk4\data\Exception
      */
     public function applyRestrictions(Persistence $p, Model $m)
     {
@@ -65,8 +55,8 @@ class ACL
 
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                $field->ui['visible'] = $rule->get('all_visible') || (array_search($name, $visible) !== false);
-                $field->ui['editable'] = $rule->get('all_editable') || (array_search($name, $editable) !== false);
+                $field->ui['visible'] = $rule->get('all_visible') || (array_search($name, $visible, true) !== false);
+                $field->ui['editable'] = $rule->get('all_editable') || (array_search($name, $editable, true) !== false);
             }
 
             // remove not allowed actions
@@ -91,18 +81,14 @@ class ACL
     /**
      * Apply conditions on model.
      *
-     * @param Persistence $p
-     * @param Model       $m
-     * @param mixed       $conditions
+     * @param mixed $conditions
      */
     public function applyConditions(Persistence $p, Model $m, $conditions)
     {
         $m->addCondition($conditions);
     }
 
-    /**
-     * Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.
-     */
+    // Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.
     /*
     public function can($feature)
     {

@@ -22,7 +22,7 @@ use atk4\ui\Layout\Admin;
 
 /**
  * Authentication controller. Add this to your application somewhere
- * and it will work wonders
+ * and it will work wonders.
  */
 class Auth
 {
@@ -43,7 +43,7 @@ class Auth
      *
      * @var Model
      */
-    public $user = null;
+    public $user;
 
     /**
      * Login Form. If you want to use a different LoginForm you can pass
@@ -81,7 +81,7 @@ class Auth
      *
      * @var string
      */
-    public $pageDashboard = null;
+    public $pageDashboard;
 
     /**
      * User will be sent to exit page when he logs out.
@@ -128,6 +128,7 @@ class Auth
                 break;
             case PHP_SESSION_NONE:
                 session_start();
+
                 break;
         }
     }
@@ -142,17 +143,16 @@ class Auth
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
         return new Array_($_SESSION[$this->name]);
     }
 
     /**
      * Specify a model for a user check here.
      *
-     * @param Model $model
+     * @param Model  $model
      * @param string $fieldLogin
      * @param string $fieldPassword
-     *
-     * @throws Exception
      *
      * @return $this
      */
@@ -188,10 +188,7 @@ class Auth
      * Link ACL object with this Auth controller object, apply restrictions on user model and
      * also apply ACL restrictions on each model you add to this persistence in future.
      *
-     * @param ACL         $acl
      * @param Persistence $persistence Optional persistence, use User model persistence by default
-     *
-     * @throws Exception
      *
      * @return $this
      */
@@ -202,6 +199,7 @@ class Auth
         $acl->applyRestrictions($this->user->persistence, $this->user);
 
         $persistence->onHook(\atk4\data\Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
+
         return $this;
     }
 
@@ -236,15 +234,15 @@ class Auth
             $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $m->addItem(['Preferences', 'icon'=>'user'], [$this->pageDashboard, 'preferences'=>true]);
+                $m->addItem(['Preferences', 'icon' => 'user'], [$this->pageDashboard, 'preferences' => true]);
             }
 
-            $m->addItem(['Logout', 'icon'=>'sign out'], [$this->pageDashboard, 'logout'=>true]);
+            $m->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
         }
 
         // add preferences menu item
         if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add([\atk4\ui\Header::class, 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
+            $this->app->add([\atk4\ui\Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
             $this->app->add(\atk4\ui\Form::class)->setModel($this->user);
             exit;
         }
@@ -278,8 +276,6 @@ class Auth
      * @param string $email
      * @param string $password
      *
-     * @throws Exception
-     *
      * @return bool
      */
     public function tryLogin($email, $password)
@@ -289,15 +285,16 @@ class Auth
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
-
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
                 $this->hook('loggedIn', [$user]);
                 $this->getSessionPersistence()->update($user, 1, $user->get());
+
                 return true;
             }
             $this->hook('badLogin', [$email]);
         }
+
         return false;
     }
 }

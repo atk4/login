@@ -8,7 +8,6 @@ use atk4\core\InitializerTrait;
 use atk4\data\Exception;
 use atk4\data\Field;
 use atk4\data\Persistence;
-use atk4\data\ValidationException;
 use atk4\ui\Persistence\UI;
 
 class Password extends Field
@@ -26,12 +25,12 @@ class Password extends Field
      *
      * @var string
      */
-    protected $password_hash = null;
+    protected $password_hash;
 
     /**
      * Optional callable for encrypting password.
      * Use it if you need to customize your password encryption algorithm.
-     * Receives parameters - plaintext password
+     * Receives parameters - plaintext password.
      *
      * @var callable
      */
@@ -40,7 +39,7 @@ class Password extends Field
     /**
      * Optional callable for verifying password.
      * Use it if you need to customize your password verification algorithm.
-     * Receives parameters - plaintext password, encrypted password
+     * Receives parameters - plaintext password, encrypted password.
      *
      * @var callable
      */
@@ -83,8 +82,6 @@ class Password extends Field
      *
      * @param string $value password
      *
-     * @throws ValidationException
-     *
      * @return mixed
      */
     public function normalize($value)
@@ -102,7 +99,7 @@ class Password extends Field
      * also update $this->password_hash, in case you'll want to perform
      * verify right after.
      *
-     * @param string                 $password plaintext password
+     * @param string      $password plaintext password
      * @param Field       $f
      * @param Persistence $p
      *
@@ -110,7 +107,7 @@ class Password extends Field
      */
     public function encrypt($password, $f, $p)
     {
-        if (is_null($password)) {
+        if ($password === null) {
             return null;
         }
 
@@ -128,7 +125,7 @@ class Password extends Field
      * DO NOT CALL THIS METHOD. It is automatically invoked when you load
      * your model.
      *
-     * @param string                 $password encrypted password
+     * @param string      $password encrypted password
      * @param Field       $f
      * @param Persistence $p
      *
@@ -149,14 +146,11 @@ class Password extends Field
      *
      * @param string $password plain text password
      *
-     * @throws Exception
-     *
      * @return bool true if passwords match
      */
     public function compare($password): bool
     {
-        if (is_null($this->password_hash)) {
-
+        if ($this->password_hash === null) {
             // perhaps we currently hold a password and it's not saved yet.
             $v = $this->get();
 
@@ -191,11 +185,11 @@ class Password extends Field
      */
     public function suggestPassword($length = 4, $words = 1)
     {
-        $p5 = ['','k','s','t','n','h','m','r','w','g','z','d','b','p'];
-        $p3 = ['y','ky','sh','ch','ny','my','ry','gy','j','py','by'];
-        $a5 = ['a','i','u','e','o'];
-        $a3 = ['a','u','o'];
-        $syl=['n'];
+        $p5 = ['', 'k', 's', 't', 'n', 'h', 'm', 'r', 'w', 'g', 'z', 'd', 'b', 'p'];
+        $p3 = ['y', 'ky', 'sh', 'ch', 'ny', 'my', 'ry', 'gy', 'j', 'py', 'by'];
+        $a5 = ['a', 'i', 'u', 'e', 'o'];
+        $a3 = ['a', 'u', 'o'];
+        $syl = ['n'];
 
         foreach ($p5 as $p) {
             foreach ($a5 as $a) {
@@ -211,7 +205,7 @@ class Password extends Field
 
         $pass = '';
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $pass .= $syl[array_rand($syl)];
         }
 

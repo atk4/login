@@ -36,7 +36,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 
         $m->addField('p', [Password::class]);
 
-        # making sure cloning does not break things
+        // making sure cloning does not break things
         $m = clone $m;
 
         $m->set('p', 'mypass');

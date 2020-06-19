@@ -8,8 +8,6 @@ use atk4\data\ValidationException;
 
 /**
  * Adding this trait to your model will allow it to set fields which should be unique.
- *
- * @package atk4\login\Feature
  */
 trait UniqueFieldValue
 {

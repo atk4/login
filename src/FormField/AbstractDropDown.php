@@ -17,9 +17,7 @@ abstract class AbstractDropDown extends DropDown
     public $isMultiple = true;
 
     /**
-     * Get AccessRule->model and initialize it
-     *
-     * @throws Exception
+     * Get AccessRule->model and initialize it.
      *
      * @return Model|null
      */

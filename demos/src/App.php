@@ -6,8 +6,6 @@ namespace atk4\login\demo;
 
 /**
  * Example implementation of your Authenticated application.
- *
- * @package atk4\login\demo
  */
 class App extends \atk4\ui\App
 {
@@ -30,12 +28,12 @@ class App extends \atk4\ui\App
 
         $this->readConfig($config_file, 'php');
 
-        if ($interface == 'admin') {
+        if ($interface === 'admin') {
             $this->initLayout(\atk4\ui\Layout\Admin::class);
-            $this->layout->menuLeft->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
-            $this->layout->menuLeft->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
-            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
-        } elseif ($interface == 'centered') {
+            $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
+            $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
+        } elseif ($interface === 'centered') {
             $this->initLayout(\atk4\ui\Layout\Centered::class);
         } else {
             $this->initLayout(new \atk4\login\Layout\Narrow());
@@ -52,7 +50,7 @@ class App extends \atk4\ui\App
 
     public function authenticate()
     {
-        $this->auth = $this->add(new \atk4\login\Auth(['check'=>true]));
+        $this->auth = $this->add(new \atk4\login\Auth(['check' => true]));
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);

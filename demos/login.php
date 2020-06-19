@@ -17,16 +17,16 @@ $app = new App(false);
 
 // stuff above the form
 $c = Columns::addTo($app);
-$c->addColumn(12)->add(['Header', 'Log into your account', 'size'=>2]);
-$c->addColumn(4)->add(['Button', 'Back', 'icon'=>'home', 'right floated tiny basic green'])
+$c->addColumn(12)->add(['Header', 'Log into your account', 'size' => 2]);
+$c->addColumn(4)->add(['Button', 'Back', 'icon' => 'home', 'right floated tiny basic green'])
     ->link(['index']);
-$app->add(['ui'=>'hidden divider']);
+$app->add(['ui' => 'hidden divider']);
 
 // form itself
-LoginForm::addTo($app, ['auth'=>$app->auth]);
+LoginForm::addTo($app, ['auth' => $app->auth]);
 
 // below the form - signup link
-$seg = $app->add(['ui'=>'secondary segment', 'class'=>['center aligned padded']], 'Segment');
+$seg = $app->add(['ui' => 'secondary segment', 'class' => ['center aligned padded']], 'Segment');
 $seg->add(['Text', 'Don\'t have account? &nbsp;&nbsp;']);
 //$seg->add(['Text', 'Don\'t have account? &nbsp;&nbsp;']);
 $l = View::addTo($seg)->link(['register']);

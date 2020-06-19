@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\Model;
 
-use atk4\core\Exception;
 use atk4\data\Model;
-use atk4\login\FormField;
-
 use atk4\login\Feature\SetupModel;
 
 /**
@@ -20,18 +17,15 @@ class AccessRule extends Model
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
 
-    /**
-     * @throws Exception
-     */
     public function init(): void
     {
         parent::init();
 
-        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role'])->withTitle();
+        $this->hasOne('role_id', [Role::class, 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])->withTitle();
 
         $this->addField('model'); // model class name
 
-        /**
+        /*
          * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
          *      '*' - equals all_fields=true
          *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo','bar']
@@ -48,15 +42,15 @@ class AccessRule extends Model
          */
 
         // which model fields should be visible
-        $this->addField('all_visible', ['type'=>'boolean']);
+        $this->addField('all_visible', ['type' => 'boolean']);
         $this->addField('visible_fields'); // used if all_visible is false
 
         // which model fields should be editable
-        $this->addField('all_editable', ['type'=>'boolean']);
+        $this->addField('all_editable', ['type' => 'boolean']);
         $this->addField('editable_fields'); // used if all_editable is false
 
         // which model actions are allowed
-        $this->addField('all_actions', ['type'=>'boolean']);
+        $this->addField('all_actions', ['type' => 'boolean']);
         $this->addField('actions'); // used if all_actions is false
 
         // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"

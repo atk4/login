@@ -21,7 +21,7 @@ class FeatureContext extends RawMinkContext implements Context
     {
     }
 
-    protected $button = null;
+    protected $button;
 
     public function getSession($name = null)
     {
@@ -45,7 +45,7 @@ class FeatureContext extends RawMinkContext implements Context
     {
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($element->getAttribute('style')) {
-            throw new \Exception("Element with text \"$arg1\" must be invisible");
+            throw new \Exception("Element with text \"{$arg1}\" must be invisible");
         }
     }
 
@@ -65,7 +65,7 @@ class FeatureContext extends RawMinkContext implements Context
     {
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if (strpos('display: none', $element->getAttribute('style')) !== false) {
-            throw new \Exception("Element with text \"$arg1\" must be invisible");
+            throw new \Exception("Element with text \"{$arg1}\" must be invisible");
         }
     }
 
@@ -86,7 +86,7 @@ class FeatureContext extends RawMinkContext implements Context
     public function modalOpensWithText($arg1)
     {
         $modal = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
-        if ($modal->getAttribute('class') != 'ui modal scrolling') {
+        if ($modal->getAttribute('class') !== 'ui modal scrolling') {
             throw new \Exception('No such modal');
         }
     }
