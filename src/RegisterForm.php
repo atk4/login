@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace atk4\login;
 
-use atk4\login\Field\Password;
 use atk4\ui\Form;
 
 /**

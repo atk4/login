@@ -6,8 +6,8 @@ namespace atk4\login;
 
 use atk4\data\Model;
 use atk4\ui\CRUD;
-use atk4\ui\jsNotify;
 use atk4\ui\Form;
+use atk4\ui\jsNotify;
 use atk4\ui\TableColumn\ActionButtons;
 use atk4\ui\View;
 

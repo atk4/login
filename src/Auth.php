@@ -7,7 +7,6 @@ namespace atk4\login;
 use atk4\core\AppScopeTrait;
 use atk4\core\ContainerTrait;
 use atk4\core\DIContainerTrait;
-use atk4\core\Exception;
 use atk4\core\FactoryTrait;
 use atk4\core\HookTrait;
 use atk4\core\InitializerTrait;
@@ -144,7 +143,7 @@ class Auth
         }
 
         $p = new Persistence\Array_();
-        \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key];}, null, Persistence\Array_::class)();
+        \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key]; }, null, Persistence\Array_::class)();
 
         return $p;
     }
