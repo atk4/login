@@ -6,6 +6,8 @@ namespace atk4\login;
 
 use atk4\data\Model;
 use atk4\ui\CRUD;
+use atk4\ui\jsNotify;
+use atk4\ui\Form;
 use atk4\ui\TableColumn\ActionButtons;
 use atk4\ui\View;
 
@@ -27,7 +29,7 @@ class UserAdmin extends View
     {
         parent::init();
 
-        $this->crud = \atk4\ui\CRUD::addTo($this);
+        $this->crud = CRUD::addTo($this);
     }
 
     /**
@@ -50,7 +52,7 @@ class UserAdmin extends View
         $column->addModal(['icon' => 'key'], 'Change Password', function ($v, $id) {
             $this->model->load($id);
 
-            $form = $v->add('Form');
+            $form = $v->add(Form::class);
             $f = $form->addField('visible_password', null, ['required' => true]);
             //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
@@ -64,7 +66,7 @@ class UserAdmin extends View
 
                 return [
                     $v->owner->hide(),
-                    $this->notify = new \atk4\ui\jsNotify([
+                    $this->notify = new jsNotify([
                         'content' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
                         'color' => 'green',
                     ]),
@@ -78,21 +80,21 @@ class UserAdmin extends View
         $column->addModal(['icon'=>'eye'], 'Details', function($v, $id) {
             $this->model->load($id);
 
-            $c = $v->add('Columns');
+            $c = $v->add(Columns::class);
             $left = $c->addColumn();
             $right = $c->addColumn();
 
-            $left->add(['Header', 'Role "'.$this->model['role'].'" Access']);
-            $crud = $left->add(['CRUD']);
+            $left->add([Header::class, 'Role "'.$this->model['role'].'" Access']);
+            $crud = $left->add([CRUD::class]);
             $crud->setModel($this->model->ref('AccessRules'));
             $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
 
-            $right->add(['Header', 'Role Details']);
+            $right->add([Header::class, 'Role Details']);
             $rule = $right->stickyGet('rule');
             if (!$rule) {
-                $right->add(['Message', 'Select role on the left', 'yellow']);
+                $right->add([Message::class, 'Select role on the left', 'yellow']);
             } else {
-                $right->add('CRUD')->setModel($this->model->ref('AccessRules')->load($rule));
+                $right->add([CRUD::class])->setModel($this->model->ref('AccessRules')->load($rule));
             }
         })->setAttr('title', 'User Details');
         */

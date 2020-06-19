@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace atk4\login;
 
+use atk4\ui\Form;
+use atk4\ui\FormField;
+use atk4\ui\View;
+
 /**
  * Login form view.
  */
-class LoginForm extends \atk4\ui\Form
+class LoginForm extends Form
 {
     /** @var array "Forgot password" page */
     public $linkForgot = ['forgot'];
@@ -35,7 +39,7 @@ class LoginForm extends \atk4\ui\Form
         $form->buttonSave->iconRight = 'right arrow';
 
         $form->addField('email', null, ['required' => true]);
-        $p = $form->addField('password', new \atk4\ui\FormField\Password(), ['required' => true]);
+        $p = $form->addField('password', new FormField\Password(), ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])
@@ -44,7 +48,7 @@ class LoginForm extends \atk4\ui\Form
         }
 
         if ($this->cookieWarning) {
-            \atk4\ui\View::addTo($form, ['element' => 'p'])
+            View::addTo($form, ['element' => 'p'])
                 ->addStyle('font-style', 'italic')
                 ->set($this->cookieWarning);
         }

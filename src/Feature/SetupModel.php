@@ -10,6 +10,7 @@ namespace atk4\login\Feature;
  *
  * @package atk4\login\Feature
  */
+use atk4\data\Model;
 use atk4\login\FormField;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
@@ -50,7 +51,7 @@ trait SetupModel
         $this->getField('conditions')->type = 'text';
 
         // cleanup data
-        $this->onHook('beforeSave', function ($m) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
             if ($m->get('all_visible')) {
                 $m->setNull('visible_fields');
             }
@@ -93,7 +94,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->onHook('beforeSave', function ($m) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {

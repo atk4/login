@@ -11,4 +11,4 @@ $app = new App(false);
 
 $app->add(new \atk4\login\Auth\Temporary('demo', 'demo'));
 
-$app->add(['Text', 'You are authenticated']);
+$app->add([\atk4\ui\Text::class, 'You are authenticated']);

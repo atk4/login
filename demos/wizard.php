@@ -133,7 +133,7 @@ $wizard->addStep('Quickly checking if database is OK', function (View $page) {
     $console = Console::addTo($page);
 
     /*
-    $button = $page->add(['Button', '<< Back', 'huge wide blue'])
+    $button = $page->add([Button::class, '<< Back', 'huge wide blue'])
         ->addStyle('display', 'none')
         ->link(['index']);
     */

@@ -15,9 +15,9 @@ use atk4\core\SessionTrait;
 use atk4\core\TrackableTrait;
 use atk4\data\Model;
 use atk4\data\Persistence;
-use atk4\data\Persistence\Array_;
 use atk4\login\Layout\Narrow;
 use atk4\ui\Form;
+use atk4\ui\Header;
 use atk4\ui\Layout\Admin;
 
 /**
@@ -36,6 +36,12 @@ class Auth
     use InitializerTrait {
         init as _init;
     }
+
+    /** @const string */
+    public const HOOK_LOGGED_IN = self::class . '@loggedIn';
+
+    /** @const string */
+    public const HOOK_BAD_LOGIN = self::class . '@badLogin';
 
     /**
      * Contains information about a current user. Unlike Model this will
@@ -126,17 +132,21 @@ class Auth
     /**
      * Return session persistence object.
      *
-     * @return Array_
+     * @return Persistence\Array_
      */
     public function getSessionPersistence()
     {
         $this->startSession();
+        $key = $this->name;
 
-        if (!isset($_SESSION[$this->name])) {
-            $_SESSION[$this->name] = null;
+        if (!isset($_SESSION[$key])) {
+            $_SESSION[$key] = [];
         }
 
-        return new Array_($_SESSION[$this->name]);
+        $p = new Persistence\Array_();
+        \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key];}, null, Persistence\Array_::class)();
+
+        return $p;
     }
 
     /**
@@ -164,7 +174,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->onHook(\atk4\data\Model::HOOK_AFTER_SAVE, function ($m) {
+        $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -190,7 +200,7 @@ class Auth
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
 
-        $persistence->onHook(\atk4\data\Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
+        $persistence->onHook(Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
 
         return $this;
     }
@@ -234,8 +244,8 @@ class Auth
 
         // add preferences menu item
         if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add([\atk4\ui\Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
-            $this->app->add(\atk4\ui\Form::class)->setModel($this->user);
+            $this->app->add([Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
+            $this->app->add(Form::class)->setModel($this->user);
             exit;
         }
 
@@ -279,12 +289,12 @@ class Auth
         if ($user->loaded()) {
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
-                $this->hook('loggedIn', [$user]);
+                $this->hook(self::HOOK_LOGGED_IN, [$user]);
                 $this->getSessionPersistence()->update($user, 1, $user->get());
 
                 return true;
             }
-            $this->hook('badLogin', [$email]);
+            $this->hook(self::HOOK_BAD_LOGIN, [$email]);
         }
 
         return false;

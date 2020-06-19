@@ -41,7 +41,6 @@ $seg = $app->add([
     'class' => ['center aligned padded'],
 ], 'Segment');
 
-//$seg->add(['Text', 'Don\'t have account? &nbsp;&nbsp;']);
 $l = View::addTo($seg)->link(['login']);
 Icon::addTo($l, ['angle left']);
 Text::addTo($l, ['Back to Login']);

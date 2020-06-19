@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\Feature;
 
+use atk4\data\Model;
 use atk4\data\ValidationException;
 
 /**
@@ -20,7 +21,7 @@ trait UniqueFieldValue
      */
     public function setUnique($field)
     {
-        $this->onHook('beforeSave', function ($m) use ($field) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
             if ($m->isDirty($field)) {
                 $a = new static($m->persistence);
                 $a->addCondition($m->id_field, '<>', $m->id);
