@@ -26,15 +26,15 @@ class App extends \atk4\ui\App
             $this->callExit();
         }
 
-        $this->readConfig($config_file, 'php-inline');
+        $this->readConfig($config_file, 'php');
 
         if ($interface == 'admin') {
-            $this->initLayout('Admin');
+            $this->initLayout(\atk4\ui\Layout\Admin::class);
             $this->layout->menuLeft->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
             $this->layout->menuLeft->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
             $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
         } elseif ($interface == 'centered') {
-            $this->initLayout('Centered');
+            $this->initLayout(\atk4\ui\Layout\Centered::class);
         } else {
             $this->initLayout(new \atk4\login\Layout\Narrow());
         }

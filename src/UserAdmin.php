@@ -25,7 +25,7 @@ class UserAdmin extends View
     {
         parent::init();
 
-        $this->crud = $this->add('CRUD');
+        $this->crud = \atk4\ui\CRUD::addTo($this);
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 namespace atk4\login\FormField;
 
 use atk4\data\Model;
