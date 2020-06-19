@@ -11,7 +11,7 @@ use atk4\ui\View;
 require '../vendor/autoload.php';
 require 'db.php';
 
-$app = new App('centered', false, true);
+$app = new App(\atk4\ui\Layout\Centered::class, false, true);
 Header::addTo($app, ['Welcome to Auth Add-on demo app']);
 Button::addTo($app, ['Run migration wizard', 'icon' => 'gift'])->link(['wizard']);
 

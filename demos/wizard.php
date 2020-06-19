@@ -30,11 +30,11 @@ $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
 
     public function dbConnectFromWizard()
     {
-        $this->readConfig('config.php', 'php-inline');
+        $this->readConfig('config.php', 'php');
         $this->dbConnect($this->config['dsn']);
     }
 };
-$app->initLayout('Centered');
+$app->initLayout(\atk4\ui\Layout\Centered::class);
 
 $wizard = Wizard::addTo($app);
 
@@ -174,16 +174,21 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
             ->each('delete');
         (new Role($c->app->db))
             ->each('delete')
-            ->import(['User Role', 'Admin Role']);
+            ->import([
+                ['name' => 'User Role'],
+                ['name' => 'Admin Role'],
+            ]);
         (new User($c->app->db))
             ->each('delete')
             ->import([
-                ['name' => 'Standard User',
+                [
+                    'name' => 'Standard User',
                     'email' => 'user',
                     'role' => 'User Role',
                     'password' => 'user',
                 ],
-                ['name' => 'Administrator',
+                [
+                    'name' => 'Administrator',
                     'email' => 'admin',
                     'role' => 'Admin Role',
                     'password' => 'admin',
@@ -191,12 +196,14 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
             ]);
         (new AccessRule($c->app->db))
             ->import([
-                ['role' => 'Admin Role',
+                [
+                    'role' => 'Admin Role',
                     'model' => '\\atk4\login\\Model\\User',
                     'all_visible' => true,
                     'all_editable' => true,
                 ],
-                ['role' => 'User Role',
+                [
+                    'role' => 'User Role',
                     'model' => '\\atk4\login\\Model\\Role',
                     'all_visible' => true,
                     'all_editable' => false,

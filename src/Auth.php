@@ -120,17 +120,7 @@ class Auth
     public function init()
     {
         $this->_init();
-        switch (session_status()) {
-            case PHP_SESSION_DISABLED:
-                // @codeCoverageIgnoreStart - impossible to test
-                throw new Exception(['Sessions are disabled on server']);
-                // @codeCoverageIgnoreEnd
-                break;
-            case PHP_SESSION_NONE:
-                session_start();
-
-                break;
-        }
+        $this->startSession();
     }
 
     /**
@@ -140,8 +130,10 @@ class Auth
      */
     public function getSessionPersistence()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        $this->startSession();
+
+        if (!isset($_SESSION[$this->name])) {
+            $_SESSION[$this->name] = null;
         }
 
         return new Array_($_SESSION[$this->name]);

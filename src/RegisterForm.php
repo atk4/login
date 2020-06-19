@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace atk4\login;
 
+use atk4\login\Field\Password;
+
 /**
  * Register form view.
  */
@@ -44,8 +46,8 @@ class RegisterForm extends \atk4\ui\Form
         $form = $this;
         $form->addField('name', null, ['required' => 'true']);
         $form->addField('email', null, ['required' => 'true']);
-        $f = $form->addField('password', ['Password'], ['required' => true])->setInputAttr('autocomplete', 'new-password');
-        $form->addField('password2', ['Password'], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
+        $f = $form->addField('password', null, ['type' => 'password', 'required' => true])->setInputAttr('autocomplete', 'new-password');
+        $form->addField('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
