@@ -142,7 +142,8 @@ class Auth
             $_SESSION[$key] = [];
         }
 
-        $p = new Persistence\Array_();
+        $data = null;
+        $p = new Persistence\Array_($data);
         \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key]; }, null, Persistence\Array_::class)();
 
         return $p;
