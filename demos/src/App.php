@@ -29,14 +29,14 @@ class App extends \atk4\ui\App
         $this->readConfig($config_file, 'php');
 
         if ($interface === 'admin') {
-            $this->initLayout(\atk4\ui\Layout\Admin::class);
+            $this->initLayout([\atk4\ui\Layout\Admin::class]);
             $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
             $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
             $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
         } elseif ($interface === 'centered') {
-            $this->initLayout(\atk4\ui\Layout\Centered::class);
+            $this->initLayout([\atk4\ui\Layout\Centered::class]);
         } else {
-            $this->initLayout(new \atk4\login\Layout\Narrow());
+            $this->initLayout([\atk4\login\Layout\Narrow::class]);
         }
 
         if (!$no_db_connect) {
@@ -50,7 +50,7 @@ class App extends \atk4\ui\App
 
     public function authenticate()
     {
-        $this->auth = $this->add(new \atk4\login\Auth(['check' => true]));
+        $this->auth = $this->add([\atk4\login\Auth::class, 'check' => true]);
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);

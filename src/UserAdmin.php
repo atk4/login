@@ -8,7 +8,7 @@ use atk4\data\Model;
 use atk4\ui\CRUD;
 use atk4\ui\Form;
 use atk4\ui\jsToast;
-use atk4\ui\TableColumn\ActionButtons;
+use atk4\ui\Table\Column\ActionButtons;
 use atk4\ui\View;
 
 /**
