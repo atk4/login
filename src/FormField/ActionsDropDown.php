@@ -33,7 +33,7 @@ class ActionsDropDown extends AbstractDropDown
             return parent::renderView();
         }
 
-        $actions = array_keys($model->getActions());
+        $actions = array_keys($model->getUserActions());
         $this->values = array_combine($actions, $actions);
 
         parent::renderView();

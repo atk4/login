@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\Feature;
 
-use atk4\data\UserAction;
+use atk4\data\Model;
 
 /**
  * Enables your User model to perform various actions with the passwords.
@@ -16,9 +16,9 @@ trait PasswordManagement
      */
     public function initPasswordManagement()
     {
-        $this->addAction('generate_random_password', ['scope' => UserAction\Generic::NO_RECORDS, 'system' => true]);
-        $this->addAction('reset_password', ['scope' => UserAction\Generic::SINGLE_RECORD]);
-        $this->addAction('check_password_strength', ['arguments']);
+        $this->addUserAction('generate_random_password', ['appliesTo' => Model\UserAction::APPLIES_TO_NO_RECORDS, 'system' => true]);
+        $this->addUserAction('reset_password', ['scope' => Model\UserAction::APPLIES_TO_SINGLE_RECORD]);
+        $this->addUserAction('check_password_strength', ['arguments']);
     }
 
     /**

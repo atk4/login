@@ -61,9 +61,9 @@ class ACL
 
             // remove not allowed actions
             if (!$rule->get('all_actions') && $rule->get('actions')) {
-                $actions_to_remove = array_diff(array_keys($m->getActions()), $actions);
+                $actions_to_remove = array_diff(array_keys($m->getUserActions()), $actions);
                 foreach ($actions_to_remove as $action) {
-                    $m->getAction($action)->enabled = false;
+                    $m->getUserAction($action)->enabled = false;
                 }
             }
 
