@@ -45,9 +45,9 @@ trait SetupModel
         $this->getField('all_editable')->default = true;
         $this->getField('all_actions')->default = true;
 
-        $this->getField('visible_fields')->ui['form'] = Control\Fields::class;
-        $this->getField('editable_fields')->ui['form'] = Control\Fields::class;
-        $this->getField('actions')->ui['form'] = Control\Actions::class;
+        $this->getField('visible_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('editable_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('actions')->ui['form'] = [Control\Actions::class];
         $this->getField('conditions')->type = 'text';
 
         // cleanup data

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\Feature;
 
-use atk4\data\UserAction;
+use atk4\data\Model\UserAction;
 
 /**
  * Adding this trait to your user model will allow users to send emails. Additionally execute
@@ -17,9 +17,9 @@ trait SendEmailAction
      */
     public function initSendEmailAction(): UserAction\Generic
     {
-        return $this->addAction('sendEmail', [
+        return $this->addUserAction('sendEmail', [
             'callback' => 'sendEmail',
-            'scope' => UserAction\Generic::SINGLE_RECORD,
+            'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
             'description' => 'Send e-mail to user',
             'ui' => ['icon' => 'mail'],
             'args' => [

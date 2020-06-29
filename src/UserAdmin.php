@@ -39,8 +39,8 @@ class UserAdmin extends View
      */
     public function setModel(Model $user)
     {
-        //$user->getAction('register_new_user')->system = true;
-        $user->getAction('add')->system = true;
+        //$user->getUserAction('register_new_user')->system = true;
+        $user->getUserAction('add')->system = true;
 
         // set model for CRUD
         $this->crud->setModel($user);
