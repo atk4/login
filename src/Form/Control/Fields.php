@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\FormField;
+namespace atk4\login\Form\Control
 
 /**
  * Form field to choose one or multiple model fields.
  */
-class FieldsDropDown extends AbstractDropDown
+class Fields extends Generic
 {
     public function setModel($model, $fields = null)
     {

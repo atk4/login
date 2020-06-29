@@ -13,7 +13,8 @@ use atk4\schema\Migration;
 use atk4\ui\App;
 use atk4\ui\Console;
 use atk4\ui\Form;
-use atk4\ui\FormField\DropDown;
+use atk4\ui\Form\Control;
+use atk4\ui\Form\Control\Dropdown;
 use atk4\ui\Loader;
 use atk4\ui\Message;
 use atk4\ui\View;
@@ -34,14 +35,14 @@ $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
         $this->dbConnect($this->config['dsn']);
     }
 };
-$app->initLayout(\atk4\ui\Layout\Centered::class);
+$app->initLayout([\atk4\ui\Layout\Centered::class]);
 
 $wizard = Wizard::addTo($app);
 
 $wizard->addStep('Setup DB Credentials', function (View $page) {
     $getFormData = function (Form $form) {
         $jsFieldValues = [];
-        foreach ($form->fields as $k => $f) {
+        foreach ($form->controls as $k => $f) {
             $jsFieldValues[$k] = $f->jsInput()->val();
         }
 
@@ -51,8 +52,8 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
     $form = Form::addTo($page);
 
     $loader = Loader::addTo($page, ['loadEvent' => 'false']);
-    $form->addField('type', [
-        DropDown::class,
+    $form->addControl('type', [
+        Dropdown::class,
         'values' => [
             'sqlite' => 'SQLite',
             'mysql' => 'MySQL',
@@ -62,18 +63,18 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
     ])->on('change', $loader->jsLoad($getFormData($form)));
 
     $line = $form->addGroup();
-    $line->addField('host', ['width' => 'six'])
+    $line->addControl('host', ['width' => 'six'])
         ->on('keyup', $loader->jsLoad($getFormData($form)));
-    $line->addField('port', ['width' => 'two'])
+    $line->addControl('port', ['width' => 'two'])
         ->on('keyup', $loader->jsLoad($getFormData($form)));
 
-    $line->addField('name', ['width' => 'four'])
+    $line->addControl('name', ['width' => 'four'])
         ->on('keyup', $loader->jsLoad($getFormData($form)));
 
     $line = $form->addGroup('DB Credentials');
-    $line->addField('user', ['width' => 'six'])
+    $line->addControl('user', ['width' => 'six'])
         ->on('keyup', $loader->jsLoad($getFormData($form)));
-    $line->addField('pass', ['width' => 'six'])
+    $line->addControl('pass', ['width' => 'six'])
         ->on('keyup', $loader->jsLoad($getFormData($form)));
 
     $form->model->set('type', 'mysql');

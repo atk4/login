@@ -52,9 +52,9 @@ class UserAdmin extends View
         $column->addModal(['icon' => 'key'], 'Change Password', function ($v, $id) {
             $this->model->load($id);
 
-            $form = $v->add(Form::class);
-            $f = $form->addField('visible_password', null, ['required' => true]);
-            //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
+            $form = $v->add([Form::class]);
+            $f = $form->addControl('visible_password', null, ['required' => true]);
+            //$form->addControl('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f) {
                 return $f->jsInput()->val($this->model->getField('password')->suggestPassword());

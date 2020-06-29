@@ -19,8 +19,8 @@ $t = $app->add([Message::class, 'Currently Logged User'])->text;
 if ($app->auth->user->loaded()) {
     $t->addParagraph($app->auth->user->get('email') . ' (' . $app->auth->user->id . ')');
 
-    $app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add(Modal::class)->set(function ($p) {
-        $p->add(Form::class)->setModel($p->app->auth->user);
+    $app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add([Modal::class])->set(function ($p) {
+        $p->add([Form::class])->setModel($p->app->auth->user);
     })->show());
 
     $app->add([Button::class, 'Logout'])->on('click', function () use ($app) {

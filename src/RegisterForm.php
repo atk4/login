@@ -44,10 +44,10 @@ class RegisterForm extends Form
         parent::setModel($user, false);
 
         $form = $this;
-        $form->addField('name', null, ['required' => 'true']);
-        $form->addField('email', null, ['required' => 'true']);
-        $f = $form->addField('password', null, ['type' => 'password', 'required' => true])->setInputAttr('autocomplete', 'new-password');
-        $form->addField('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
+        $form->addControl('name', null, ['required' => 'true']);
+        $form->addControl('email', null, ['required' => 'true']);
+        $f = $form->addControl('password', null, ['type' => 'password', 'required' => true])->setInputAttr('autocomplete', 'new-password');
+        $form->addControl('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
