@@ -8,7 +8,7 @@ use atk4\core\DebugTrait;
 use atk4\data\Model;
 use atk4\ui\CRUD;
 use atk4\ui\Header;
-use atk4\ui\TableColumn\ActionButtons;
+use atk4\ui\Table\Column\ActionButtons;
 use atk4\ui\View;
 
 /**
@@ -50,7 +50,7 @@ class RoleAdmin extends View
         $this->crud->setModel($role);
 
         // Add new table column used for actions
-        /** @var \atk4\ui\TableColumn\Generic $column */
+        /** @var \atk4\ui\Table\Column $column */
         $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {

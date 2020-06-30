@@ -11,7 +11,7 @@ namespace atk4\login\Feature;
  * @package atk4\login\Feature
  */
 use atk4\data\Model;
-use atk4\login\FormField;
+use atk4\login\Form\Control;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
@@ -45,9 +45,9 @@ trait SetupModel
         $this->getField('all_editable')->default = true;
         $this->getField('all_actions')->default = true;
 
-        $this->getField('visible_fields')->ui['form'] = FormField\FieldsDropDown::class;
-        $this->getField('editable_fields')->ui['form'] = FormField\FieldsDropDown::class;
-        $this->getField('actions')->ui['form'] = FormField\ActionsDropDown::class;
+        $this->getField('visible_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('editable_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('actions')->ui['form'] = [Control\Actions::class];
         $this->getField('conditions')->type = 'text';
 
         // cleanup data

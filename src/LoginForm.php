@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace atk4\login;
 
 use atk4\ui\Form;
-use atk4\ui\FormField;
+use atk4\ui\Form\Control;
 use atk4\ui\View;
 
 /**
@@ -38,8 +38,8 @@ class LoginForm extends Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addField('email', null, ['required' => true]);
-        $p = $form->addField('password', new FormField\Password(), ['required' => true]);
+        $form->addControl('email', null, ['required' => true]);
+        $p = $form->addControl('password', [Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])

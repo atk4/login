@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\FormField;
+namespace atk4\login\Form\Control;
 
 use atk4\data\Model;
 use atk4\ui\Exception;
-use atk4\ui\FormField\DropDown;
+use atk4\ui\Form\Control\Dropdown;
 
 /**
  * Form field to choose one or multiple entities.
  */
-abstract class AbstractDropDown extends DropDown
+abstract class Generic extends Dropdown
 {
     /** @var bool Dropdown with multiselect */
     public $isMultiple = true;

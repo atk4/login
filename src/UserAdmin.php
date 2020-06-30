@@ -8,7 +8,7 @@ use atk4\data\Model;
 use atk4\ui\CRUD;
 use atk4\ui\Form;
 use atk4\ui\jsToast;
-use atk4\ui\TableColumn\ActionButtons;
+use atk4\ui\Table\Column\ActionButtons;
 use atk4\ui\View;
 
 /**
@@ -39,8 +39,8 @@ class UserAdmin extends View
      */
     public function setModel(Model $user)
     {
-        //$user->getAction('register_new_user')->system = true;
-        $user->getAction('add')->system = true;
+        //$user->getUserAction('register_new_user')->system = true;
+        $user->getUserAction('add')->system = true;
 
         // set model for CRUD
         $this->crud->setModel($user);
@@ -52,9 +52,9 @@ class UserAdmin extends View
         $column->addModal(['icon' => 'key'], 'Change Password', function ($v, $id) {
             $this->model->load($id);
 
-            $form = $v->add(Form::class);
-            $f = $form->addField('visible_password', null, ['required' => true]);
-            //$form->addField('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
+            $form = $v->add([Form::class]);
+            $f = $form->addControl('visible_password', null, ['required' => true]);
+            //$form->addControl('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f) {
                 return $f->jsInput()->val($this->model->getField('password')->suggestPassword());
