@@ -26,11 +26,11 @@ class Fields extends Generic
     /**
      * Renders view.
      */
-    public function renderView()
+    protected function renderView(): void
     {
         $model = $this->getModel();
         if (!$model) {
-            return parent::renderView();
+            parent::renderView();
         }
 
         $fields = array_keys($model->getFields());

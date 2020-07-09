@@ -6,7 +6,7 @@ namespace atk4\login;
 
 use atk4\core\AppScopeTrait;
 use atk4\core\ContainerTrait;
-use atk4\core\DIContainerTrait;
+use atk4\core\DiContainerTrait;
 use atk4\core\FactoryTrait;
 use atk4\core\HookTrait;
 use atk4\core\InitializerTrait;
@@ -29,7 +29,7 @@ class Auth
     use ContainerTrait;
     use FactoryTrait;
     use AppScopeTrait;
-    use DIContainerTrait;
+    use DiContainerTrait;
     use TrackableTrait;
     use HookTrait;
     use InitializerTrait {
