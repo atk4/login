@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace atk4\login;
 
 use atk4\data\Model;
-use atk4\ui\CRUD;
+use atk4\ui\Crud;
 use atk4\ui\Form;
 use atk4\ui\jsToast;
 use atk4\ui\Table\Column\ActionButtons;
@@ -19,7 +19,7 @@ class UserAdmin extends View
 {
     use \atk4\core\DebugTrait;
 
-    /** @var CRUD */
+    /** @var Crud */
     public $crud;
 
     /**
@@ -29,7 +29,7 @@ class UserAdmin extends View
     {
         parent::init();
 
-        $this->crud = CRUD::addTo($this);
+        $this->crud = Crud::addTo($this);
     }
 
     /**

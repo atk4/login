@@ -6,7 +6,7 @@ namespace atk4\login;
 
 use atk4\core\DebugTrait;
 use atk4\data\Model;
-use atk4\ui\CRUD;
+use atk4\ui\Crud;
 use atk4\ui\Header;
 use atk4\ui\Table\Column\ActionButtons;
 use atk4\ui\View;
@@ -24,7 +24,7 @@ class RoleAdmin extends View
 
     use DebugTrait;
 
-    /** @var CRUD */
+    /** @var Crud */
     public $crud;
 
     /**
@@ -36,7 +36,7 @@ class RoleAdmin extends View
 
         //$this->crud = $this->add(CRUD::class, ['formDefault' => ['Form', 'layout' => 'Columns']]);
         //// @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
-        $this->crud = CRUD::addTo($this);
+        $this->crud = Crud::addTo($this);
     }
 
     /**
@@ -58,13 +58,13 @@ class RoleAdmin extends View
 
             $v->add([Header::class, $this->model->getTitle() . ' Permissions']);
 
-            /** @var CRUD $crud */
-            $crud = CRUD::addTo($v);
+            /** @var Crud $crud */
+            $crud = Crud::addTo($v);
             $crud->setModel($this->model->ref('AccessRules'));
         });
 
         //@todo remove this line. It's just a workaround while CRUD edit action button will be fixed in modal windows
-        $this->crud->owner->add([CRUD::class])->setModel($this->crud->model->ref('AccessRules'));
+        $this->crud->owner->add([Crud::class])->setModel($this->crud->model->ref('AccessRules'));
 
         return parent::setModel($role);
     }
