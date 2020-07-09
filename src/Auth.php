@@ -61,7 +61,7 @@ class Auth
     public $form = LoginForm::class;
 
     /**
-     * @var array Seed that would create VirtualPage for adding Preference page content.
+     * @var array Seed that would create VirtualPage for adding Preference page content
      */
     public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
 
