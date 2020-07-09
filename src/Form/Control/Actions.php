@@ -30,7 +30,7 @@ class Actions extends Generic
     {
         $model = $this->getModel();
         if (!$model) {
-             parent::renderView();
+            parent::renderView();
         }
 
         $actions = array_keys($model->getUserActions());
