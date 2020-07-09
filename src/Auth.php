@@ -18,6 +18,7 @@ use atk4\login\Layout\Narrow;
 use atk4\ui\Form;
 use atk4\ui\Header;
 use atk4\ui\Layout\Admin;
+use atk4\ui\VirtualPage;
 
 /**
  * Authentication controller. Add this to your application somewhere
@@ -57,6 +58,11 @@ class Auth
      * @var string|Form
      */
     public $form = LoginForm::class;
+
+    /**
+     * @var array Seed that would create VirtualPage for adding Preference page content
+     */
+    public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
 
     /**
      * Which field to look up user by.
@@ -122,7 +128,7 @@ class Auth
     /**
      * Initialization.
      */
-    public function init()
+    public function init(): void
     {
         $this->_init();
         $this->startSession();
@@ -235,23 +241,28 @@ class Auth
             $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $m->addItem(['Preferences', 'icon' => 'user'], [$this->pageDashboard, 'preferences' => true]);
+                $userPage = $this->app->add($this->preferencePage);
+                $this->setPreferencePage($userPage);
+
+                $m->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
             }
 
             $m->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
-        }
-
-        // add preferences menu item
-        if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add([Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
-            $this->app->add(Form::class)->setModel($this->user);
-            exit;
         }
 
         if (isset($_GET['logout'])) {
             $this->logout();
             $this->app->redirect([$this->pageExit]);
         }
+    }
+
+    /**
+     * Set preference page content.
+     */
+    public function setPreferencePage(VirtualPage $page)
+    {
+        $page->add([Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
+        $page->add([Form::class])->setModel($this->user);
     }
 
     public function displayLoginForm()
