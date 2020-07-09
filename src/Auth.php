@@ -18,7 +18,6 @@ use atk4\login\Layout\Narrow;
 use atk4\ui\Form;
 use atk4\ui\Header;
 use atk4\ui\Layout\Admin;
-use atk4\ui\View;
 use atk4\ui\VirtualPage;
 
 /**
