@@ -63,7 +63,7 @@ class Password extends Field
         // Otherwise it will use encrypt/decrypt method of old model object.
         $this->setDefaultTypecastMethods();
     }
-    
+
     /**
      * Sets default typecast methods.
      */
@@ -71,11 +71,11 @@ class Password extends Field
     {
         $this->typecast = [
             // callback on saving
-            function(string $password, Field $f, Persistence $p) {
+            function (string $password, Field $f, Persistence $p) {
                 return $this->encrypt($password, $f, $p);
             },
             // callback on loading
-            function(string $password, Field $f, Persistence $p){
+            function (string $password, Field $f, Persistence $p){
                 return $this->decrypt($password, $f, $p);
             },
         ];
@@ -103,9 +103,7 @@ class Password extends Field
      * also update $this->password_hash, in case you'll want to perform
      * verify right after.
      *
-     * @param string      $password plaintext password
-     * @param Field       $f
-     * @param Persistence $p
+     * @param string $password plaintext password
      *
      * @return string|null encrypted password
      */
@@ -129,9 +127,7 @@ class Password extends Field
      * DO NOT CALL THIS METHOD. It is automatically invoked when you load
      * your model.
      *
-     * @param string      $password encrypted password
-     * @param Field       $f
-     * @param Persistence $p
+     * @param string $password encrypted password
      *
      * @return string|null encrypted password
      */
@@ -181,13 +177,8 @@ class Password extends Field
      * 116985856 unique password combinations with length of 4.
      *
      * To make this more complex, use suggestPasssword(3).' '.suggestPassword(3);
-     *
-     * @param int $length
-     * @param int $words
-     *
-     * @return string
      */
-    public function suggestPassword(int $length = 4, int $words = 1)
+    public function suggestPassword(int $length = 4, int $words = 1): string
     {
         $p5 = ['', 'k', 's', 't', 'n', 'h', 'm', 'r', 'w', 'g', 'z', 'd', 'b', 'p'];
         $p3 = ['y', 'ky', 'sh', 'ch', 'ny', 'my', 'ry', 'gy', 'j', 'py', 'by'];
