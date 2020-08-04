@@ -12,13 +12,12 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 {
     public function testPasswordField()
     {
-        $m = new Model(); //$db, 'job');
-
-        $m->addField('p', ['\atk4\login\Field\Password']);
+        $m = new Model();
+        $m->addField('p', [Password::class]);
 
         $m->set('p', 'mypass');
 
-        // when setting password, you cannot retrieve it back
+        // when setting password, you can retrieve it back while it's not yet saved
         $this->assertSame('mypass', $m->get('p'));
 
         // password changed, so it's dirty.
@@ -39,16 +38,13 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         // making sure cloning does not break things
         $m = clone $m;
 
+        // when setting password, you can retrieve it back while it's not yet saved
         $m->set('p', 'mypass');
         $this->assertSame('mypass', $m->get('p'));
         $m->save();
 
-        $reflection = new \ReflectionClass($p);
-        $reflection_property = $reflection->getProperty('data');
-        $reflection_property->setAccessible(true);
+        $enc = $this->getProtected($p, 'data')['data'][1]['p']; // stored encoded password
 
-        //var_dump($reflection_property->getValue($p)['data']);
-        $enc = $reflection_property->getValue($p)['data'][1]['p']; // stored encoded password
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
@@ -69,8 +65,12 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 
         $m->save();
 
+        $this->assertFalse($m->isDirty('p'));
+        $this->assertFalse($m->compare('p', 'mypass'));
+        $this->assertTrue($m->compare('p', 'newpass'));
+
         // will have new hash
-        $this->assertNotSame($enc, $reflection_property->getValue($p)['data'][1]['p']);
+        $this->assertNotSame($enc, $this->getProtected($p, 'data')['data'][1]['p']);
     }
 
     public function testCanNotCompareEmptyException1()
@@ -92,7 +92,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $p = new Persistence\Array_($a);
         $m = new Model($p);
 
-        $m->addField('p', ['\atk4\login\Field\Password']);
+        $m->addField('p', [Password::class]);
         $m->compare('p', 'mypass');
     }
 }

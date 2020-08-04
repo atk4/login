@@ -51,14 +51,7 @@ class Password extends Field
     public function init(): void
     {
         $this->_init();
-
-        // set up typecasting
-        $this->typecast = [
-            // callback on saving
-            [$this, 'encrypt'],
-            // callback on loading
-            [$this, 'decrypt'],
-        ];
+        $this->setDefaultTypecastMethods();
     }
 
     /**
@@ -68,12 +61,23 @@ class Password extends Field
     {
         // IMPORTANT: This is required as workaround in case you clone model.
         // Otherwise it will use encrypt/decrypt method of old model object.
-        // set up typecasting
+        $this->setDefaultTypecastMethods();
+    }
+    
+    /**
+     * Sets default typecast methods.
+     */
+    protected function setDefaultTypecastMethods()
+    {
         $this->typecast = [
             // callback on saving
-            [$this, 'encrypt'],
+            function(string $password, Field $f, Persistence $p) {
+                return $this->encrypt($password, $f, $p);
+            },
             // callback on loading
-            [$this, 'decrypt'],
+            function(string $password, Field $f, Persistence $p){
+                return $this->decrypt($password, $f, $p);
+            },
         ];
     }
 
@@ -105,7 +109,7 @@ class Password extends Field
      *
      * @return string|null encrypted password
      */
-    public function encrypt($password, $f, $p)
+    public function encrypt(string $password, Field $f, Persistence $p)
     {
         if ($password === null) {
             return null;
@@ -131,7 +135,7 @@ class Password extends Field
      *
      * @return string|null encrypted password
      */
-    public function decrypt($password, $f, $p)
+    public function decrypt(string $password, Field $f, Persistence $p)
     {
         $this->password_hash = $password;
         if ($p instanceof UI) {
@@ -183,7 +187,7 @@ class Password extends Field
      *
      * @return string
      */
-    public function suggestPassword($length = 4, $words = 1)
+    public function suggestPassword(int $length = 4, int $words = 1)
     {
         $p5 = ['', 'k', 's', 't', 'n', 'h', 'm', 'r', 'w', 'g', 'z', 'd', 'b', 'p'];
         $p3 = ['y', 'ky', 'sh', 'ch', 'ny', 'my', 'ry', 'gy', 'j', 'py', 'by'];
