@@ -34,8 +34,8 @@
   },
   "require-release": {
     "php": ">=7.3.0",
-    "atk4/ui": "^2.0",
-    "atk4/data": "^2.0"
+    "atk4/ui": "^2.1",
+    "atk4/data": "^2.1"
   },
   "require-dev": {
     "atk4/schema": "dev-develop",
@@ -44,7 +44,7 @@
     "symfony/contracts": ">=1.1"
   },
   "require-dev-release": {
-    "atk4/schema": "^2.0",
+    "atk4/schema": "^2.1",
     "friendsofphp/php-cs-fixer": "^2.16",
     "phpunit/phpunit": "*",
     "symfony/contracts": ">=1.1"
