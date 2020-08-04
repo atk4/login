@@ -75,7 +75,7 @@ class Password extends Field
                 return $this->encrypt($password, $f, $p);
             },
             // callback on loading
-            function (string $password, Field $f, Persistence $p){
+            function (string $password, Field $f, Persistence $p) {
                 return $this->decrypt($password, $f, $p);
             },
         ];
