@@ -33,8 +33,8 @@ class LoginForm extends \atk4\ui\Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addField('email', null, ['required' => true]);
-        $p = $form->addField('password', ['Password'], ['required' => true]);
+        $form->addControl('email', null, ['required' => true]);
+        $p = $form->addControl('password', [\atk4\ui\Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])
@@ -43,9 +43,7 @@ class LoginForm extends \atk4\ui\Form
         }
 
         if ($this->cookieWarning) {
-            $form->add(['element' => 'p'])
-                ->addStyle('font-style', 'italic')
-                ->set($this->cookieWarning);
+            \atk4\ui\Text::addTo($form)->addParagraph($this->cookieWarning);
         }
 
         if ($this->auth) {

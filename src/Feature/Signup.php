@@ -2,7 +2,7 @@
 
 namespace atk4\login\Feature;
 
-use atk4\data\UserAction;
+use atk4\data\Model\UserAction;
 
 /**
  * Adding this trait to your user model will allow users to sign-up for your application. Additionally execute
@@ -17,7 +17,7 @@ trait Signup
      */
     public function initSignup()
     {
-        $this->addAction('register_new_user', ['scope'=>UserAction\Generic::NO_RECORDS, 'fields' => ['name', 'email', 'password']]);
+        $this->addUserAction('register_new_user', ['appliesTo' => \atk4\data\Model\UserAction::APPLIES_TO_NO_RECORDS]);
     }
 
     /**

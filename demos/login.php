@@ -1,5 +1,4 @@
 <?php
-
 namespace atk4\login\demo;
 
 include '../vendor/autoload.php';

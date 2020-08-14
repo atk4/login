@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'dsn'=>'mysql://root:root@localhost/test3'
+    "dsn" => new \atk4\data\Persistence\SQL('mysql:dbname=atk4-login;host=localhost', 'root', 'root')
 ];

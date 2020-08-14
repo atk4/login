@@ -29,18 +29,19 @@ class App extends \atk4\ui\App
         $this->readConfig($config_file, 'php-inline');
 
         if ($interface == 'admin') {
-            $this->initLayout('Admin');
+            $this->initLayout([\atk4\ui\Layout\Admin::class]);
             $this->layout->leftMenu->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
             $this->layout->leftMenu->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
             $this->layout->leftMenu->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
         } elseif ($interface == 'centered') {
-            $this->initLayout('Centered');
+            //$this->initLayout('Centered');
+            $this->initLayout([\atk4\ui\Layout\Centered::class]);
         } else {
-            $this->initLayout(new \atk4\login\Layout\Narrow());
+            $this->initLayout([\atk4\ui\Layout::class]);
         }
 
         if (!$no_db_connect) {
-            $this->dbConnect($this->config['dsn']);
+            $this->db = $this->config['dsn'];
         }
 
         if (!$no_authenticate) {

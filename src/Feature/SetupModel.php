@@ -49,7 +49,7 @@ trait SetupModel
         $this->getField('conditions')->type = 'text';
 
         // cleanup data
-        $this->addHook('beforeSave', function ($m) {
+        $this->onHook(\atk4\data\Model::HOOK_BEFORE_SAVE, function ($m) {
             if ($m['all_visible']) {
                 $m['visible_fields'] = null;
             }
@@ -92,7 +92,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->addHook('beforeSave', function ($m) {
+        $this->onHook(\atk4\data\Model::HOOK_BEFORE_SAVE, function ($m) {
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {

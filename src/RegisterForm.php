@@ -43,10 +43,10 @@ class RegisterForm extends \atk4\ui\Form
         parent::setModel($user, false);
 
         $form = $this;
-        $form->addField('name', null, ['required' => 'true']);
-        $form->addField('email', null, ['required' => 'true']);
-        $f = $form->addField('password', ['Password'], ['required' => true]);
-        $form->addField('password2', ['Password'], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true]);
+        $form->addControl('name', null, ['required' => true]);
+        $form->addControl('email', null, ['required' => true]);
+        $f = $form->addControl('password', [\atk4\ui\Form\Control\Password::class], ['required' => true]);
+        $form->addControl('password2', [\atk4\ui\Form\Control\Password::class], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true]);
 
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
