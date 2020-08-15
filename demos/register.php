@@ -30,7 +30,7 @@ Button::addTo($c->addColumn(4), [
     'Back to login',
     'icon'=>'home',
     'right floated tiny basic green',
-  ])->link(['index']);
+])->link(['index']);
 
 View::addTo($app, ['ui' => 'hidden divider']);
 
@@ -41,7 +41,7 @@ RegisterForm::addTo($app)->setModel(new User($app->db));
 \atk4\ui\View::addTo($app, [
     'ui'=>'secondary segment',
     'class'=>['center aligned padded'],
-  ]);
+]);
 
 $l = View::addTo($seg)->link(['login']);
 Icon::addTo($l, ['angle left']);
