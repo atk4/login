@@ -24,11 +24,11 @@ $c = Columns::addTo($app);
 
 Header::addTo($c->addColumn(12), [
     'Create New Account',
-    'size'  => 2,
+    'size' => 2,
   ]);
 Button::addTo($c->addColumn(4), [
     'Back to login',
-    'icon'=>'home',
+    'icon' => 'home',
     'right floated tiny basic green',
 ])->link(['index']);
 
@@ -39,8 +39,8 @@ RegisterForm::addTo($app)->setModel(new User($app->db));
 
 // below the form - signup link
 \atk4\ui\View::addTo($app, [
-    'ui'=>'secondary segment',
-    'class'=>['center aligned padded'],
+    'ui' => 'secondary segment',
+    'class' => ['center aligned padded'],
 ]);
 
 $l = View::addTo($seg)->link(['login']);
