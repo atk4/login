@@ -25,7 +25,7 @@ $c = Columns::addTo($app);
 Header::addTo($c->addColumn(12), [
     'Create New Account',
     'size' => 2,
-  ]);
+]);
 Button::addTo($c->addColumn(4), [
     'Back to login',
     'icon' => 'home',
