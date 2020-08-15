@@ -1,27 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login\Feature;
 
-use atk4\data\UserAction;
+use atk4\data\Model\UserAction;
 
 /**
  * Adding this trait to your user model will allow users to send emails. Additionally execute
  * $this->initSendEmailAction() from your init() method.
- *
- * @package atk4\login\Feature
  */
 trait SendEmailAction
 {
     /**
      * Adds sendEmail action.
-     *
-     * @return UserAction\Generic
      */
     public function initSendEmailAction(): UserAction\Generic
     {
-        return $this->addAction('sendEmail', [
+        return $this->addUserAction('sendEmail', [
             'callback' => 'sendEmail',
-            'scope' => UserAction\Generic::SINGLE_RECORD,
+            'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
             'description' => 'Send e-mail to user',
             'ui' => ['icon' => 'mail'],
             'args' => [
@@ -36,12 +34,10 @@ trait SendEmailAction
      *
      * @param string $subject Email subject
      * @param string $message Email body
-     *
-     * @return bool
      */
     public function sendEmail(string $subject, string $message): bool
     {
-        $to = $this['email'];
+        $to = $this->get('email');
         $message = str_replace(["\r\n", "\r", "\n"], PHP_EOL, $message);
         $message = wordwrap($message, 70, PHP_EOL);
 

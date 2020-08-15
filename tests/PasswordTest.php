@@ -1,30 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\data\tests;
 
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\login\Field\Password;
-use PHPUnit\Framework\TestCase;
 
-class PasswordTest extends TestCase
+class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 {
     public function testPasswordField()
     {
-        $m = new Model(); //$db, 'job');
+        $m = new Model();
+        $m->addField('p', [Password::class]);
 
-        $m->addField('p', ['\atk4\login\Field\Password']);
+        $m->set('p', 'mypass');
 
-        $m['p'] = 'mypass';
-
-        // when setting password, you cannot retrieve it back
-        $this->assertEquals('mypass', $m['p']);
+        // when setting password, you can retrieve it back while it's not yet saved
+        $this->assertSame('mypass', $m->get('p'));
 
         // password changed, so it's dirty.
-        $this->assertEquals(true, $m->isDirty('p'));
+        $this->assertTrue($m->isDirty('p'));
 
-        $this->assertEquals(false, $m->compare('p', 'badpass'));
-        $this->assertEquals(true, $m->compare('p', 'mypass'));
+        $this->assertFalse($m->compare('p', 'badpass'));
+        $this->assertTrue($m->compare('p', 'mypass'));
     }
 
     public function testPasswordPersistence1()
@@ -35,21 +35,21 @@ class PasswordTest extends TestCase
 
         $m->addField('p', [Password::class]);
 
-        # making sure cloning does not break things
+        // making sure cloning does not break things
         $m = clone $m;
 
-
-        $m['p'] = 'mypass';
-        $this->assertEquals('mypass', $m['p']);
+        // when setting password, you can retrieve it back while it's not yet saved
+        $m->set('p', 'mypass');
+        $this->assertSame('mypass', $m->get('p'));
         $m->save();
 
-        //var_dump($a['data']);
-        $enc = $a['data'][1]['p']; // stored encoded password
+        $enc = $this->getProtected($p, 'data')['data'][1]['p']; // stored encoded password
+
         $this->assertTrue(is_string($enc));
-        $this->assertNotEquals('mypass', $enc);
+        $this->assertNotSame('mypass', $enc);
 
         // should have reloaded also
-        $this->assertNull($m['p']);
+        $this->assertNull($m->get('p'));
 
         $this->assertFalse($m->compare('p', 'badpass'));
         $this->assertTrue($m->compare('p', 'mypass'));
@@ -57,7 +57,7 @@ class PasswordTest extends TestCase
         // password shouldn't be dirty here
         $this->assertFalse($m->isDirty('p'));
 
-        $m['p'] = 'newpass';
+        $m->set('p', 'newpass');
 
         $this->assertTrue($m->isDirty('p'));
         $this->assertFalse($m->compare('p', 'mypass'));
@@ -65,15 +65,17 @@ class PasswordTest extends TestCase
 
         $m->save();
 
+        $this->assertFalse($m->isDirty('p'));
+        $this->assertFalse($m->compare('p', 'mypass'));
+        $this->assertTrue($m->compare('p', 'newpass'));
+
         // will have new hash
-        $this->assertNotEquals($enc, $a['data'][1]['p']);
+        $this->assertNotSame($enc, $this->getProtected($p, 'data')['data'][1]['p']);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testCanNotCompareEmptyException1()
     {
+        $this->expectException(\atk4\data\Exception::class);
         $a = [];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
@@ -82,16 +84,15 @@ class PasswordTest extends TestCase
         $m->compare('p', 'mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testPasswordCompareException2()
     {
+        $this->expectException(\atk4\data\Exception::class);
+
         $a = [];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
 
-        $m->addField('p', ['\atk4\login\Field\Password']);
+        $m->addField('p', [Password::class]);
         $m->compare('p', 'mypass');
     }
 }

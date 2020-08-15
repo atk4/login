@@ -1,30 +1,30 @@
 <?php
 
-namespace atk4\login\FormField;
+declare(strict_types=1);
+
+namespace atk4\login\Form\Control;
 
 use atk4\data\Model;
 use atk4\ui\Exception;
-use atk4\ui\FormField\DropDown;
+use atk4\ui\Form\Control\Dropdown;
 
 /**
  * Form field to choose one or multiple entities.
  */
-abstract class AbstractDropDown extends DropDown
+abstract class Generic extends Dropdown
 {
     /** @var bool Dropdown with multiselect */
     public $isMultiple = true;
 
     /**
-     * Get AccessRule->model and initialize it
-     *
-     * @throws Exception
+     * Get AccessRule->model and initialize it.
      *
      * @return Model|null
      */
     public function getModel()
     {
         // prepare values for this dropdown - these will be fields from model of AccessRule->model
-        $class = $this->form->model['model'];
+        $class = $this->form->model->get('model');
         if (!$class) {
             return;
         }

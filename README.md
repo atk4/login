@@ -10,7 +10,7 @@ Then add `Auth` into your app and set appropriate user controller:
 
 ```php
 $app = new \atk4\ui\App();
-$app->initLayout('Admin');
+$app->initLayout(\atk4\ui\Layout\Admin::class);
 $app->dbConnect($dsn);
 
 // ADD THIS CODE:
@@ -18,7 +18,7 @@ $app->add(new \atk4\login\Auth())
     ->setModel(new User($app->db));
 
 // The rest of YOUR UI code will now be protected
-$app->add('CRUD')->setModel(new Client($app->db));
+$app->add(\atk4\ui\CRUD:class)->setModel(new Client($app->db));
 ```
 
 (If you do not have User model yet, you can extend or use \atk4\login\Model\User).
@@ -88,7 +88,7 @@ if (!$app->auth->user->loaded()) {
 #### Adding sign-up form
 
 ``` php
-$app->add(new \atk4\login\RegisterForm())
+$app->add(\atk4\login\RegisterForm::class)
     ->setModel(new \atk4\login\Model\User($app->db));
 ```
 
@@ -105,7 +105,7 @@ Displays email and 2 password fields (for confirmation). If filled successfully 
 
 ``` php
 $app->add([
-  new \atk4\login\LoginForm(), 
+  \atk4\login\LoginForm::class, 
   'auth'=>$app->auth,
   //'successLink'=>['dashboard'],
   //'forgotLink'=>['forgot'],
@@ -143,14 +143,14 @@ You may also access user data like this: `$app->auth->model['name']`; Things to 
 This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
 
 ``` php
-$app->add('Form')->setModel($app->auth->user);
+$app->add(Form::class)->setModel($app->auth->user);
 ```
 
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-$app->add(['Button', 'Profile', 'primary'])->on('click', $app->add('Modal')->set(function($p) {
-    $p->add('Form')->setModel($p->app->auth->user);
+$app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add(Modal::class)->set(function($p) {
+    $p->add(Form::class)->setModel($p->app->auth->user);
 })->show());
 ```
 

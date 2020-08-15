@@ -1,39 +1,68 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login;
+
+use atk4\core\AppScopeTrait;
+use atk4\core\ContainerTrait;
+use atk4\core\DiContainerTrait;
+use atk4\core\FactoryTrait;
+use atk4\core\HookTrait;
+use atk4\core\InitializerTrait;
+use atk4\core\SessionTrait;
+use atk4\core\TrackableTrait;
+use atk4\data\Model;
+use atk4\data\Persistence;
+use atk4\login\Layout\Narrow;
+use atk4\ui\Form;
+use atk4\ui\Header;
+use atk4\ui\Layout\Admin;
+use atk4\ui\VirtualPage;
 
 /**
  * Authentication controller. Add this to your application somewhere
- * and it will work wonders
+ * and it will work wonders.
  */
 class Auth
 {
-    use \atk4\core\SessionTrait;
-    use \atk4\core\ContainerTrait;
-    use \atk4\core\FactoryTrait;
-    use \atk4\core\AppScopeTrait;
-    use \atk4\core\DIContainerTrait;
-    use \atk4\core\TrackableTrait;
-    use \atk4\core\HookTrait;
-    use \atk4\core\InitializerTrait {
+    use SessionTrait;
+    use ContainerTrait;
+    use FactoryTrait;
+    use AppScopeTrait;
+    use DiContainerTrait;
+    use TrackableTrait;
+    use HookTrait;
+    use InitializerTrait {
         init as _init;
     }
+
+    /** @const string */
+    public const HOOK_LOGGED_IN = self::class . '@loggedIn';
+
+    /** @const string */
+    public const HOOK_BAD_LOGIN = self::class . '@badLogin';
 
     /**
      * Contains information about a current user. Unlike Model this will
      * contain a record loaded from session cache.
      *
-     * @var \atk4\data\Model
+     * @var Model
      */
-    public $user = null;
+    public $user;
 
     /**
      * Login Form. If you want to use a different LoginForm you can pass
      * a seed or object here.
      *
-     * @var string|\atk4\ui\Form
+     * @var string|Form
      */
-    public $form = \atk4\login\LoginForm::class;
+    public $form = LoginForm::class;
+
+    /**
+     * @var array Seed that would create VirtualPage for adding Preference page content
+     */
+    public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
 
     /**
      * Which field to look up user by.
@@ -63,7 +92,7 @@ class Auth
      *
      * @var string
      */
-    public $pageDashboard = null;
+    public $pageDashboard;
 
     /**
      * User will be sent to exit page when he logs out.
@@ -99,42 +128,38 @@ class Auth
     /**
      * Initialization.
      */
-    public function init()
+    public function init(): void
     {
         $this->_init();
-        switch (session_status()) {
-            case PHP_SESSION_DISABLED:
-                // @codeCoverageIgnoreStart - impossible to test
-                throw new \atk4\core\Exception(['Sessions are disabled on server']);
-                // @codeCoverageIgnoreEnd
-                break;
-            case PHP_SESSION_NONE:
-                session_start();
-                break;
-        }
+        $this->startSession();
     }
 
     /**
      * Return session persistence object.
      *
-     * @return \atk4\data\Persistence\Array_
+     * @return Persistence\Array_
      */
     public function getSessionPersistence()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        $this->startSession();
+        $key = $this->name;
+
+        if (!isset($_SESSION[$key])) {
+            $_SESSION[$key] = [];
         }
-        return new \atk4\data\Persistence\Array_($_SESSION[$this->name]);
+
+        $p = new Persistence\Array_();
+        \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key]; }, null, Persistence\Array_::class)();
+
+        return $p;
     }
 
     /**
      * Specify a model for a user check here.
      *
-     * @param \atk4\data\Model $model
+     * @param Model  $model
      * @param string $fieldLogin
      * @param string $fieldPassword
-     *
-     * @throws \atk4\core\Exception
      *
      * @return $this
      */
@@ -154,7 +179,7 @@ class Auth
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model
-        $this->user->onHook(\atk4\data\Model::HOOK_AFTER_SAVE, function ($m) {
+        $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
             $this->getSessionPersistence()->update($m, 1, $m->get());
         });
 
@@ -170,19 +195,17 @@ class Auth
      * Link ACL object with this Auth controller object, apply restrictions on user model and
      * also apply ACL restrictions on each model you add to this persistence in future.
      *
-     * @param \atk4\login\ACL $acl
-     * @param \atk4\data\Persistence $persistence Optional persistence, use User model persistence by default
-     *
-     * @throws \atk4\core\Exception
+     * @param Persistence $persistence Optional persistence, use User model persistence by default
      *
      * @return $this
      */
-    public function setACL(\atk4\login\ACL $acl, \atk4\data\Persistence $persistence = null)
+    public function setACL(ACL $acl, Persistence $persistence = null)
     {
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
-        $persistence->onHook(\atk4\data\Model::HOOK_AFTER_ADD, [$acl, 'applyRestrictions']);
+
+        $persistence->onHook(Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
 
         return $this;
     }
@@ -214,21 +237,17 @@ class Auth
     public function addUserMenu()
     {
         // add admin menu
-        if ($this->hasUserMenu && $this->app->layout instanceof \atk4\ui\Layout\Admin) {
+        if ($this->hasUserMenu && $this->app->layout instanceof Admin) {
             $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $m->addItem(['Preferences', 'icon'=>'user'], [$this->pageDashboard, 'preferences'=>true]);
+                $userPage = $this->app->add($this->preferencePage);
+                $this->setPreferencePage($userPage);
+
+                $m->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
             }
 
-            $m->addItem(['Logout', 'icon'=>'sign out'], [$this->pageDashboard, 'logout'=>true]);
-        }
-
-        // add preferences menu item
-        if ($this->hasPreferences && $this->app->stickyGet('preferences')) {
-            $this->app->add(['Header', 'User Preferences', 'subHeader'=>$this->user->getTitle(), 'icon'=>'user']);
-            $this->app->add('Form')->setModel($this->user);
-            exit;
+            $m->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
         }
 
         if (isset($_GET['logout'])) {
@@ -237,26 +256,30 @@ class Auth
         }
     }
 
+    /**
+     * Set preference page content.
+     */
+    public function setPreferencePage(VirtualPage $page)
+    {
+        $page->add([Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
+        $page->add([Form::class])->setModel($this->user);
+    }
+
     public function displayLoginForm()
     {
-        $login = new \atk4\ui\App($this->app->title . ' - Log-in Required');
         $this->app->catch_runaway_callbacks = false;
-        $this->app->run_called = true;
-        $login->catch_runaway_callbacks = false;
-        $login->initLayout(new \atk4\login\Layout\Narrow());
-
-        $login->add([
-                $this->form,
-                'auth' => $this,
-                'linkSuccess' => [$this->pageDashboard],
-                'linkForgot' => false,
+        $this->app->html = null;
+        $this->app->initLayout(new Narrow());
+        $this->app->title = $this->app->title . ' - Log-in Required';
+        $this->app->add([
+            $this->form,
+            'auth' => $this,
+            'linkSuccess' => [$this->pageDashboard],
+            'linkForgot' => false,
         ]);
-
-        $login->layout->template->set('title', 'Log-in Required');
-
-        $login->run();
-        $this->app->terminate();
-        exit;
+        $this->app->layout->template->set('title', $this->app->title);
+        $this->app->run();
+        $this->app->callExit();
     }
 
     /**
@@ -264,8 +287,6 @@ class Auth
      *
      * @param string $email
      * @param string $password
-     *
-     * @throws \atk4\core\Exception
      *
      * @return bool
      */
@@ -276,15 +297,16 @@ class Auth
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
-
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
-                $this->hook('loggedIn', [$user]);
+                $this->hook(self::HOOK_LOGGED_IN, [$user]);
                 $this->getSessionPersistence()->update($user, 1, $user->get());
+
                 return true;
             }
-            $this->hook('badLogin', [$email]);
+            $this->hook(self::HOOK_BAD_LOGIN, [$email]);
         }
+
         return false;
     }
 }

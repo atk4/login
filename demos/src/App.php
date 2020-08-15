@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login\demo;
 
 /**
  * Example implementation of your Authenticated application.
- *
- * @package atk4\login\demo
  */
 class App extends \atk4\ui\App
 {
@@ -26,18 +26,17 @@ class App extends \atk4\ui\App
             $this->callExit();
         }
 
-        $this->readConfig($config_file, 'php-inline');
+        $this->readConfig($config_file, 'php');
 
-        if ($interface == 'admin') {
+        if ($interface === 'admin') {
             $this->initLayout([\atk4\ui\Layout\Admin::class]);
-            $this->layout->leftMenu->addItem(['User Admin', 'icon'=>'users'], ['admin-users']);
-            $this->layout->leftMenu->addItem(['Role Admin', 'icon'=>'tasks'], ['admin-roles']);
-            $this->layout->leftMenu->addItem(['Back to Demo Index', 'icon'=>'arrow left'], ['index']);
-        } elseif ($interface == 'centered') {
-            //$this->initLayout('Centered');
+            $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
+            $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
+        } elseif ($interface === 'centered') {
             $this->initLayout([\atk4\ui\Layout\Centered::class]);
         } else {
-            $this->initLayout([\atk4\ui\Layout::class]);
+            $this->initLayout([\atk4\login\Layout\Narrow::class]);
         }
 
         if (!$no_db_connect) {
@@ -51,7 +50,7 @@ class App extends \atk4\ui\App
 
     public function authenticate()
     {
-        $this->auth = $this->add(new \atk4\login\Auth(['check'=>true]));
+        $this->auth = $this->add([\atk4\login\Auth::class, 'check' => true]);
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);

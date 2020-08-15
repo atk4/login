@@ -1,11 +1,13 @@
 <?php
 
-namespace atk4\login\FormField;
+declare(strict_types=1);
+
+namespace atk4\login\Form\Control;
 
 /**
  * Form field to choose one or multiple model actions.
  */
-class ActionsDropDown extends AbstractDropDown
+class Actions extends Generic
 {
     public function setModel($model, $fields = null)
     {
@@ -24,14 +26,14 @@ class ActionsDropDown extends AbstractDropDown
     /**
      * Renders view.
      */
-    public function renderView()
+    protected function renderView(): void
     {
         $model = $this->getModel();
         if (!$model) {
-            return parent::renderView();
+            parent::renderView();
         }
 
-        $actions = array_keys($model->getActions());
+        $actions = array_keys($model->getUserActions());
         $this->values = array_combine($actions, $actions);
 
         parent::renderView();

@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\login;
+
+use atk4\ui\Form;
 
 /**
  * Register form view.
  */
-class RegisterForm extends \atk4\ui\Form
+class RegisterForm extends Form
 {
     /**
      * Which field to look up user by.
@@ -31,10 +35,7 @@ class RegisterForm extends \atk4\ui\Form
     /**
      * Sets user model.
      *
-     * @param \atk4\data\Model $user
      * @param array $fields
-     *
-     * @throws \atk4\core\Exception
      *
      * @return \atk4\data\Model
      */
@@ -43,24 +44,23 @@ class RegisterForm extends \atk4\ui\Form
         parent::setModel($user, false);
 
         $form = $this;
-        $form->addControl('name', null, ['required' => true]);
-        $form->addControl('email', null, ['required' => true]);
-        $f = $form->addControl('password', [\atk4\ui\Form\Control\Password::class], ['required' => true]);
-        $form->addControl('password2', [\atk4\ui\Form\Control\Password::class], ['required' => true, 'caption' => 'Repeat Password', 'never_persist' => true]);
+        $form->addControl('name', null, ['required' => 'true']);
+        $form->addControl('email', null, ['required' => 'true']);
+        $f = $form->addControl('password', null, ['type' => 'password', 'required' => true])->setInputAttr('autocomplete', 'new-password');
+        $form->addControl('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
-
             // Look if user already exist?
             $c = clone $this->model;
             $c->unload();
-            $c->tryLoadBy($this->fieldLogin, strtolower($form->model['email']));
+            $c->tryLoadBy($this->fieldLogin, strtolower($form->model->get('email')));
             if ($c->loaded()) {
                 return $form->error('email', 'User with this email already exist');
             }
 
             // check if passwords match
-            if ($form->model['password'] != $form->model['password2']) {
+            if ($form->model->get('password') !== $form->model->get('password2')) {
                 return $form->error('password2', 'Passwords does not match');
             }
 
