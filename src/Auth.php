@@ -175,7 +175,7 @@ class Auth
             $this->fieldPassword = $fieldPassword;
         }
 
-        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user) ?: [];
+        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1) ?: [];
         $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
 
         // update session persistence after changes saved in user model

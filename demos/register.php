@@ -37,9 +37,6 @@ View::addTo($app, ['ui' => 'hidden divider']);
 // form itself
 RegisterForm::addTo($app)->setModel(new User($app->db));
 
-
-// form itself
-
 // below the form - signup link
 \atk4\ui\View::addTo($app, [
     'ui'=>'secondary segment',
