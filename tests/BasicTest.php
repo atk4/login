@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\ui\tests;
 
-class BasicTest extends \atk4\core\PHPUnit_AgileTestCase
+class BasicTest extends \atk4\core\AtkPhpunit\TestCase
 {
     /**
      * Test constructor.
      */
     public function testTesting()
     {
-        $this->assertEquals('foo', 'foo');
+        $this->assertSame('foo', 'foo');
     }
-
 }

@@ -1,17 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace atk4\login\Feature;
 
-/**
+/*
  * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
  * $this->setupModel() from your models init() method after you define model fields.
  *
  * @package atk4\login\Feature
  */
+use atk4\data\Model;
+use atk4\login\Form\Control;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
-
-use atk4\login\FormField;
 
 trait SetupModel
 {
@@ -22,7 +25,7 @@ trait SetupModel
     {
         $this->getField('model')->required = true;
         $this->getField('model')->caption = 'Model Class';
-    
+
         /*
         $this->containsOne('config', new class extends Model {
             public function init()
@@ -37,21 +40,27 @@ trait SetupModel
             }
         });
         */
-        
+
         $this->getField('all_visible')->default = true;
         $this->getField('all_editable')->default = true;
         $this->getField('all_actions')->default = true;
-        
-        $this->getField('visible_fields')->ui['form'] = FormField\FieldsDropDown::class;
-        $this->getField('editable_fields')->ui['form'] = FormField\FieldsDropDown::class;
-        $this->getField('actions')->ui['form'] = FormField\ActionsDropDown::class;
+
+        $this->getField('visible_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('editable_fields')->ui['form'] = [Control\Fields::class];
+        $this->getField('actions')->ui['form'] = [Control\Actions::class];
         $this->getField('conditions')->type = 'text';
 
         // cleanup data
-        $this->addHook('beforeSave', function ($m) {
-            if ($m['all_visible']) $m['visible_fields'] = null;
-            if ($m['all_editable']) $m['editable_fields'] = null;
-            if ($m['all_actions']) $m['actions'] = null;
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
+            if ($m->get('all_visible')) {
+                $m->setNull('visible_fields');
+            }
+            if ($m->get('all_editable')) {
+                $m->setNull('editable_fields');
+            }
+            if ($m->get('all_actions')) {
+                $m->setNull('actions');
+            }
         });
     }
 
@@ -73,7 +82,7 @@ trait SetupModel
         $this->getField('email')->required = true;
         $this->setUnique('email');
         $this->getField('password')->ui['visible'] = false;
-    
+
         // all AccessRules for all user roles
         // @TODO in future when there can be multiple, then merge them together
         $this->hasMany('AccessRules', [
@@ -85,7 +94,7 @@ trait SetupModel
         ]);
 
         // add some validations
-        $this->addHook('beforeSave', function ($m){
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
             // password should be set when trying to insert new record
             // but it can be empty if you update record (then it will not change password)
             if (!$m->loaded() && !$m->get('password')) {

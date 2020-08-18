@@ -1,15 +1,16 @@
 <?php
+
+declare(strict_types=1);
+
 namespace atk4\login\Model;
 
 use atk4\data\Model;
-use atk4\data\ValidationException;
-use atk4\login\Field\Password;
-
-# Features of User model
-use atk4\login\Feature\SetupModel;
 use atk4\login\Feature\PasswordManagement;
+// Features of User model
+use atk4\login\Feature\SetupModel;
 use atk4\login\Feature\Signup;
 use atk4\login\Feature\UniqueFieldValue;
+use atk4\login\Field\Password;
 
 /**
  * Example user data model.
@@ -24,7 +25,7 @@ class User extends Model
     public $table = 'login_user';
     public $caption = 'User';
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -33,7 +34,7 @@ class User extends Model
         $this->addField('password', [Password::class]);
 
         // currently user can have only one role. In future it should be n:n relation
-        $this->hasOne('role_id', [Role::class, 'our_field'=>'role_id', 'their_field'=>'id', 'caption'=>'Role'])->withTitle();
+        $this->hasOne('role_id', [Role::class, 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role']);
 
         // traits
         $this->setupUserModel();
