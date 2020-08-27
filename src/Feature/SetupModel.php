@@ -28,7 +28,7 @@ trait SetupModel
 
         /*
         $this->containsOne('config', new class extends Model {
-            public function init()
+            protected function init()
             {
                 parent::init();
 

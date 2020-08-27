@@ -48,7 +48,7 @@ class Password extends Field
     /**
      * Initialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         $this->_init();
         $this->setDefaultTypecastMethods();

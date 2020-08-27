@@ -128,7 +128,7 @@ class Auth
     /**
      * Initialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         $this->_init();
         $this->startSession();
