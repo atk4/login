@@ -172,17 +172,17 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
         $c->notice('Populating data...');
 
         $rule = new AccessRule($c->app->db);
-        $rule->each(function ($m) {$m->delete();});
+        $rule->each(function ($m) {$m->delete(); });
 
         $role = new Role($c->app->db);
-        $role->each(function ($m) {$m->delete();})
+        $role->each(function ($m) {$m->delete(); })
             ->import([
                 ['name' => 'User Role'],
                 ['name' => 'Admin Role'],
             ]);
 
         $user = new User($c->app->db);
-        $user->each(function ($m) {$m->delete();})
+        $user->each(function ($m) {$m->delete(); })
             ->import([
                 [
                     'name' => 'Standard User',
