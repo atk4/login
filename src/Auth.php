@@ -300,7 +300,10 @@ class Auth
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$user]);
-                $this->getSessionPersistence()->update($user, 1, $user->get());
+                // save user record in session persistence with id=1
+                $data = $user->get();
+                unset($data[$user->id_field]);
+                $this->getSessionPersistence()->update($user, 1, $data);
 
                 return true;
             }
