@@ -29,12 +29,10 @@ class Actions extends Generic
     protected function renderView(): void
     {
         $model = $this->getModel();
-        if (!$model) {
-            parent::renderView();
+        if ($model) {
+            $actions = array_keys($model->getUserActions());
+            $this->values = array_combine($actions, $actions);
         }
-
-        $actions = array_keys($model->getUserActions());
-        $this->values = array_combine($actions, $actions);
 
         parent::renderView();
     }

@@ -31,7 +31,8 @@ $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
     public function dbConnectFromWizard()
     {
         $this->readConfig('config.php', 'php');
-        $this->dbConnect($this->config['dsn']);
+        $this->db = Persistence::connect($this->config['dsn']);
+        $this->db->app = $this;
     }
 };
 $app->initLayout([\atk4\ui\Layout\Centered::class]);
@@ -170,16 +171,18 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
     Console::addTo($page)->set(function (Console $c) {
         $c->notice('Populating data...');
 
-        (new AccessRule($c->app->db))
-            ->each('delete');
-        (new Role($c->app->db))
-            ->each('delete')
+        $rule = new AccessRule($c->app->db);
+        $rule->each(function ($m) {$m->delete();});
+
+        $role = new Role($c->app->db);
+        $role->each(function ($m) {$m->delete();})
             ->import([
                 ['name' => 'User Role'],
                 ['name' => 'Admin Role'],
             ]);
-        (new User($c->app->db))
-            ->each('delete')
+
+        $user = new User($c->app->db);
+        $user->each(function ($m) {$m->delete();})
             ->import([
                 [
                     'name' => 'Standard User',
@@ -194,22 +197,22 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
                     'password' => 'admin',
                 ],
             ]);
-        (new AccessRule($c->app->db))
-            ->import([
-                [
-                    'role' => 'Admin Role',
-                    'model' => '\\atk4\login\\Model\\User',
-                    'all_visible' => true,
-                    'all_editable' => true,
-                ],
-                [
-                    'role' => 'User Role',
-                    'model' => '\\atk4\login\\Model\\Role',
-                    'all_visible' => true,
-                    'all_editable' => false,
-                    // 'editable_fields'=>['a','b']
-                ],
-            ]);
+
+        $rule->import([
+            [
+                'role' => 'Admin Role',
+                'model' => '\\atk4\login\\Model\\User',
+                'all_visible' => true,
+                'all_editable' => true,
+            ],
+            [
+                'role' => 'User Role',
+                'model' => '\\atk4\login\\Model\\Role',
+                'all_visible' => true,
+                'all_editable' => false,
+                // 'editable_fields'=>['a','b']
+            ],
+        ]);
 
         $c->notice('User created!');
         $c->debug('Username : user');

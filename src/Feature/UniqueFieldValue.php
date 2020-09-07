@@ -24,7 +24,7 @@ trait UniqueFieldValue
         $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
             if ($m->isDirty($field)) {
                 $a = new static($m->persistence);
-                $a->addCondition($m->id_field, '<>', $m->id);
+                $a->addCondition($m->id_field, '!=', $m->id);
                 $a->tryLoadBy($field, $m->get($field));
                 if ($a->loaded()) {
                     throw new ValidationException([$field => ucwords($field) . ' with such value already exists'], $this);
