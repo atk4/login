@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace atk4\login\demo;
 
+use atk4\data\Persistence;
+use atk4\login\Acl;
+use atk4\login\Auth;
+use atk4\ui\Layout;
+
 /**
  * Example implementation of your Authenticated application.
  */
@@ -29,18 +34,19 @@ class App extends \atk4\ui\App
         $this->readConfig($config_file, 'php');
 
         if ($interface === 'admin') {
-            $this->initLayout([\atk4\ui\Layout\Admin::class]);
+            $this->initLayout([Layout\Admin::class]);
             $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
             $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
             $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
         } elseif ($interface === 'centered') {
-            $this->initLayout([\atk4\ui\Layout\Centered::class]);
+            $this->initLayout([Layout\Centered::class]);
         } else {
             $this->initLayout([\atk4\login\Layout\Narrow::class]);
         }
 
         if (!$no_db_connect) {
-            $this->dbConnect($this->config['dsn']);
+            $this->db = Persistence::connect($this->config['dsn']);
+            $this->db->app = $this;
         }
 
         if (!$no_authenticate) {
@@ -50,11 +56,12 @@ class App extends \atk4\ui\App
 
     public function authenticate()
     {
-        $this->auth = $this->add([\atk4\login\Auth::class, 'check' => true]);
+        $this->auth = new Auth(['check' => true]);
+        $this->auth->app = $this;
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);
 
-        $this->auth->setACL(new \atk4\login\ACL(), $this->db);
+        $this->auth->setAcl(new Acl(), $this->db);
     }
 }

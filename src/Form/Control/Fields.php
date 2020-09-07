@@ -29,12 +29,10 @@ class Fields extends Generic
     protected function renderView(): void
     {
         $model = $this->getModel();
-        if (!$model) {
-            parent::renderView();
+        if ($model) {
+            $fields = array_keys($model->getFields());
+            $this->values = array_combine($fields, $fields);
         }
-
-        $fields = array_keys($model->getFields());
-        $this->values = array_combine($fields, $fields);
 
         parent::renderView();
     }
