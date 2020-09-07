@@ -141,7 +141,7 @@ class Auth
      */
     protected function getCacheKey()
     {
-        return $this->name ?? get_class($this);
+        return $this->name ?? static::class;
     }
 
     /**
@@ -181,7 +181,7 @@ class Auth
      */
     public function setModel($model, $fieldLogin = null, $fieldPassword = null)
     {
-            $this->user = $model;
+        $this->user = $model;
 
         if ($fieldLogin) {
             $this->fieldLogin = $fieldLogin;
