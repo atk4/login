@@ -11,7 +11,7 @@ use atk4\data\Persistence;
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
  */
-class ACL
+class Acl
 {
     /**
      * References an auth controller, so we can look up who is logged

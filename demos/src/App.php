@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace atk4\login\demo;
 
 use atk4\data\Persistence;
-use atk4\login\ACL;
+use atk4\login\Acl;
 use atk4\login\Auth;
 use atk4\ui\Layout;
 
@@ -62,6 +62,6 @@ class App extends \atk4\ui\App
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);
 
-        $this->auth->setACL(new ACL(), $this->db);
+        $this->auth->setAcl(new Acl(), $this->db);
     }
 }

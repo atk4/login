@@ -154,7 +154,11 @@ class Auth
         $this->startSession();
         $key = $this->getCacheKey();
 
-        return $_SESSION[$key] ?? $_SESSION[$key] = [];
+        if (!isset($_SESSION[$key])) {
+            $_SESSION[$key] = [];
+        }
+
+        return $_SESSION[$key];
     }
 
     /**
@@ -215,7 +219,7 @@ class Auth
      *
      * @return $this
      */
-    public function setACL(ACL $acl, Persistence $persistence = null)
+    public function setAcl(Acl $acl, Persistence $persistence = null)
     {
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
