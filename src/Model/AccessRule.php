@@ -17,7 +17,7 @@ class AccessRule extends Model
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
 
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 

@@ -79,7 +79,7 @@ class Auth
     public $fieldPassword = 'password';
 
     /**
-     * Permorm check automatically and display a Login form when 'setModel' takes place.
+     * Perform check automatically and display a Login form when 'setModel' takes place.
      *
      * This is a transparent way to add authentication to an existing application.
      *
@@ -128,30 +128,50 @@ class Auth
     /**
      * Initialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         $this->_init();
         $this->startSession();
     }
 
     /**
-     * Return session persistence object.
+     * Return cache key.
      *
-     * @return Persistence\Array_
+     * @return string
      */
-    public function getSessionPersistence()
+    protected function getCacheKey()
+    {
+        return $this->name ?? static::class;
+    }
+
+    /**
+     * Get data from session cache.
+     *
+     * @return array
+     */
+    protected function getCachedData()
     {
         $this->startSession();
-        $key = $this->name;
+        $key = $this->getCacheKey();
 
         if (!isset($_SESSION[$key])) {
             $_SESSION[$key] = [];
         }
 
-        $p = new Persistence\Array_();
-        \Closure::bind(function () use ($p, $key) {$p->data = &$_SESSION[$key]; }, null, Persistence\Array_::class)();
+        return $_SESSION[$key];
+    }
 
-        return $p;
+    /**
+     * Store data in session cache.
+     *
+     * @return $this
+     */
+    protected function setCachedData(array $data)
+    {
+        $this->startSession();
+        $_SESSION[$this->getCacheKey()] = $data;
+
+        return $this;
     }
 
     /**
@@ -175,12 +195,12 @@ class Auth
             $this->fieldPassword = $fieldPassword;
         }
 
-        $this->user->data = $this->getSessionPersistence()->tryLoad($this->user, 1) ?: [];
-        $this->user->id = $this->user->data ? $this->user->data[$this->user->id_field] : null;
+        $this->user->data = $this->getCachedData();
+        $this->user->id = $this->user->data[$this->user->id_field] ?? null;
 
-        // update session persistence after changes saved in user model
+        // update cache after changes saved in user model
         $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
-            $this->getSessionPersistence()->update($m, 1, $m->get());
+            $this->setCachedData($m->get());
         });
 
         // validate user
@@ -199,7 +219,7 @@ class Auth
      *
      * @return $this
      */
-    public function setACL(ACL $acl, Persistence $persistence = null)
+    public function setAcl(Acl $acl, Persistence $persistence = null)
     {
         $persistence = $persistence ?? $this->user->persistence;
         $acl->auth = $this;
@@ -215,7 +235,7 @@ class Auth
      */
     public function logout()
     {
-        $this->getSessionPersistence()->delete($this->user, 1);
+        $this->setCachedData([]);
     }
 
     /**
@@ -284,13 +304,8 @@ class Auth
 
     /**
      * Try to log in user.
-     *
-     * @param string $email
-     * @param string $password
-     *
-     * @return bool
      */
-    public function tryLogin($email, $password)
+    public function tryLogin(string $email, string $password): bool
     {
         $user = clone $this->user;
         $user->unload();
@@ -300,7 +315,8 @@ class Auth
             // verify if the password matches
             if ($user->compare($this->fieldPassword, $password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$user]);
-                $this->getSessionPersistence()->update($user, 1, $user->get());
+                // save user record in session persistence
+                $this->setCachedData($user->get());
 
                 return true;
             }

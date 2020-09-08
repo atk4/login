@@ -28,7 +28,7 @@ class LoginForm extends Form
     /**
      * Intialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 

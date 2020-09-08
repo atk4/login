@@ -25,7 +25,7 @@ class User extends Model
     public $table = 'login_user';
     public $caption = 'User';
 
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 

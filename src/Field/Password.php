@@ -48,7 +48,7 @@ class Password extends Field
     /**
      * Initialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         $this->_init();
         $this->setDefaultTypecastMethods();
@@ -71,11 +71,11 @@ class Password extends Field
     {
         $this->typecast = [
             // callback on saving
-            function (string $password, Field $f, Persistence $p) {
+            function (?string $password, Field $f, Persistence $p) {
                 return $this->encrypt($password, $f, $p);
             },
             // callback on loading
-            function (string $password, Field $f, Persistence $p) {
+            function (?string $password, Field $f, Persistence $p) {
                 return $this->decrypt($password, $f, $p);
             },
         ];
@@ -107,7 +107,7 @@ class Password extends Field
      *
      * @return string|null encrypted password
      */
-    public function encrypt(string $password, Field $f, Persistence $p)
+    public function encrypt(?string $password, Field $f, Persistence $p)
     {
         if ($password === null) {
             return null;
@@ -131,7 +131,7 @@ class Password extends Field
      *
      * @return string|null encrypted password
      */
-    public function decrypt(string $password, Field $f, Persistence $p)
+    public function decrypt(?string $password, Field $f, Persistence $p)
     {
         $this->password_hash = $password;
         if ($p instanceof UI) {
