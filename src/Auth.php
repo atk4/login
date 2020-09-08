@@ -196,7 +196,7 @@ class Auth
         }
 
         $this->user->data = $this->getCachedData();
-        $this->user->id = $this->user->data[$this->user->id_field] ?? null;
+        $this->user->setId($this->user->data[$this->user->id_field] ?? null);
 
         // update cache after changes saved in user model
         $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
@@ -307,8 +307,7 @@ class Auth
      */
     public function tryLogin(string $email, string $password): bool
     {
-        $user = clone $this->user;
-        $user->unload();
+        $user = $this->user->newInstance();
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
