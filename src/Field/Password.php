@@ -145,7 +145,6 @@ class Password extends Field
      * Verify if the password user have supplied you with is correct.
      *
      * @param string $password plain text password
-     * @param string $value2 unused argument
      *
      * @return bool true if passwords match
      */
