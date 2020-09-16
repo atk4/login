@@ -145,10 +145,11 @@ class Password extends Field
      * Verify if the password user have supplied you with is correct.
      *
      * @param string $password plain text password
+     * @param string $value2 unused argument
      *
      * @return bool true if passwords match
      */
-    public function compare($password): bool
+    public function compare($password, $value2 = null): bool
     {
         if ($this->password_hash === null) {
             // perhaps we currently hold a password and it's not saved yet.
