@@ -51,8 +51,8 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         // should have reloaded also
         $this->assertNull($m->get('p'));
 
-        $this->assertFalse($m->compare('p', 'badpass'));
-        $this->assertTrue($m->compare('p', 'mypass'));
+        $this->assertFalse($m->getField('p')->verify('badpass'));
+        $this->assertTrue($m->getField('p')->verify('mypass'));
 
         // password shouldn't be dirty here
         $this->assertFalse($m->isDirty('p'));
@@ -60,14 +60,14 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m->set('p', 'newpass');
 
         $this->assertTrue($m->isDirty('p'));
-        $this->assertFalse($m->compare('p', 'mypass'));
-        $this->assertTrue($m->compare('p', 'newpass'));
+        $this->assertFalse($m->getField('p')->verify('mypass'));
+        $this->assertTrue($m->getField('p')->verify('newpass'));
 
         $m->save();
 
         $this->assertFalse($m->isDirty('p'));
-        $this->assertFalse($m->compare('p', 'mypass'));
-        $this->assertTrue($m->compare('p', 'newpass'));
+        $this->assertFalse($m->getField('p')->verify('mypass'));
+        $this->assertTrue($m->getField('p')->verify('newpass'));
 
         // will have new hash
         $this->assertNotSame($enc, $this->getProtected($p, 'data')['data'][1]['p']);
@@ -81,7 +81,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
-        $m->compare('p', 'mypass'); // tries to compare empty password field value with value 'mypass'
+        $m->getField('p')->verify('mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
     public function testPasswordCompareException2()
@@ -93,6 +93,6 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
-        $m->compare('p', 'mypass');
+        $m->getField('p')->verify('mypass');
     }
 }

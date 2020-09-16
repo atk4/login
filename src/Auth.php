@@ -312,7 +312,7 @@ class Auth
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
             // verify if the password matches
-            if ($user->compare($this->fieldPassword, $password)) {
+            if ($user->getField($this->fieldPassword)->verify($password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$user]);
                 // save user record in session persistence
                 $this->setCachedData($user->get());

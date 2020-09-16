@@ -149,7 +149,7 @@ class Password extends Field
      *
      * @return bool true if passwords match
      */
-    public function compare($password, $value2 = null): bool
+    public function verify($password): bool
     {
         if ($this->password_hash === null) {
             // perhaps we currently hold a password and it's not saved yet.
@@ -164,11 +164,9 @@ class Password extends Field
         }
 
         // verify password
-        if (is_callable($this->verifyMethod)) {
-            $v = call_user_func_array($this->verifyMethod, [$password, $this->password_hash]);
-        } else {
-            $v = password_verify($password, $this->password_hash);
-        }
+        $v = is_callable($this->verifyMethod)
+                ? call_user_func_array($this->verifyMethod, [$password, $this->password_hash])
+                : password_verify($password, $this->password_hash);
 
         return $v;
     }
