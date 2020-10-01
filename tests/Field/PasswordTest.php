@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\data\tests;
+namespace atk4\login\tests\Field;
 
 use atk4\data\Model;
 use atk4\data\Persistence;
@@ -94,5 +94,14 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
 
         $m->addField('p', [Password::class]);
         $m->getField('p')->verify('mypass');
+    }
+
+    public function testSuggestPassword()
+    {
+        $field = new Password();
+        self::assertGreaterThanOrEqual(
+            6,
+            strlen($field->suggestPassword(3))
+        );
     }
 }
