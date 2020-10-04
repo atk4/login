@@ -56,7 +56,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "atk4\\audit\\tests\\": "tests/"
+      "atk4\\login\\tests\\": "tests/"
     }
   }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace atk4\login\Feature;
 
 use atk4\data\Model\UserAction;
+use atk4\login\Field\Password;
 
 /**
  * Enables your User model to perform various actions with the passwords.
@@ -31,31 +32,7 @@ trait PasswordManagement
      */
     public function generate_random_password($length = 4, $words = 1)
     {
-        $p5 = ['', 'k', 's', 't', 'n', 'h', 'm', 'r', 'w', 'g', 'z', 'd', 'b', 'p'];
-        $p3 = ['y', 'ky', 'sh', 'ch', 'ny', 'my', 'ry', 'gy', 'j', 'py', 'by'];
-        $a5 = ['a', 'i', 'u', 'e', 'o'];
-        $a3 = ['a', 'u', 'o'];
-        $syl = ['n'];
-
-        foreach ($p5 as $p) {
-            foreach ($a5 as $a) {
-                $syl[] = $p . $a;
-            }
-        }
-
-        foreach ($p3 as $p) {
-            foreach ($a3 as $a) {
-                $syl[] = $p . $a;
-            }
-        }
-
-        $pass = '';
-
-        for ($i = 0; $i < $length; ++$i) {
-            $pass .= $syl[array_rand($syl)];
-        }
-
-        return $pass;
+        return (new Password())->suggestPassword($length, $words);
     }
 
     /**
