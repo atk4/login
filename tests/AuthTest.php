@@ -9,24 +9,23 @@ use atk4\login\Auth;
 
 class AuthTest extends TestCase
 {
-
     public function testGetCacheKey()
     {
         $auth = new Auth();
-        self::assertSame(
+        $this->assertSame(
             Auth::class,
             $this->callProtected($auth, 'getCacheKey')
         );
 
         $auth->name = 'SOMENAME';
 
-        self::assertSame(
+        $this->assertSame(
             'SOMENAME',
             $this->callProtected($auth, 'getCacheKey')
         );
     }
 
-    /**
+    /*
      * currently generates error:
      * session_start(): Cannot start session when headers already sent
      */
@@ -34,12 +33,10 @@ class AuthTest extends TestCase
     {
         $auth = new Auth();
         $res = $this->callProtected($auth, 'getCachedData');
-        self::assertSame(
+        $this->assertSame(
             [],
             $res
         );
-        self::assertTrue(isset($_SESSION[Auth::class]));
+        $this->assertTrue(isset($_SESSION[Auth::class]));
     }*/
-
-
 }
