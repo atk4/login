@@ -99,9 +99,8 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
     public function testSuggestPassword()
     {
         $field = new Password();
-        $this->assertGreaterThanOrEqual(
-            6,
-            strlen($field->suggestPassword(3))
-        );
+        $pwd = $field->suggestPassword(6);
+        $this->assertIsString($pwd);
+        $this->assertGreaterThanOrEqual(6, strlen($pwd));
     }
 }
