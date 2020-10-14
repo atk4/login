@@ -47,15 +47,15 @@ trait PasswordManagement
     public function reset_password($length = null, $words = null)
     {
         $password = $this->generate_random_password(
-            $length ?: $this->app->addonConfig['atk4/login']['defaultPasswordLength'] ?? 4,
+            $length ?: $this->getApp()->addonConfig['atk4/login']['defaultPasswordLength'] ?? 4,
             $words
         );
 
         $this->set('password', $password);
         $this->save();
 
-        if ($this->hasField('email') && isset($this->app->outbox)) {
-            $this->app->outbox->sendEmail($this->get('email'), 'password_reset', ['new_password' => $password]);
+        if ($this->hasField('email') && isset($this->getApp()->outbox)) {
+            $this->getApp()->outbox->sendEmail($this->get('email'), 'password_reset', ['new_password' => $password]);
 
             return 'Password was emailed to ' . $this->get('email');
         }

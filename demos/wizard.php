@@ -32,7 +32,7 @@ $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
     {
         $this->readConfig('config.php', 'php');
         $this->db = Persistence::connect($this->config['dsn']);
-        $this->db->app = $this;
+        //$this->db->setApp($this);
     }
 };
 $app->initLayout([\atk4\ui\Layout\Centered::class]);
@@ -117,14 +117,14 @@ EOD;
     });
 
     $loader->set(function (Loader $loader) {
-        $dsn = $loader->app->stickyGet('type') . ':';
-        $dsn .= $loader->app->stickyGet('user');
+        $dsn = $loader->getApp()->stickyGet('type') . ':';
+        $dsn .= $loader->getApp()->stickyGet('user');
         $dsn .= ':';
-        $dsn .= $loader->app->stickyGet('pass');
+        $dsn .= $loader->getApp()->stickyGet('pass');
         $dsn .= '@';
-        $dsn .= $loader->app->stickyGet('host') . ':' . $loader->app->stickyGet('port');
+        $dsn .= $loader->getApp()->stickyGet('host') . ':' . $loader->getApp()->stickyGet('port');
         $dsn .= '/';
-        $dsn .= $loader->app->stickyGet('name');
+        $dsn .= $loader->getApp()->stickyGet('name');
 
         View::addTo($loader)->set('DSN : ' . $dsn);
     });
@@ -138,13 +138,13 @@ $wizard->addStep('Quickly checking if database is OK', function (View $page) {
         ->addStyle('display', 'none')
         ->link(['index']);
     */
-    $page->app->dbConnectFromWizard();
+    $page->getApp()->dbConnectFromWizard();
 
     //@todo migrateModels Is broken and need a fix
     //$console->migrateModels([User::class, Role::class, AccessRule::class]);
 
     //@todo imported code from migratedModels function - START
-    $console->app->db = $page->app->db;
+    $console->getApp()->db = $page->getApp()->db;
 
     $console->set(function ($console) {
         $console->notice('Preparing to migrate models');
@@ -152,7 +152,7 @@ $wizard->addStep('Quickly checking if database is OK', function (View $page) {
         $models = [User::class, Role::class, AccessRule::class];
 
         foreach ($models as $model) {
-            $model = new $model($console->app->db);
+            $model = new $model($console->getApp()->db);
             $m = Migration::of($model);
             $result = $m->run();
 
@@ -166,22 +166,22 @@ $wizard->addStep('Quickly checking if database is OK', function (View $page) {
 });
 
 $wizard->addStep('Populate Sample Data', function (View $page) {
-    $page->app->dbConnectFromWizard();
+    $page->getApp()->dbConnectFromWizard();
 
     Console::addTo($page)->set(function (Console $c) {
         $c->notice('Populating data...');
 
-        $rule = new AccessRule($c->app->db);
+        $rule = new AccessRule($c->getApp()->db);
         $rule->each(function ($m) {$m->delete(); });
 
-        $role = new Role($c->app->db);
+        $role = new Role($c->getApp()->db);
         $role->each(function ($m) {$m->delete(); })
             ->import([
                 ['name' => 'User Role'],
                 ['name' => 'Admin Role'],
             ]);
 
-        $user = new User($c->app->db);
+        $user = new User($c->getApp()->db);
         $user->each(function ($m) {$m->delete(); })
             ->import([
                 [
@@ -227,5 +227,5 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
 });
 
 $wizard->addFinish(function ($p) {
-    $p->app->redirect(['index']);
+    $p->getApp()->redirect(['index']);
 });

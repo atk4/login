@@ -64,7 +64,7 @@ class RoleAdmin extends View
         });
 
         //@todo remove this line. It's just a workaround while CRUD edit action button will be fixed in modal windows
-        $this->crud->owner->add([Crud::class])->setModel($this->crud->model->ref('AccessRules'));
+        $this->crud->getOwner()->add([Crud::class])->setModel($this->crud->model->ref('AccessRules'));
 
         return parent::setModel($role);
     }

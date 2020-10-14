@@ -65,7 +65,7 @@ class UserAdmin extends View
                 $this->model->save();
 
                 return [
-                    $v->owner->hide(),
+                    $v->getOwner()->hide(),
                     new jsToast([
                         'message' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
                         'class' => 'success',

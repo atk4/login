@@ -46,7 +46,7 @@ class App extends \atk4\ui\App
 
         if (!$no_db_connect) {
             $this->db = Persistence::connect($this->config['dsn']);
-            $this->db->app = $this;
+            //$this->db->setApp($this);
         }
 
         if (!$no_authenticate) {
@@ -57,7 +57,7 @@ class App extends \atk4\ui\App
     public function authenticate()
     {
         $this->auth = new Auth(['check' => true]);
-        $this->auth->app = $this;
+        $this->auth->setApp($this);
 
         $m = new \atk4\login\Model\User($this->db);
         $this->auth->setModel($m);

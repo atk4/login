@@ -257,11 +257,11 @@ class Auth
     public function addUserMenu()
     {
         // add admin menu
-        if ($this->hasUserMenu && $this->app->layout instanceof Admin) {
-            $m = $this->app->layout->menuRight->addMenu($this->user->getTitle());
+        if ($this->hasUserMenu && $this->getApp()->layout instanceof Admin) {
+            $m = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $userPage = $this->app->add($this->preferencePage);
+                $userPage = $this->getApp()->add($this->preferencePage);
                 $this->setPreferencePage($userPage);
 
                 $m->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
@@ -272,7 +272,7 @@ class Auth
 
         if (isset($_GET['logout'])) {
             $this->logout();
-            $this->app->redirect([$this->pageExit]);
+            $this->getApp()->redirect([$this->pageExit]);
         }
     }
 
@@ -287,19 +287,19 @@ class Auth
 
     public function displayLoginForm()
     {
-        $this->app->catch_runaway_callbacks = false;
-        $this->app->html = null;
-        $this->app->initLayout(new Narrow());
-        $this->app->title = $this->app->title . ' - Log-in Required';
-        $this->app->add([
+        $this->getApp()->catch_runaway_callbacks = false;
+        $this->getApp()->html = null;
+        $this->getApp()->initLayout(new Narrow());
+        $this->getApp()->title = $this->getApp()->title . ' - Log-in Required';
+        $this->getApp()->add([
             $this->form,
             'auth' => $this,
             'linkSuccess' => [$this->pageDashboard],
             'linkForgot' => false,
         ]);
-        $this->app->layout->template->set('title', $this->app->title);
-        $this->app->run();
-        $this->app->callExit();
+        $this->getApp()->layout->template->set('title', $this->getApp()->title);
+        $this->getApp()->run();
+        $this->getApp()->callExit();
     }
 
     /**
