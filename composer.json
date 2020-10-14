@@ -29,22 +29,22 @@
   },
   "require": {
     "php": ">=7.3.0",
-    "atk4/ui": "dev-develop",
-    "atk4/data": "dev-develop"
+    "atk4/ui": "~2.3.0",
+    "atk4/data": "~2.3.0"
   },
   "require-release": {
     "php": ">=7.3.0",
-    "atk4/ui": "^2.1",
-    "atk4/data": "^2.1"
+    "atk4/ui": "~2.3.0",
+    "atk4/data": "~2.3.0"
   },
   "require-dev": {
-    "atk4/schema": "dev-develop",
+    "atk4/schema": "~2.3.0",
     "friendsofphp/php-cs-fixer": "^2.16",
     "phpunit/phpunit": "*",
     "symfony/contracts": ">=1.1"
   },
   "require-dev-release": {
-    "atk4/schema": "^2.1",
+    "atk4/schema": "~2.3.0",
     "friendsofphp/php-cs-fixer": "^2.16",
     "phpunit/phpunit": "*",
     "symfony/contracts": ">=1.1"
