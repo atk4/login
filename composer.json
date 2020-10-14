@@ -29,11 +29,11 @@
   },
   "require": {
     "php": ">=7.3.0",
-    "atk4/ui": "^2.3",
-    "atk4/data": "^2.3"
+    "atk4/ui": "~2.3.0",
+    "atk4/data": "~2.3.0"
   },
   "require-dev": {
-    "atk4/schema": "^2.3",
+    "atk4/schema": "~2.3.0",
     "friendsofphp/php-cs-fixer": "^2.16",
     "phpunit/phpunit": "*",
     "symfony/contracts": ">=1.1"
