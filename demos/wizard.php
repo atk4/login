@@ -21,8 +21,7 @@ use atk4\ui\Wizard;
 use Throwable;
 
 include '../vendor/autoload.php';
-
-//include 'db.php';
+include 'db.php';
 
 // App without authentication to be able to freely import data
 $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
@@ -32,7 +31,6 @@ $app = new class(['title' => 'Agile Toolkit - Wizard setup']) extends App {
     {
         $this->readConfig('config.php', 'php');
         $this->db = Persistence::connect($this->config['dsn']);
-        //$this->db->setApp($this);
     }
 };
 $app->initLayout([\atk4\ui\Layout\Centered::class]);
@@ -131,38 +129,11 @@ EOD;
 });
 
 $wizard->addStep('Quickly checking if database is OK', function (View $page) {
-    $console = Console::addTo($page);
-
-    /*
-    $button = $page->add([Button::class, '<< Back', 'huge wide blue'])
-        ->addStyle('display', 'none')
-        ->link(['index']);
-    */
     $page->getApp()->dbConnectFromWizard();
 
-    //@todo migrateModels Is broken and need a fix
-    //$console->migrateModels([User::class, Role::class, AccessRule::class]);
-
-    //@todo imported code from migratedModels function - START
-    $console->getApp()->db = $page->getApp()->db;
-
-    $console->set(function ($console) {
-        $console->notice('Preparing to migrate models');
-
-        $models = [User::class, Role::class, AccessRule::class];
-
-        foreach ($models as $model) {
-            $model = new $model($console->getApp()->db);
-            $m = Migration::of($model);
-            $result = $m->run();
-
-            $console->debug('  ' . get_class($m) . ': ' . $model->table . ' - ' . $result);
-        }
-
-        $console->notice('Done with migration');
-    });
-
-    //@todo imported code from migratedModels function - END
+    // do migration
+    $console = \MigratorConsole::addTo($page);
+    $console->migrateModels([User::class, Role::class, AccessRule::class]);
 });
 
 $wizard->addStep('Populate Sample Data', function (View $page) {
@@ -210,7 +181,6 @@ $wizard->addStep('Populate Sample Data', function (View $page) {
                 'model' => '\\atk4\login\\Model\\Role',
                 'all_visible' => true,
                 'all_editable' => false,
-                // 'editable_fields'=>['a','b']
             ],
         ]);
 
