@@ -5,28 +5,28 @@ Feature: Login basic
 
 Scenario:
  Given I am on "login.php"
- Then I see button "Login" 
+ Then I see button "Sign in" 
  And I dont see "You are authenticated"
 
 Scenario:
  Given I am on "login.php"
- When I type "demo" in field "login"
- And I type "demo" in field "password"
- And I click button "Login"
+ When I type "user" in field "login"
+ And I type "user" in field "password"
+ And I click button "Sign in"
  Then I see text "You are authenticated" 
 
 Scenario:
  Given I am on "login.php"
- When I type "demo" in field "login"
+ When I type "user" in field "login"
  And I type "wrong" in field "password"
- And I click button "Login"
+ And I click button "Sign in"
  Then I dont see text "You are authenticated" 
  And I see text "incorrect"
 
 Scenario:
  Given I am on "login.php"
  When I type "" in field "login"
- And I type "demo" in field "password"
- And I click button "Login"
+ And I type "user" in field "password"
+ And I click button "Sign in"
  Then I dont see text "You are authenticated" 
  And I see text "incorrect"
