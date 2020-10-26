@@ -96,10 +96,10 @@ $wizard->addStep('Setup DB Credentials', function (View $page) {
             $dsn .= $f->model->get('name');
 
             Persistence::connect($dsn);
-            $string_config = "<?php\n\n".
-                "declare(strict_types=1);\n\n".
-                "return [\n".
-                "    'dsn'=>'{$dsn}'\n".
+            $string_config = "<?php\n\n" .
+                "declare(strict_types=1);\n\n" .
+                "return [\n" .
+                "    'dsn'=>'{$dsn}'\n" .
                 "];\n";
             file_put_contents('config.php', $string_config);
         } catch (Throwable $e) {

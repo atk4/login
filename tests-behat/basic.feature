@@ -6,27 +6,27 @@ Feature: Login basic
 Scenario:
  Given I am on "login.php"
  Then I see button "Sign in" 
- And I dont see "You are authenticated"
+ And I should not see "You are authenticated"
 
 Scenario:
  Given I am on "login.php"
- When I type "admin" in field "login"
- And I type "admin" in field "password"
+ When I fill in "login" with "admin"
+ And I fill in "password" with "admin"
  And I press button "Sign in"
- Then I see text "You are authenticated" 
+ Then I should see "You are authenticated" 
 
 Scenario:
  Given I am on "login.php"
- When I type "admin" in field "login"
- And I type "wrong" in field "password"
+ When I fill in "login" with "admin"
+ And I fill in "password" with "wrong"
  And I press button "Sign in"
- Then I dont see text "You are authenticated" 
- And I see text "incorrect"
+ Then I should see "incorrect"
+ And I should not see "You are authenticated" 
 
 Scenario:
  Given I am on "login.php"
- When I type "" in field "login"
- And I type "admin" in field "password"
+ When I fill in "login" with ""
+ And I fill in "password" with "admin"
  And I press button "Sign in"
- Then I dont see text "You are authenticated" 
- And I see text "incorrect"
+ Then I should see "incorrect"
+ And I should not see "You are authenticated" 
