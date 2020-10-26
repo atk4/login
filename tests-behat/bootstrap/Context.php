@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace atk4\login\behat;
 
 use Behat\Behat\Context\Context as BehatContext;
-use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Behat\Hook\Scope\BeforeStepScope;
+//use Behat\Behat\Hook\Scope\AfterStepScope;
+//use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 
 class Context extends RawMinkContext implements BehatContext
