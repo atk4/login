@@ -10,7 +10,7 @@ Then add `Auth` into your app and set appropriate user controller:
 
 ```php
 $app = new \atk4\ui\App();
-$app->initLayout(\atk4\ui\Layout\Admin::class);
+$app->initLayout([\atk4\ui\Layout\Admin::class]);
 $app->db = new \atk4\data\Persistence($dsn);
 
 // ADD THIS CODE:
@@ -18,7 +18,7 @@ $app->add(new \atk4\login\Auth())
     ->setModel(new User($app->db));
 
 // The rest of YOUR UI code will now be protected
-$app->add(\atk4\ui\CRUD:class)->setModel(new Client($app->db));
+$app->add([\atk4\ui\CRUD:class])->setModel(new Client($app->db));
 ```
 
 (If you do not have User model yet, you can extend or use \atk4\login\Model\User).
@@ -88,7 +88,7 @@ if (!$app->auth->user->loaded()) {
 #### Adding sign-up form
 
 ``` php
-$app->add(\atk4\login\RegisterForm::class)
+$app->add([\atk4\login\RegisterForm::class])
     ->setModel(new \atk4\login\Model\User($app->db));
 ```
 
@@ -143,14 +143,14 @@ You may also access user data like this: `$app->auth->model['name']`; Things to 
 This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
 
 ``` php
-$app->add(Form::class)->setModel($app->auth->user);
+$app->add([Form::class])->setModel($app->auth->user);
 ```
 
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-$app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add(Modal::class)->set(function($p) {
-    $p->add(Form::class)->setModel($p->app->auth->user);
+$app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add([Modal::class])->set(function($p) {
+    $p->add([Form::class])->setModel($p->app->auth->user);
 })->show());
 ```
 
@@ -165,7 +165,7 @@ Things to try:
 Field 'password' is using a custom field class `Password`.  It appears as a regular password, but will be hashed before storing into the database. You can use this field in any model like this:
 
 ``` php
-$model->addField('mypass', [new \atk4\login\Field\Password]);
+$model->addField('mypass', [\atk4\login\Field\Password::class]);
 ```
 
 Also the password will not be stored in session cache and will not be accessible directly. 
