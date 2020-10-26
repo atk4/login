@@ -125,6 +125,7 @@ jobs:
         run: |
           mkdir -p build/logs
           \cp -fR demos/config-example.php demos/config.php
+          php demos/_demo-data/create-db.php
 
       - name: "Run tests: Behat"
         run: |
