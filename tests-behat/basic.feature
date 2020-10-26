@@ -30,4 +30,3 @@ Scenario:
  And I click button "Login"
  Then I dont see text "You are authenticated" 
  And I see text "incorrect"
-

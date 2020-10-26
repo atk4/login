@@ -2,28 +2,19 @@
 
 declare(strict_types=1);
 
-use Behat\Behat\Context\Context;
+namespace atk4\login\behat;
+
+use Behat\Behat\Context\Context as BehatContext;
+use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 
-/**
- * Defines application features from the specific context.
- */
-class FeatureContext extends RawMinkContext implements Context
+class Context extends RawMinkContext implements BehatContext
 {
-    /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
-     */
-    public function __construct()
-    {
-    }
+    /** @var null Temporary store button id when press. Used in js callback test. */
+    protected $buttonId;
 
-    protected $button;
-
-    public function getSession($name = null)
+    public function getSession($name = null): \Behat\Mink\Session
     {
         return $this->getMink()->getSession($name);
     }
@@ -34,7 +25,10 @@ class FeatureContext extends RawMinkContext implements Context
     public function iPressButton($arg1)
     {
         $button = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
-        $this->button_id = $button->getAttribute('id');
+        // store button id.
+        $this->buttonId = $button->getAttribute('id');
+        // fix "is out of bounds of viewport width and height" for Firefox
+        $button->focus();
         $button->click();
     }
 
@@ -74,30 +68,30 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function labelChangesToANumber()
     {
-        $element = $this->getSession()->getPage()->findById($this->button_id);
-        if (!is_numeric($element->getHtml())) {
-            throw new \Exception('Label must be numeric');
+        $this->getSession()->wait(5000, '!$("#' . $this->buttonId . '").hasClass("loading")');
+        $element = $this->getSession()->getPage()->findById($this->buttonId);
+        $value = trim($element->getHtml());
+        if (!is_numeric($value)) {
+            throw new \Exception('Label must be numeric on button: ' . $this->buttonId . ' : ' . $value);
         }
     }
 
     /**
      * @Then Modal opens with text :arg1
+     *
+     * Check if text is present in modal or dynamic modal.
      */
     public function modalOpensWithText($arg1)
     {
-        $modal = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
-        if ($modal->getAttribute('class') !== 'ui modal scrolling') {
-            throw new \Exception('No such modal');
+        // get modal
+        $modal = $this->getSession()->getPage()->find('css', '.modal.transition.visible.active.front');
+        if ($modal === null) {
+            throw new \Exception('No modal found');
         }
-    }
-
-    /**
-     * @Then Progress bar should be go all the way
-     */
-    public function progressBarShouldBeGoAllTheWay()
-    {
-        $element = $this->getSession()->getPage()->find('css', '.bar');
-        //TODO: zombiejs does not support sse :(
-        //var_dump($element->getOuterHtml());
+        // find text in modal
+        $text = $modal->find('xpath', '//div[text()="' . $arg1 . '"]');
+        if (!$text || $text->getText() !== $arg1) {
+            throw new \Exception('No such text in modal');
+        }
     }
 }

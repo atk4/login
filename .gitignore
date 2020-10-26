@@ -13,7 +13,10 @@ cache
 *.cache
 *.cache.*
 
+/demos/config.php
+
 /phpunit.xml
 /phpunit-*.xml
+/behat.yml
 
-demos/config.php
+*.bak
