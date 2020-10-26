@@ -10,14 +10,14 @@ Scenario:
 
 Scenario:
  Given I am on "login.php"
- When I fill in "login" with "admin"
+ When I fill in "email" with "admin"
  And I fill in "password" with "admin"
  And I press button "Sign in"
  Then I should see "You are authenticated" 
 
 Scenario:
  Given I am on "login.php"
- When I fill in "login" with "admin"
+ When I fill in "email" with "admin"
  And I fill in "password" with "wrong"
  And I press button "Sign in"
  Then I should see "incorrect"
@@ -25,7 +25,7 @@ Scenario:
 
 Scenario:
  Given I am on "login.php"
- When I fill in "login" with ""
+ When I fill in "email" with ""
  And I fill in "password" with "admin"
  And I press button "Sign in"
  Then I should see "incorrect"

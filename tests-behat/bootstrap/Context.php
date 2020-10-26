@@ -35,7 +35,7 @@ class Context extends RawMinkContext implements BehatContext
     /**
      * @Then I see button :arg1
      */
-    public function iSee($arg1)
+    public function iSeeButton($arg1)
     {
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($element->getAttribute('style')) {
@@ -55,24 +55,11 @@ class Context extends RawMinkContext implements BehatContext
     /**
      * @Then I don't see button :arg1
      */
-    public function iDontSee($arg1)
+    public function iDontSeeButton($arg1)
     {
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if (strpos('display: none', $element->getAttribute('style')) !== false) {
             throw new \Exception("Element with text \"{$arg1}\" must be invisible");
-        }
-    }
-
-    /**
-     * @Then Label changes to a number
-     */
-    public function labelChangesToANumber()
-    {
-        $this->getSession()->wait(5000, '!$("#' . $this->buttonId . '").hasClass("loading")');
-        $element = $this->getSession()->getPage()->findById($this->buttonId);
-        $value = trim($element->getHtml());
-        if (!is_numeric($value)) {
-            throw new \Exception('Label must be numeric on button: ' . $this->buttonId . ' : ' . $value);
         }
     }
 
