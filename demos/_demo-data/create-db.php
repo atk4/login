@@ -10,5 +10,5 @@ include '../vendor/autoload.php';
 $config = require 'config.php';
 $data = file_get_contents('dump.sql');
 
-$c = new \atk4\dsql\Connection::connect($config['dns']);
+$c = \atk4\dsql\Connection::connect($config['dns']);
 $c->expr($data)->execute();
