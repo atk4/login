@@ -11,7 +11,7 @@ Then add `Auth` into your app and set appropriate user controller:
 ```php
 $app = new \atk4\ui\App();
 $app->initLayout(\atk4\ui\Layout\Admin::class);
-$app->dbConnect($dsn);
+$app->db = new \atk4\data\Persistence($dsn);
 
 // ADD THIS CODE:
 $app->add(new \atk4\login\Auth())
