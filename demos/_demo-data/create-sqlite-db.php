@@ -37,7 +37,7 @@ foreach (preg_split('~;\s*(\n\s*|$)~', file_get_contents($srcFile)) as $query) {
         $createMatches[3] = preg_replace('~(?<!\w)ENGINE=InnoDB(?!\w)~is', '', $createMatches[3]);
         $query = $createMatches[1] . "\n    " . implode(",\n    ", $createRows) . "\n" . $createMatches[3];
 
-         //echo $query . "\n\n";
+        //echo $query . "\n\n";
     }
 
     $query = preg_replace('~\\\\\'~is', '\'\'', $query);
