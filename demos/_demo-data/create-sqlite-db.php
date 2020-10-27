@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\demo;
 
-require '../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 $srcFile = __DIR__ . '/dump.sql';
 $destFile = __DIR__ . '/db.sqlite';
