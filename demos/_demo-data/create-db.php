@@ -8,7 +8,7 @@ require '../../vendor/autoload.php';
 
 // CREATE TABLES AND POPULATE DATA ------------------------
 $config = require '../config.php';
-$data = str_replace(["\n","\r"],'',file_get_contents('dump.sql'));
+$data = str_replace(["\n","\r"],'',file_get_contents('sqlite-dump.sql'));
 //var_dump($config);
 //var_dump($data);
 
