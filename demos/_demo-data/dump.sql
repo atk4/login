@@ -9,7 +9,7 @@ CREATE TABLE `login_user` (
   KEY `fk_user_role_idx` (`role_id`)
 ) ENGINE=InnoDB;
 
--- user/user, admin/admin
+/* user/user, admin/admin */
 INSERT INTO `login_user` VALUES
     (1,'Standard User','user','$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy',1),
     (2,'Administrator','admin','$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O',2);
