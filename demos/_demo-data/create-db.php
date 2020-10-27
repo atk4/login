@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace atk4\login\demo;
 
-include '../../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 // CREATE TABLES AND POPULATE DATA ------------------------
-$config = include '../config.php';
+$config = require '../config.php';
 $data = file_get_contents('dump.sql');
 
-$c = \atk4\dsql\Connection::connect($config['dns']);
+$c = \atk4\dsql\Connection::connect($config['dsn']);
 $c->expr($data)->execute();
