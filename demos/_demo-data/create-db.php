@@ -12,3 +12,7 @@ $data = file_get_contents('dump.sql');
 
 $c = \atk4\dsql\Connection::connect($config['dsn']);
 $c->expr($data)->execute();
+
+//var_dump($c->expr('show tables')->get());
+//var_dump($c->expr('select * from login_user')->get());
+//var_dump($c->expr('select "login_user"."id","login_user"."name","login_user"."email","login_user"."password","login_user"."role_id",(select "name" from "login_role" "r" where "id" = "login_user"."role_id") "role" from "login_user" where "login_user"."email" = \'admin\' limit 0, 1')->get());

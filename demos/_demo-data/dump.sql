@@ -10,7 +10,7 @@ CREATE TABLE `login_user` (
 ) ENGINE=InnoDB;
 
 -- user/user, admin/admin
-INSERT INTO `user` VALUES
+INSERT INTO `login_user` VALUES
     (1,'Standard User','user','$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy',1),
     (2,'Administrator','admin','$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O',2);
 
@@ -22,7 +22,7 @@ CREATE TABLE `login_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-INSERT INTO `role` VALUES (1,'User Role'),(2,'Admin Role');
+INSERT INTO `login_role` VALUES (1,'User Role'),(2,'Admin Role');
 
 
 DROP TABLE IF EXISTS `login_access_rule`;
