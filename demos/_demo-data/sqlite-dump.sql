@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS "login_user";
-CREATE TABLE "login_user" (
+CREATE TABLE "test1" (
   "id" integer PRIMARY KEY,
-  "name" text,
-  "email" text,
-  "password" text,
-  "role_id" integer
+  "name" text
+);
+CREATE TABLE "test2" (
+  "id" integer PRIMARY KEY,
+  "name" text
 );
