@@ -13,7 +13,9 @@ cache
 *.cache
 *.cache.*
 
+/demos/_demo-data/db.sqlite
 /demos/config.php
+/demos/db.php
 
 /phpunit.xml
 /phpunit-*.xml
