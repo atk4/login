@@ -9,9 +9,13 @@ require '../../vendor/autoload.php';
 // CREATE TABLES AND POPULATE DATA ------------------------
 $config = require '../config.php';
 $data = file_get_contents('dump.sql');
+var_dump($config);
+var_dump($data);
 
 $c = \atk4\dsql\Connection::connect($config['dsn']);
-$c->expr($data)->execute();
+var_dump($c);
+$pdo = $c->expr($data)->execute();
+var_dump($pdo);
 
 var_dump($c->expr('show tables')->get());
 var_dump($c->expr('select * from login_user')->get());
