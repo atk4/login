@@ -1,13 +1,12 @@
 DROP TABLE IF EXISTS "login_user";
 CREATE TABLE "login_user" (
-  "id" integer PRIMARY KEY ASC,
+  "id" integer PRIMARY KEY,
   "name" text,
   "email" text,
   "password" text,
   "role_id" integer
 );
 
-/* user/user, admin/admin */
 INSERT INTO "login_user" VALUES
     (1,'Standard User','user','$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy',1),
     (2,'Administrator','admin','$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O',2);
@@ -15,7 +14,7 @@ INSERT INTO "login_user" VALUES
 
 DROP TABLE IF EXISTS "login_role";
 CREATE TABLE "login_role" (
-  "id" integer PRIMARY KEY ASC,
+  "id" integer PRIMARY KEY,
   "name" text
 );
 
