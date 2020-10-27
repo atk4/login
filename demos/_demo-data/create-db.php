@@ -14,11 +14,14 @@ $c = \atk4\dsql\Connection::connect($config['dsn']);
 
 foreach (preg_split('~;\s*(\n\s*|$)~', $data) as $query) {
     if ($query) {
-        echo $query."\n";
+        echo $query . "\n";
         $pdo = $c->expr($query)->execute();
+        if ($pdo->errorCode()) {
+            echo 'ERROR: ' . $pdo->errorCode() . ' ' . $pdo->errorInfo();
+        }
     }
 }
 
-//var_dump($c->expr('SELECT name FROM sqlite_master WHERE type = "table"')->get());
+var_dump($c->expr('SELECT name FROM sqlite_master WHERE type = "table"')->get());
 //var_dump($c->expr('select * from login_user')->get());
 //var_dump($c->expr('select "login_user"."id","login_user"."name","login_user"."email","login_user"."password","login_user"."role_id",(select "name" from "login_role" "r" where "id" = "login_user"."role_id") "role" from "login_user" where "login_user"."email" = \'admin\' limit 0, 1')->get());
