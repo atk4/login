@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests\Field;
+namespace atk4\login\tests;
 
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\login\Field\Password;
 
-class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
+class PasswordFieldTest extends \atk4\core\AtkPhpunit\TestCase
 {
     public function testPasswordField()
     {
@@ -27,7 +27,7 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $this->assertTrue($m->compare('p', 'mypass'));
     }
 
-    public function testPasswordPersistence1()
+    public function testPasswordPersistence()
     {
         $a = [];
         $p = new Persistence\Array_($a);
@@ -43,14 +43,15 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $this->assertSame('mypass', $m->get('p'));
         $m->save();
 
-        $enc = $this->getProtected($p, 'data')['data'][1]['p']; // stored encoded password
-
+        // stored encoded password
+        $enc = $this->getProtected($p, 'data')['data'][1]['p'];
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
         // should have reloaded also
         $this->assertNull($m->get('p'));
 
+        // password value after load is null, but it still should validate/verify
         $this->assertFalse($m->getField('p')->verify('badpass'));
         $this->assertTrue($m->getField('p')->verify('mypass'));
 
@@ -58,13 +59,11 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $this->assertFalse($m->isDirty('p'));
 
         $m->set('p', 'newpass');
-
         $this->assertTrue($m->isDirty('p'));
         $this->assertFalse($m->getField('p')->verify('mypass'));
         $this->assertTrue($m->getField('p')->verify('newpass'));
 
         $m->save();
-
         $this->assertFalse($m->isDirty('p'));
         $this->assertFalse($m->getField('p')->verify('mypass'));
         $this->assertTrue($m->getField('p')->verify('newpass'));
@@ -73,27 +72,16 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $this->assertNotSame($enc, $this->getProtected($p, 'data')['data'][1]['p']);
     }
 
-    public function testCanNotCompareEmptyException1()
+    public function testCanNotCompareEmptyException()
     {
-        $this->expectException(\atk4\data\Exception::class);
         $a = [];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
+
+        $this->expectException(\atk4\data\Exception::class);
         $m->getField('p')->verify('mypass'); // tries to compare empty password field value with value 'mypass'
-    }
-
-    public function testPasswordCompareException2()
-    {
-        $this->expectException(\atk4\data\Exception::class);
-
-        $a = [];
-        $p = new Persistence\Array_($a);
-        $m = new Model($p);
-
-        $m->addField('p', [Password::class]);
-        $m->getField('p')->verify('mypass');
     }
 
     public function testSuggestPassword()
@@ -101,6 +89,6 @@ class PasswordTest extends \atk4\core\AtkPhpunit\TestCase
         $field = new Password();
         $pwd = $field->suggestPassword(6);
         $this->assertIsString($pwd);
-        $this->assertGreaterThanOrEqual(6, strlen($pwd));
+        $this->assertSame(6, strlen($pwd));
     }
 }

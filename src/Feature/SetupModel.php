@@ -11,6 +11,7 @@ namespace atk4\login\Feature;
  * @package atk4\login\Feature
  */
 use atk4\data\Model;
+use atk4\data\ValidationException;
 use atk4\login\Form\Control;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;

@@ -10,7 +10,6 @@ use atk4\core\DiContainerTrait;
 use atk4\core\FactoryTrait;
 use atk4\core\HookTrait;
 use atk4\core\InitializerTrait;
-use atk4\core\SessionTrait;
 use atk4\core\TrackableTrait;
 use atk4\data\Model;
 use atk4\data\Persistence;
@@ -26,16 +25,15 @@ use atk4\ui\VirtualPage;
  */
 class Auth
 {
-    use SessionTrait;
-    use ContainerTrait;
-    use FactoryTrait;
     use AppScopeTrait;
+    use ContainerTrait;
     use DiContainerTrait;
-    use TrackableTrait;
+    use FactoryTrait;
     use HookTrait;
     use InitializerTrait {
         init as _init;
     }
+    use TrackableTrait;
 
     /** @const string */
     public const HOOK_LOGGED_IN = self::class . '@loggedIn';
@@ -50,19 +48,6 @@ class Auth
      * @var Model
      */
     public $user;
-
-    /**
-     * Login Form. If you want to use a different LoginForm you can pass
-     * a seed or object here.
-     *
-     * @var string|Form
-     */
-    public $form = LoginForm::class;
-
-    /**
-     * @var array Seed that would create VirtualPage for adding Preference page content
-     */
-    public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
 
     /**
      * Which field to look up user by.
@@ -86,6 +71,40 @@ class Auth
      * @var bool
      */
     public $check = true;
+
+    /**
+     * Should use some caching (in session for example) or not?
+     *
+     * @var bool
+     */
+    public $cacheEnabled = true;
+
+    /**
+     * Cache class to use.
+     *
+     * @var array
+     */
+    public $cacheClass = [Cache\Session::class];
+
+    /**
+     * Cache object.
+     *
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
+     * Login Form. If you want to use a different LoginForm you can pass
+     * a seed or object here.
+     *
+     * @var string|Form
+     */
+    public $form = LoginForm::class;
+
+    /**
+     * @var array Seed that would create VirtualPage for adding Preference page content
+     */
+    public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
 
     /**
      * Which is the index page? This page should have auth / check.
@@ -123,6 +142,10 @@ class Auth
     public function __construct($options = [])
     {
         $this->setDefaults($options);
+
+        if ($this->cacheEnabled) {
+            $this->cache = $this->factory($this->cacheClass);
+        }
     }
 
     /**
@@ -131,47 +154,6 @@ class Auth
     protected function init(): void
     {
         $this->_init();
-        $this->startSession();
-    }
-
-    /**
-     * Return cache key.
-     *
-     * @return string
-     */
-    protected function getCacheKey()
-    {
-        return $this->name ?? static::class;
-    }
-
-    /**
-     * Get data from session cache.
-     *
-     * @return array
-     */
-    protected function getCachedData()
-    {
-        $this->startSession();
-        $key = $this->getCacheKey();
-
-        if (!isset($_SESSION[$key])) {
-            $_SESSION[$key] = [];
-        }
-
-        return $_SESSION[$key];
-    }
-
-    /**
-     * Store data in session cache.
-     *
-     * @return $this
-     */
-    protected function setCachedData(array $data)
-    {
-        $this->startSession();
-        $_SESSION[$this->getCacheKey()] = $data;
-
-        return $this;
     }
 
     /**
@@ -183,25 +165,28 @@ class Auth
      *
      * @return $this
      */
-    public function setModel($model, $fieldLogin = null, $fieldPassword = null)
+    public function setModel($model, string $fieldLogin = null, string $fieldPassword = null)
     {
         $this->user = $model;
 
-        if ($fieldLogin) {
+        if ($fieldLogin !== null) {
             $this->fieldLogin = $fieldLogin;
         }
 
-        if ($fieldPassword) {
+        if ($fieldPassword !== null) {
             $this->fieldPassword = $fieldPassword;
         }
 
-        $this->user->data = $this->getCachedData();
-        $this->user->setId($this->user->data[$this->user->id_field] ?? null);
+        if ($this->cacheEnabled) {
+            $this->loadFromCache();
+        }
 
         // update cache after changes saved in user model
-        $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
-            $this->setCachedData($m->get());
-        });
+        if ($this->cacheEnabled) {
+            $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
+                $this->cache->setData($m->get());
+            });
+        }
 
         // validate user
         if ($this->check) {
@@ -209,6 +194,67 @@ class Auth
         }
 
         return $this;
+    }
+
+    /**
+     * Load data from cache.
+     */
+    protected function loadFromCache(): void
+    {
+        $this->user->data = $this->cache->getData();
+        $this->user->setId($this->user->data[$this->user->id_field] ?? null);
+    }
+
+    /**
+     * Is logged in.
+     */
+    public function isLoggedIn(): bool
+    {
+        return $this->user->loaded();
+    }
+
+    /**
+     * Try to log in user.
+     */
+    public function tryLogin(string $email, string $password): bool
+    {
+        // first logout
+        $this->logout();
+
+        $user = $this->user;
+
+        $user->tryLoadBy($this->fieldLogin, $email);
+        if ($user->loaded()) {
+            // verify if the password matches
+            $pw_field = $user->getField($this->fieldPassword);
+            if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
+                $this->hook(self::HOOK_LOGGED_IN, [$user]);
+                // save user record in cache
+                if ($this->cacheEnabled) {
+                    $this->cache->setData($user->get());
+                    $this->loadFromCache();
+                }
+
+                return true;
+            }
+            $user->unload();
+            $this->hook(self::HOOK_BAD_LOGIN, [$email]);
+        }
+
+        return false;
+    }
+
+    /**
+     * Logout user.
+     */
+    public function logout(): void
+    {
+        if ($this->isLoggedIn()) {
+            $this->user->unload();
+        }
+        if ($this->cacheEnabled) {
+            $this->cache->setData([]);
+        }
     }
 
     /**
@@ -231,21 +277,13 @@ class Auth
     }
 
     /**
-     * Logout user.
-     */
-    public function logout()
-    {
-        $this->setCachedData([]);
-    }
-
-    /**
      * Call this method to verify credentials.
      *
      * It will show login form in case user is not already logged in.
      */
-    public function check()
+    public function check(): void
     {
-        if ($this->user->loaded()) {
+        if ($this->isLoggedIn()) {
             // if user is already logged in
             $this->addUserMenu();
         } else {
@@ -254,20 +292,23 @@ class Auth
         }
     }
 
-    public function addUserMenu()
+    /**
+     * Adds user dropdown menu in apps right menu.
+     */
+    public function addUserMenu(): void
     {
         // add admin menu
         if ($this->hasUserMenu && $this->getApp()->layout instanceof Admin) {
-            $m = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
+            $menu = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
                 $userPage = $this->getApp()->add($this->preferencePage);
                 $this->setPreferencePage($userPage);
 
-                $m->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
+                $menu->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
             }
 
-            $m->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
+            $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
         }
 
         if (isset($_GET['logout'])) {
@@ -279,17 +320,20 @@ class Auth
     /**
      * Set preference page content.
      */
-    public function setPreferencePage(VirtualPage $page)
+    public function setPreferencePage(VirtualPage $page): void
     {
-        $page->add([Header::class, 'User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
-        $page->add([Form::class])->setModel($this->user);
+        Header::addTo($page, ['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
+        Form::addTo($page)->setModel($this->user);
     }
 
-    public function displayLoginForm()
+    /**
+     * Displays only login form in app.
+     */
+    public function displayLoginForm(): void
     {
         $this->getApp()->catch_runaway_callbacks = false;
         $this->getApp()->html = null;
-        $this->getApp()->initLayout(new Narrow());
+        $this->getApp()->initLayout([Narrow::class]);
         $this->getApp()->title = $this->getApp()->title . ' - Log-in Required';
         $this->getApp()->add([
             $this->form,
@@ -300,28 +344,5 @@ class Auth
         $this->getApp()->layout->template->set('title', $this->getApp()->title);
         $this->getApp()->run();
         $this->getApp()->callExit();
-    }
-
-    /**
-     * Try to log in user.
-     */
-    public function tryLogin(string $email, string $password): bool
-    {
-        $user = $this->user->newInstance();
-
-        $user->tryLoadBy($this->fieldLogin, $email);
-        if ($user->loaded()) {
-            // verify if the password matches
-            if ($user->getField($this->fieldPassword)->verify($password)) {
-                $this->hook(self::HOOK_LOGGED_IN, [$user]);
-                // save user record in session persistence
-                $this->setCachedData($user->get());
-
-                return true;
-            }
-            $this->hook(self::HOOK_BAD_LOGIN, [$email]);
-        }
-
-        return false;
     }
 }

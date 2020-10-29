@@ -9,7 +9,6 @@ nbproject
 local
 *.local
 *.local.*
-cache
 *.cache
 *.cache.*
 
