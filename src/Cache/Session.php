@@ -33,13 +33,6 @@ class Session // implementes CacheInterface
     public $key;
 
     /**
-     * Timestamp when cache data was set.
-     *
-     * @int
-     */
-    protected $setAt = 0;
-
-    /**
      * Constructor.
      */
     public function __construct(array $options = [])
@@ -65,7 +58,7 @@ class Session // implementes CacheInterface
     public function getKey()
     {
         $this->init();
-        return $this->key ?? static::class;
+        return $this->key ?? $this->name ?? static::class;
     }
 
     /**
@@ -75,7 +68,7 @@ class Session // implementes CacheInterface
     {
         $key = $this->getKey();
 
-        if (!isset($_SESSION[$key])) {
+        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key.'-at'] + $this->expireTime < time())) {
             $_SESSION[$key] = [];
         }
 
@@ -89,7 +82,9 @@ class Session // implementes CacheInterface
      */
     public function setData(array $data)
     {
-        $_SESSION[$this->getKey()] = $data;
+        $key = $this->getKey();
+        $_SESSION[$key] = $data;
+        $_SESSION[$key.'-at'] = time();
 
         return $this;
     }

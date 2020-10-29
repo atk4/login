@@ -89,6 +89,6 @@ class PasswordFieldTest extends \atk4\core\AtkPhpunit\TestCase
         $field = new Password();
         $pwd = $field->suggestPassword(6);
         $this->assertIsString($pwd);
-        $this->assertSame(6, strlen($pwd));
+        $this->assertGreaterThanOrEqual(6, strlen($pwd));
     }
 }

@@ -129,6 +129,9 @@ class AuthTest extends \atk4\schema\PhpunitTestCase
         $auth->setModel($u = $this->getUserModel(), 'email', 'name');
         $auth->tryLogin('admin', 'admin'); // wrong password field
         $this->assertFalse($auth->isLoggedIn());
+
+        // @todo Need some tests for cache session expireTime property and cache expiration
+
     }
 
     public function testAuthNoCache()
