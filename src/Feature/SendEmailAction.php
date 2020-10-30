@@ -15,7 +15,7 @@ trait SendEmailAction
     /**
      * Adds sendEmail action.
      */
-    public function initSendEmailAction(): UserAction\Generic
+    public function initSendEmailAction(): UserAction
     {
         return $this->addUserAction('sendEmail', [
             'callback' => 'sendEmail',

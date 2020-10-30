@@ -11,32 +11,8 @@ use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
 
-class AuthTest extends \atk4\schema\PhpunitTestCase
+class AuthTest extends Generic
 {
-    protected function setupDefaultDb()
-    {
-        $this->setDb([
-            'login_user' => [
-                1 => ['id' => 1, 'name' => 'Standard User', 'email' => 'user', 'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy', 'role_id' => 1], // user/user
-                2 => ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', 'role_id' => 2], // admin/admin
-            ],
-            'login_role' => [
-                1 => ['id' => 1, 'name' => 'User Role'],
-                2 => ['id' => 2, 'name' => 'Admin Role'],
-            ],
-            'login_access_rule' => [
-                1 => ['id' => 1, 'role_id' => 1, 'model' => '\\atk4\login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                2 => ['id' => 2, 'role_id' => 2, 'model' => '\\atk4\login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                3 => ['id' => 3, 'role_id' => 2, 'model' => '\\atk4\login\\Model\\Role', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-            ],
-        ]);
-    }
-
-    protected function getUserModel()
-    {
-        return new User($this->db, 'login_user');
-    }
-
     public function testDb()
     {
         $this->setupDefaultDb();
@@ -131,7 +107,24 @@ class AuthTest extends \atk4\schema\PhpunitTestCase
         $this->assertFalse($auth->isLoggedIn());
 
         // @todo Need some tests for cache session expireTime property and cache expiration
+        if ($cacheEnabled) {
+            $auth = new Auth([
+                'check' => false,
+                'cacheEnabled' => $cacheEnabled,
+                'cacheOptions' => ['expireTime' => 2], // 2 seconds
+            ]);
 
+            $auth->setModel($u = $this->getUserModel());
+            $auth->tryLogin('admin', 'admin'); // saves in cache and set timer
+
+            $auth->setModel($u = $this->getUserModel());
+            $this->assertTrue($auth->isLoggedIn());
+
+            // now sleep 3 seconds (cache should expire) and try again
+            sleep(3);
+            $auth->setModel($u = $this->getUserModel());
+            $this->assertFalse($auth->isLoggedIn());
+        }
     }
 
     public function testAuthNoCache()

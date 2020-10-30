@@ -87,6 +87,13 @@ class Auth
     public $cacheClass = [Cache\Session::class];
 
     /**
+     * Options for cache class.
+     *
+     * @var array
+     */
+    public $cacheOptions = [];
+
+    /**
      * Cache object.
      *
      * @var Cache
@@ -144,7 +151,7 @@ class Auth
         $this->setDefaults($options);
 
         if ($this->cacheEnabled) {
-            $this->cache = $this->factory($this->cacheClass);
+            $this->cache = $this->factory($this->cacheClass, $this->cacheOptions);
         }
     }
 

@@ -15,11 +15,9 @@ trait UniqueFieldValue
     /**
      * Set that field value should be unique.
      *
-     * @param string $field
-     *
      * @return $this
      */
-    public function setUnique($field)
+    public function setUnique(string $field)
     {
         $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
             if ($m->isDirty($field)) {
