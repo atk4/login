@@ -73,68 +73,69 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: build/logs/clover.xml
 
-  behat-test:
-    name: Behat
-    runs-on: ubuntu-latest
-    container:
-      image: atk4/image:${{ matrix.php }}
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ['latest']
-        type: ['Chrome', 'Firefox', 'Chrome Lowest']
-    env:
-      LOG_COVERAGE: ''
-    services:
-      selenium-chrome:
-        image: selenium/standalone-chrome:latest
-        options: --health-cmd "/opt/bin/check-grid.sh"
-      selenium-firefox:
-        image: selenium/standalone-firefox:latest
-        options: --health-cmd "/opt/bin/check-grid.sh"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Configure PHP
-        run: |
-          if [ -z "$LOG_COVERAGE" ]; then rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ; fi
-          php --version
-
-      - name: Setup cache 1/2
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Setup cache 2/2
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.type }}-${{ hashFiles('composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install PHP dependencies
-        run: |
-          composer remove --no-interaction --no-update phpunit/phpunit johnkary/phpunit-speedtrap phpunit/phpcov --dev
-          composer remove --no-interaction --no-update friendsofphp/php-cs-fixer --dev
-          composer install --no-suggest --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
-          if [ "${{ matrix.type }}" == "Chrome Lowest" ]; then composer update  --ansi --prefer-dist --prefer-lowest --prefer-stable --no-interaction --no-progress --optimize-autoloader ; fi
-
-      - name: Init
-        run: |
-          mkdir -p build/logs
-          php demos/_demo-data/create-sqlite-db.php
-
-      - name: "Run tests: Behat"
-        run: |
-          php -S 172.18.0.2:8888 > /dev/null 2>&1 &
-          sleep 0.2
-          if [ "${{ matrix.type }}" == "Firefox" ]; then sed -i "s~chrome~firefox~" behat.yml.dist ; fi
-
-          # remove once https://github.com/minkphp/Mink/pull/801
-          # and https://github.com/minkphp/MinkSelenium2Driver/pull/322 are released
-          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink/src/Element/Element.php
-          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink-selenium2-driver/src/Selenium2Driver.php
-
-          vendor/bin/behat --config behat.yml.dist
+# Behat tests technically work, but need to refactor demos to be easyer to test them
+#  behat-test:
+#    name: Behat
+#    runs-on: ubuntu-latest
+#    container:
+#      image: atk4/image:${{ matrix.php }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        php: ['latest']
+#        type: ['Chrome', 'Firefox', 'Chrome Lowest']
+#    env:
+#      LOG_COVERAGE: ''
+#    services:
+#      selenium-chrome:
+#        image: selenium/standalone-chrome:latest
+#        options: --health-cmd "/opt/bin/check-grid.sh"
+#      selenium-firefox:
+#        image: selenium/standalone-firefox:latest
+#        options: --health-cmd "/opt/bin/check-grid.sh"
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Configure PHP
+#        run: |
+#          if [ -z "$LOG_COVERAGE" ]; then rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ; fi
+#          php --version
+#
+#      - name: Setup cache 1/2
+#        id: composer-cache
+#        run: |
+#          echo "::set-output name=dir::$(composer config cache-files-dir)"
+#
+#      - name: Setup cache 2/2
+#        uses: actions/cache@v1
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.type }}-${{ hashFiles('composer.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-composer-
+#
+#      - name: Install PHP dependencies
+#        run: |
+#          composer remove --no-interaction --no-update phpunit/phpunit johnkary/phpunit-speedtrap phpunit/phpcov --dev
+#          composer remove --no-interaction --no-update friendsofphp/php-cs-fixer --dev
+#          composer install --no-suggest --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
+#          if [ "${{ matrix.type }}" == "Chrome Lowest" ]; then composer update  --ansi --prefer-dist --prefer-lowest --prefer-stable --no-interaction --no-progress --optimize-autoloader ; fi
+#
+#      - name: Init
+#        run: |
+#          mkdir -p build/logs
+#          php demos/_demo-data/create-sqlite-db.php
+#
+#      - name: "Run tests: Behat"
+#        run: |
+#          php -S 172.18.0.2:8888 > /dev/null 2>&1 &
+#          sleep 0.2
+#          if [ "${{ matrix.type }}" == "Firefox" ]; then sed -i "s~chrome~firefox~" behat.yml.dist ; fi
+#
+#          # remove once https://github.com/minkphp/Mink/pull/801
+#          # and https://github.com/minkphp/MinkSelenium2Driver/pull/322 are released
+#          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink/src/Element/Element.php
+#          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink-selenium2-driver/src/Selenium2Driver.php
+#
+#          vendor/bin/behat --config behat.yml.dist
