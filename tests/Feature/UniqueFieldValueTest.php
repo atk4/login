@@ -23,16 +23,16 @@ class UniqueFieldValueTest extends Generic
     protected function getTestModel()
     {
         $c = new class() extends Model {
-                use UniqueFieldValue;
+            use UniqueFieldValue;
 
-                public $table = 'test';
+            public $table = 'test';
 
-                protected function init(): void {
-                    parent::init();
-                    $this->addField('name');
-                    $this->setUnique('name');
-                }
-            };
+            protected function init(): void {
+                parent::init();
+                $this->addField('name');
+                $this->setUnique('name');
+            }
+        };
         return new $c($this->db, 'test');
     }
 
@@ -42,7 +42,7 @@ class UniqueFieldValueTest extends Generic
         $m = $this->getTestModel();
 
         (clone $m)->save(['name' => 'Test2']);
-        $this->assertEquals(2, count($m->export()));
+        $this->assertSame(2, count($m->export()));
 
         $this->expectException(ValidationException::class);
         (clone $m)->save(['name' => 'Test1']);

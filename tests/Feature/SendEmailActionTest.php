@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace atk4\login\tests\Feature;
 
-use atk4\data\Model;
-use atk4\login\Feature\Signup;
 use atk4\login\Model\User;
 use atk4\login\tests\Generic;
 
@@ -24,8 +22,8 @@ class SendEmailActionTest extends Generic
         $m->getUserAction('sendEmail')->callback = function () {
             $args = func_get_args();
             $this->assertInstanceOf(User::class, $args[0]);
-            $this->assertEquals('Email subject', $args[1]);
-            $this->assertEquals('Email body', $args[2]);
+            $this->assertSame('Email subject', $args[1]);
+            $this->assertSame('Email body', $args[2]);
         };
 
         $m->executeUserAction(

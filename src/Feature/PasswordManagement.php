@@ -33,7 +33,7 @@ trait PasswordManagement
             ],
         ]);
         $this->addUserAction('check_password_strength', [
-            /*'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, */
+            // 'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'args' => [
                 'password' => ['type' => 'string'],
             ],

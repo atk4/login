@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace atk4\login\tests;
 
-use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\login\Auth;
 use atk4\login\Model\AccessRule;
@@ -18,26 +17,26 @@ class AuthTest extends Generic
         $this->setupDefaultDb();
 
         $u = $this->getUserModel();
-        $this->assertEquals(2, count($u->export()));
+        $this->assertSame(2, count($u->export()));
 
         $r = new Role($this->db, 'login_role');
-        $this->assertEquals(2, count($r->export()));
+        $this->assertSame(2, count($r->export()));
 
         $a = new AccessRule($this->db, 'login_access_rule');
-        $this->assertEquals(3, count($a->export()));
+        $this->assertSame(3, count($a->export()));
 
         // password field should not be visible in UI by default
-        $this->assertEquals(false, $u->getField('password')->isVisible());
+        $this->assertFalse($u->getField('password')->isVisible());
 
         // password field value should not load when loading record
-        $this->assertEquals(null, (clone $u)->load(1)->get('password'));
+        $this->assertNull((clone $u)->load(1)->get('password'));
 
         // test traversal
-        $this->assertEquals(2, count((clone $u)->load(2)->ref('AccessRules')->export()));
-        $this->assertEquals(1, count((clone $u)->load(2)->ref('role_id')->export()));
-        $this->assertEquals(2, count((clone $r)->load(2)->ref('AccessRules')->export()));
-        $this->assertEquals(1, count((clone $r)->load(2)->ref('Users')->export()));
-        $this->assertEquals(1, count((clone $a)->load(2)->ref('role_id')->export()));
+        $this->assertSame(2, count((clone $u)->load(2)->ref('AccessRules')->export()));
+        $this->assertSame(1, count((clone $u)->load(2)->ref('role_id')->export()));
+        $this->assertSame(2, count((clone $r)->load(2)->ref('AccessRules')->export()));
+        $this->assertSame(1, count((clone $r)->load(2)->ref('Users')->export()));
+        $this->assertSame(1, count((clone $a)->load(2)->ref('role_id')->export()));
     }
 
     public function testAuth($cacheEnabled = true)
