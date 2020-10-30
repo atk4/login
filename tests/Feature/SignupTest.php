@@ -19,6 +19,6 @@ class SignupTest extends Generic
             'register_new_user',
             ['name' => 'New user', 'email' => 'test', 'password' => 'testpass']
         );
-        $this->assertSame(1, count((clone $m)->addCondition('email','test')->export()));
+        $this->assertSame(1, count((clone $m)->addCondition('email', 'test')->export()));
     }
 }

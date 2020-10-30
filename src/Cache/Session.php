@@ -45,7 +45,7 @@ class Session // implementes CacheInterface
      */
     public function init(): void
     {
-        if (PHP_SAPI !== 'cli') { // helps with unit tests
+        if (\PHP_SAPI !== 'cli') { // helps with unit tests
             $this->startSession();
         }
     }

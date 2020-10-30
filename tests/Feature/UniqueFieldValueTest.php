@@ -27,12 +27,14 @@ class UniqueFieldValueTest extends Generic
 
             public $table = 'test';
 
-            protected function init(): void {
+            protected function init(): void
+            {
                 parent::init();
                 $this->addField('name');
                 $this->setUnique('name');
             }
         };
+
         return new $c($this->db, 'test');
     }
 
