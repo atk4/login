@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use atk4\core\Factory;
 use atk4\schema\Migration;
 use atk4\ui\Console;
 
@@ -27,7 +28,7 @@ class MigratorConsole extends Console
 
             foreach ($models as $model) {
                 if (!is_object($model)) {
-                    $model = $this->factory((array) $model);
+                    $model = Factory::factory((array) $model);
                     $console->getApp()->db->add($model);
                 }
 

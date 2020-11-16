@@ -7,7 +7,7 @@ namespace atk4\login;
 use atk4\core\AppScopeTrait;
 use atk4\core\ContainerTrait;
 use atk4\core\DiContainerTrait;
-use atk4\core\FactoryTrait;
+use atk4\core\Factory;
 use atk4\core\HookTrait;
 use atk4\core\InitializerTrait;
 use atk4\core\TrackableTrait;
@@ -28,7 +28,6 @@ class Auth
     use AppScopeTrait;
     use ContainerTrait;
     use DiContainerTrait;
-    use FactoryTrait;
     use HookTrait;
     use InitializerTrait {
         init as _init;
@@ -151,7 +150,7 @@ class Auth
         $this->setDefaults($options);
 
         if ($this->cacheEnabled) {
-            $this->cache = $this->factory($this->cacheClass, $this->cacheOptions);
+            $this->cache = Factory::factory($this->cacheClass, $this->cacheOptions);
         }
     }
 
