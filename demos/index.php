@@ -8,17 +8,14 @@ use atk4\ui\Button;
 use atk4\ui\Header;
 use atk4\ui\View;
 
-require '../vendor/autoload.php';
-require 'db.php';
+require 'init.php';
 
-$app = new App(\atk4\ui\Layout\Centered::class, false, true);
 Header::addTo($app, ['Welcome to Auth Add-on demo app']);
-Button::addTo($app, ['Run migration wizard', 'icon' => 'gift'])->link(['wizard']);
 
-View::addTo($app, ['ui' => 'divider']);
-Button::addTo($app, ['Log-in', 'icon' => 'sign in'])->link(['login']);
-Button::addTo($app, ['Register', 'icon' => 'edit'])->link(['register']);
-Button::addTo($app, ['Dashboard', 'icon' => 'dashboard'])->link(['dashboard']);
+// Setup db by using migration
+$v = View::addTo($app, ['ui' => 'segment']);
+Button::addTo($v, ['Setup demo SQLite database', 'icon' => 'cogs'])->link(['admin-setup']);
 
-View::addTo($app, ['ui' => 'divider']);
-Button::addTo($app, ['Admin', 'icon' => 'lock open'])->link(['admin-users']);
+// Addon description
+$v = View::addTo($app, ['ui' => 'segment']);
+$v->set('Here goes small description of this addon');

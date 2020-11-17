@@ -2,12 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
-
-use atk4\core\AppScopeTrait;
-use atk4\core\DynamicMethodTrait;
 use atk4\core\Factory;
-use atk4\core\HookTrait;
 use atk4\schema\Migration;
 use atk4\ui\Console;
 
@@ -17,16 +12,6 @@ use atk4\ui\Console;
  */
 class MigratorConsole extends Console
 {
-    use AppScopeTrait;
-    use DynamicMethodTrait;
-    use HookTrait;
-
-    /** @const string */
-    public const HOOK_BEFORE_MIGRATION = self::class . '@beforeMigration';
-
-    /** @const string */
-    public const HOOK_AFTER_MIGRATION = self::class . '@afterMigration';
-
     /** @var string Name of migrator class to use */
     public $migrator_class = Migration::class;
 
@@ -39,8 +24,6 @@ class MigratorConsole extends Console
     {
         // run inside callback
         $this->set(function ($console) use ($models) {
-            $this->hook(self::HOOK_BEFORE_MIGRATION);
-
             $console->notice('Preparing to migrate models');
 
             foreach ($models as $model) {
@@ -55,8 +38,6 @@ class MigratorConsole extends Console
             }
 
             $console->notice('Done with migration');
-
-            $this->hook(self::HOOK_AFTER_MIGRATION);
         });
     }
 }

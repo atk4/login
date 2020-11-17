@@ -20,48 +20,42 @@ class App extends \atk4\ui\App
     public $auth;
     public $title = 'Auth Demo App';
 
-    public function __construct($interface = 'front', $no_db_connect = false, $no_authenticate = false)
+    /**/
+
+    public function __construct()
     {
         parent::__construct();
 
-        $config_file = __DIR__ . '/../config.php';
+        $this->initLayout([Layout\Admin::class]);
 
-        if (!file_exists($config_file)) {
-            $this->redirect('wizard.php');
-            $this->callExit();
-        }
+        // Construct menu
+        $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
+        $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
-        $this->readConfig($config_file, 'php');
+        $g = $this->layout->menuLeft->addGroup(['Forms']);
+        $g->addItem(['Sign-up form', 'icon' => 'table'], ['form-register']);
+        $g->addItem(['Login form', 'icon' => 'table'], ['form-login']);
+        $g->addItem(['Forgot password form', 'icon' => 'table'], ['form-forgot']);
 
-        if ($interface === 'admin') {
-            $this->initLayout([Layout\Admin::class]);
-            $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
-            $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
-            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
-        } elseif ($interface === 'centered') {
-            $this->initLayout([Layout\Centered::class]);
-        } else {
-            $this->initLayout([\atk4\login\Layout\Narrow::class]);
-        }
+        $g = $this->layout->menuLeft->addGroup(['ACL']);
+        $g->addItem(['User roles', 'icon' => 'id card'], ['acl-roles']);
 
-        if (!$no_db_connect) {
-            $this->db = Persistence::connect($this->config['dsn']);
-            //$this->db->setApp($this);
-        }
+        $g = $this->layout->menuLeft->addGroup(['Admin']);
+        $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
+        $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
 
-        if (!$no_authenticate) {
-            $this->authenticate();
-        }
+        $this->initAuth(false);
     }
 
-    public function authenticate()
+    protected function initAuth($check = true)
     {
-        $this->auth = new Auth(['check' => true]);
+        $this->auth = new Auth(['check' => $check]);
         $this->auth->setApp($this);
 
-        $m = new \atk4\login\Model\User($this->db);
-        $this->auth->setModel($m);
+        // Strangely can not setmodel at this stage :(
+        //$m = new \atk4\login\Model\User($this->db);
+        //$this->auth->setModel($m);
 
-        $this->auth->setAcl(new Acl(), $this->db);
+        //$this->auth->setAcl(new Acl(), $this->db);
     }
 }
