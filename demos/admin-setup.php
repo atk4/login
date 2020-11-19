@@ -93,7 +93,7 @@ $c1->migrateModels([Role::class, User::class, AccessRule::class, Client::class])
 
 // button to execute migration
 $b = Button::addTo($v, ['Run migration', 'icon' => 'check']);
-$b->on('click', function() use ($c1, $b) {
+$b->on('click', function () use ($c1, $b) {
     return [
         $c1->jsExecute(),
         $b->js()->hide(),
