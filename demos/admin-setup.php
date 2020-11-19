@@ -25,7 +25,7 @@ Message::addTo($v, ['type' => 'warning'])->set('Be aware that running this migra
 $c1 = MigratorConsole::addTo($v, ['event' => false]);
 
 // after migration import data
-$c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function($c){
+$c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
     $c->notice('Populating data...');
 
     $rule = new AccessRule($c->getApp()->db);
@@ -86,8 +86,6 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function($c){
         ]);
     $c->debug('  Import clients.. OK');
 
-
-
     $c->notice('Data imported');
 });
 
@@ -95,7 +93,7 @@ $c1->migrateModels([Role::class, User::class, AccessRule::class, Client::class])
 
 // button to execute migration
 $b = Button::addTo($v, ['Run migration', 'icon' => 'check']);
-$b->on('click', function() use ($c1, $b){
+$b->on('click', function() use ($c1, $b) {
     return [
         $c1->jsExecute(),
         $b->js()->hide(),
