@@ -336,8 +336,9 @@ class Auth
     /**
      * Displays only login form in app.
      */
-    public function displayLoginForm(): void
+    public function displayLoginForm(array $seed = []): void
     {
+
         $this->getApp()->catch_runaway_callbacks = false;
         $this->getApp()->html = null;
         $this->getApp()->initLayout([Narrow::class]);
@@ -348,7 +349,8 @@ class Auth
                 'auth' => $this,
                 'linkSuccess' => [$this->pageDashboard],
                 'linkForgot' => false,
-            ]
+            ],
+            $seed
         ));
         $this->getApp()->layout->template->set('title', $this->getApp()->title);
         $this->getApp()->run();

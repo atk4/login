@@ -8,15 +8,10 @@ use atk4\login\Form;
 use atk4\ui\Header;
 use atk4\ui\View;
 
-require 'init.php';
+require 'demo-init.php';
 
-Header::addTo($app, ['Login form']);
+//$app->auth->logout();
+//$app->redirect(['demo-index']);
 
-$v = View::addTo($app, ['ui' => 'segment']);
-$f = Form\Login::addTo($v, [
-    'auth' => $app->auth,
-    'linkForgot' => ['form-forgot'],
-    'linkSuccess' => ['index'],
-]);
 
-//$app->auth->displayLoginForm();
+$app->auth->displayLoginForm();

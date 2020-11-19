@@ -11,19 +11,21 @@ use atk4\ui\Layout;
 /**
  * Example implementation of your Authenticated application.
  */
-class App extends \atk4\ui\App
+class App extends AbstractApp
 {
-    use \atk4\core\ConfigTrait;
+    public $title = 'Demo App';
 
-    public $db;
-    public $auth;
-    public $title = 'Auth Demo App';
-
-    public function __construct()
+    protected function init(): void
     {
-        parent::__construct();
+        parent::init();
 
         $this->initLayout([Layout\Admin::class]);
+
+        // iframe for demo app
+        $i = \atk4\ui\View::addTo($this, ['green' => true, 'ui' => 'segment'])
+            ->setElement('iframe')
+            ->setStyle(['width' => '100%', 'height' => '800px']);
+        $i->js(true)->hide();
 
         // Construct menu
         $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
@@ -31,7 +33,12 @@ class App extends \atk4\ui\App
 
         $g = $this->layout->menuLeft->addGroup(['Forms']);
         $g->addItem(['Sign-up form', 'icon' => 'edit'], ['form-register']);
-        $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
+
+        $x = $g->addItem(['Login form', 'icon' => 'edit'])->on('click', [
+            $i->js()->show(),
+            $i->js()->attr('src', $this->url('form-login')),
+        ]);
+
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
         $g = $this->layout->menuLeft->addGroup(['ACL']);
@@ -40,30 +47,5 @@ class App extends \atk4\ui\App
         $g = $this->layout->menuLeft->addGroup(['Admin']);
         $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
         $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
-    }
-
-    protected function init(): void
-    {
-        parent::init();
-
-        $this->initAuth(false);
-
-        // if user is already logged in then show user menu on top right
-        if ($this->auth->isLoggedIn()) {
-            $this->auth->addUserMenu();
-        }
-    }
-
-    protected function initAuth($check = true)
-    {
-        $this->auth = new Auth(['check' => $check]);
-        $this->auth->setApp($this);
-
-        // Can not setmodel at this stage :(
-        $m = new \atk4\login\Model\User($this->db);
-        $this->auth->setModel($m);
-
-        // adding this requires user to be logged in, so we can't run this in wrapping app :(
-        //$this->auth->setAcl(new Acl(), $this->db);
     }
 }

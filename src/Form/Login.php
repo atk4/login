@@ -58,7 +58,8 @@ class Login extends Form
             $this->onSubmit(function ($form) {
                 // try to log user in
                 if ($this->auth->tryLogin($form->model->get('email'), $form->model->get('password'))) {
-                    return $this->getApp()->jsRedirect($this->linkSuccess);
+                    //return $this->getApp()->jsRedirect($this->linkSuccess);
+                    return $this->getApp()->redirect($this->linkSuccess);
                 }
 
                 return $form->error('password', 'Email or Password is incorrect');

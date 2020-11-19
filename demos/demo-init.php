@@ -7,5 +7,5 @@ namespace atk4\login\demo;
 include '../vendor/autoload.php';
 
 // init App
-$app = new App();
+$app = new DemoApp();
 $app->invokeInit();
