@@ -13,6 +13,7 @@ use atk4\ui\Layout;
  */
 class App extends AbstractApp
 {
+    public $auth;
     public $title = 'Demo App';
 
     protected function init(): void
@@ -21,24 +22,13 @@ class App extends AbstractApp
 
         $this->initLayout([Layout\Admin::class]);
 
-        // iframe for demo app
-        $i = \atk4\ui\View::addTo($this, ['green' => true, 'ui' => 'segment'])
-            ->setElement('iframe')
-            ->setStyle(['width' => '100%', 'height' => '800px']);
-        $i->js(true)->hide();
-
         // Construct menu
         $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
         $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
         $g = $this->layout->menuLeft->addGroup(['Forms']);
         $g->addItem(['Sign-up form', 'icon' => 'edit'], ['form-register']);
-
-        $x = $g->addItem(['Login form', 'icon' => 'edit'])->on('click', [
-            $i->js()->show(),
-            $i->js()->attr('src', $this->url('form-login')),
-        ]);
-
+        $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
         $g = $this->layout->menuLeft->addGroup(['ACL']);
@@ -47,5 +37,27 @@ class App extends AbstractApp
         $g = $this->layout->menuLeft->addGroup(['Admin']);
         $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
         $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+
+        $this->initAuth(false);
+
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->addUserMenu();
+        }
+    }
+
+    public function initAuth($check = true)
+    {
+        $this->auth = new Auth(['check' => $check, 'pageDashboard' => 'index']);
+        $this->auth->setApp($this);
+
+        // Can not setmodel at this stage :(
+        $m = new \atk4\login\Model\User($this->db);
+        $this->auth->setModel($m);
+    }
+
+    public function initAcl()
+    {
+        // adding this requires user to be logged in, so we can't run this in wrapping app :(
+        $this->auth->setAcl(new Acl(), $this->db);
     }
 }

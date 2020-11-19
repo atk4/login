@@ -65,6 +65,7 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
             'model' => Client::class,
             'all_visible' => true,
             'all_editable' => true,
+            'all_actions' => true,
         ],
         [
             'role' => 'User Role',
@@ -72,6 +73,8 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
             'all_visible' => true,
             'all_editable' => false,
             'editable_fields' => 'vat_number,active',
+            'all_actions' => false,
+            'actions' => 'edit,test',
         ],
     ]);
     $c->debug('  Import roles.. OK');

@@ -50,21 +50,16 @@ class RoleAdmin extends View
         $this->crud->setModel($role);
 
         // Add new table column used for actions
-        /** @var \atk4\ui\Table\Column $column */
         $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
-        $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) {
-            $this->model->load($id);
+        $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
+            $role->load($id);
+            $v->add([Header::class, $role->getTitle() . ' Permissions']);
 
-            $v->add([Header::class, $this->model->getTitle() . ' Permissions']);
-
-            /** @var Crud $crud */
             $crud = Crud::addTo($v);
-            $crud->setModel($this->model->ref('AccessRules'));
+            //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - looks like ATK bug
+            $crud->setModel((new \atk4\login\Model\AccessRule($role->persistence))->addCondition('role_id', $id));
         });
-
-        //@todo remove this line. It's just a workaround while CRUD edit action button will be fixed in modal windows
-        $this->crud->getOwner()->add([Crud::class])->setModel($this->crud->model->ref('AccessRules'));
 
         return parent::setModel($role);
     }

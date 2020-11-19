@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace atk4\login\demo;
 
-use atk4\login\Acl;
-use atk4\login\Auth;
-use atk4\ui\Layout;
-
 /**
- * Example implementation of your Authenticated application.
+ * Application which use demo database.
  */
 abstract class AbstractApp extends \atk4\ui\App
 {
@@ -26,6 +22,5 @@ abstract class AbstractApp extends \atk4\ui\App
         // set DB connection
         $this->dbFile = __DIR__ . '/..' . $this->dbFile;
         $this->db = new \atk4\data\Persistence\Sql('sqlite:' . $this->dbFile);
-        //$app->db->setApp($app);
     }
 }

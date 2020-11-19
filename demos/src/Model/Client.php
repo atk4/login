@@ -19,5 +19,10 @@ class Client extends Model
         $this->addField('vat_number');
         $this->addField('balance', ['type' => 'money']);
         $this->addField('active', ['type' => 'boolean', 'default' => true]);
+
+        // custom action
+        $this->addUserAction('test', function ($m) {
+            return 'Test action run for ' . $m->getTitle() . ' !';
+        });
     }
 }
