@@ -239,6 +239,8 @@ class Auth
                 if ($this->cacheEnabled) {
                     $this->cache->setData($user->get());
                     $this->loadFromCache();
+                } else {
+                    $this->user = clone $user;
                 }
 
                 return true;
