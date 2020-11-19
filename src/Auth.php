@@ -338,7 +338,6 @@ class Auth
      */
     public function displayLoginForm(array $seed = []): void
     {
-
         $this->getApp()->catch_runaway_callbacks = false;
         $this->getApp()->html = null;
         $this->getApp()->initLayout([Narrow::class]);
