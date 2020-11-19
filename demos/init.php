@@ -11,3 +11,5 @@ $app = new App();
 $app->dbFile = __DIR__ . '/data/db.sqlite';
 $app->db = new \atk4\data\Persistence\Sql('sqlite:' . $app->dbFile);
 //$app->db->setApp($app);
+
+$app->invokeInit();

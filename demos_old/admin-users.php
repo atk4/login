@@ -11,7 +11,7 @@ use atk4\login\Model\User;
 use atk4\login\UserAdmin;
 use atk4\ui\Header;
 
-$app = new \atk4\login\demo\App('admin');
+$app = new App('admin');
 
 // USERS --------------------------------------------------
 Header::addTo($app)->set('Users');

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace atk4\login\Form;
 
+use atk4\login\Auth;
 use atk4\ui\Form;
 use atk4\ui\Form\Control;
 use atk4\ui\View;
@@ -11,7 +12,7 @@ use atk4\ui\View;
 /**
  * Login form view.
  */
-class LoginForm extends Form
+class Login extends Form
 {
     /** @var array "Forgot password" page */
     public $linkForgot = ['forgot'];

@@ -33,18 +33,28 @@ class App extends \atk4\ui\App
         $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
         $g = $this->layout->menuLeft->addGroup(['Forms']);
-        $g->addItem(['Sign-up form', 'icon' => 'table'], ['form-register']);
-        $g->addItem(['Login form', 'icon' => 'table'], ['form-login']);
-        $g->addItem(['Forgot password form', 'icon' => 'table'], ['form-forgot']);
+        $g->addItem(['Sign-up form', 'icon' => 'edit'], ['form-register']);
+        $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
+        $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
         $g = $this->layout->menuLeft->addGroup(['ACL']);
-        $g->addItem(['User roles', 'icon' => 'id card'], ['acl-roles']);
+        $g->addItem(['Client list (for testing)', 'icon' => 'table'], ['acl-clients']);
 
         $g = $this->layout->menuLeft->addGroup(['Admin']);
         $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
         $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+    }
+
+    protected function init(): void
+    {
+        parent::init();
 
         $this->initAuth(false);
+
+        // if user is already logged in then show user menu on top right
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->addUserMenu();
+        }
     }
 
     protected function initAuth($check = true)
@@ -52,10 +62,11 @@ class App extends \atk4\ui\App
         $this->auth = new Auth(['check' => $check]);
         $this->auth->setApp($this);
 
-        // Strangely can not setmodel at this stage :(
-        //$m = new \atk4\login\Model\User($this->db);
-        //$this->auth->setModel($m);
+        // Can not setmodel at this stage :(
+        $m = new \atk4\login\Model\User($this->db);
+        $this->auth->setModel($m);
 
+        // adding this requires user to be logged in, so we can't run this in wrapping app :(
         //$this->auth->setAcl(new Acl(), $this->db);
     }
 }

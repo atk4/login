@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\login\demo;
 
+use atk4\login\demo\Model\Client;
 use atk4\login\Model\AccessRule;
 use atk4\login\Model\Role;
 use atk4\login\Model\User;
@@ -54,36 +55,43 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function($c){
                 'password' => 'admin',
             ],
         ]);
+    $c->notice('User: admin/admin created.');
+    $c->notice('User: user/user created.');
     $c->debug('  Import users.. OK');
 
     $rule->import([
         [
             'role' => 'Admin Role',
-            'model' => '\\atk4\login\\Model\\User',
+            'model' => Client::class,
             'all_visible' => true,
             'all_editable' => true,
         ],
         [
             'role' => 'User Role',
-            'model' => '\\atk4\login\\Model\\Role',
+            'model' => Client::class,
             'all_visible' => true,
             'all_editable' => false,
+            'editable_fields' => 'vat_number,active',
         ],
     ]);
     $c->debug('  Import roles.. OK');
 
-    $c->notice('User created!');
-    $c->debug('Username : user');
-    $c->debug('Password : user');
+    $client = new Client($c->getApp()->db);
+    $client->each(function ($m) {$m->delete(); })
+        ->import([
+            ['name' => 'John Doe', 'vat_number' => 'GB1234567890', 'balance' => 1234.56, 'active' => true],
+            ['name' => 'Jane Doe', 'vat_number' => null, 'balance' => 50, 'active' => true],
+            ['name' => 'Pokemon', 'vat_number' => 'LV-13141516', 'balance' => 100.65, 'active' => true],
+            ['name' => 'Captain Jack', 'vat_number' => null, 'balance' => -600, 'active' => false],
+        ]);
+    $c->debug('  Import clients.. OK');
 
-    $c->notice('User created!');
-    $c->debug('Username : admin');
-    $c->debug('Password : admin');
+
 
     $c->notice('Data imported');
 });
 
-$c1->migrateModels([Role::class, User::class, AccessRule::class]);
+$c1->migrateModels([Role::class, User::class, AccessRule::class, Client::class]);
 
 // button to execute migration
 $b = Button::addTo($v, ['Run migration', 'icon' => 'check']);

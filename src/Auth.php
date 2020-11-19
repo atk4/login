@@ -13,8 +13,8 @@ use atk4\core\InitializerTrait;
 use atk4\core\TrackableTrait;
 use atk4\data\Model;
 use atk4\data\Persistence;
+use atk4\login\Form;
 use atk4\login\Layout\Narrow;
-use atk4\ui\Form;
 use atk4\ui\Header;
 use atk4\ui\Layout\Admin;
 use atk4\ui\VirtualPage;
@@ -101,16 +101,16 @@ class Auth
 
     /**
      * Login Form. If you want to use a different LoginForm you can pass
-     * a seed or object here.
+     * a seed here.
      *
-     * @var string|Form
+     * @var array
      */
-    public $form = LoginForm::class;
+    public $formLoginSeed = [Form\Login::class];
 
     /**
      * @var array Seed that would create VirtualPage for adding Preference page content
      */
-    public $preferencePage = [VirtualPage::class, 'appStickyCb' => false];
+    public $preferencePage = [VirtualPage::class];
 
     /**
      * Which is the index page? This page should have auth / check.
@@ -227,7 +227,7 @@ class Auth
         // first logout
         $this->logout();
 
-        $user = $this->user;
+        $user = $this->user->newInstance();
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
@@ -311,7 +311,7 @@ class Auth
                 $userPage = $this->getApp()->add($this->preferencePage);
                 $this->setPreferencePage($userPage);
 
-                $menu->addItem(['Preferences', 'icon' => 'user'], [$userPage->getUrl()]);
+                $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
             }
 
             $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
@@ -328,8 +328,9 @@ class Auth
      */
     public function setPreferencePage(VirtualPage $page): void
     {
-        Header::addTo($page, ['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
-        Form::addTo($page)->setModel($this->user);
+        $f = \atk4\ui\Form::addTo($page);
+        $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
+        $f->setModel($this->user);
     }
 
     /**
@@ -341,12 +342,14 @@ class Auth
         $this->getApp()->html = null;
         $this->getApp()->initLayout([Narrow::class]);
         $this->getApp()->title = $this->getApp()->title . ' - Log-in Required';
-        $this->getApp()->add([
-            $this->form,
-            'auth' => $this,
-            'linkSuccess' => [$this->pageDashboard],
-            'linkForgot' => false,
-        ]);
+        $this->getApp()->add(array_merge(
+            $this->formLoginSeed,
+            [
+                'auth' => $this,
+                'linkSuccess' => [$this->pageDashboard],
+                'linkForgot' => false,
+            ]
+        ));
         $this->getApp()->layout->template->set('title', $this->getApp()->title);
         $this->getApp()->run();
         $this->getApp()->callExit();
