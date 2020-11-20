@@ -15,42 +15,21 @@ use atk4\ui\View;
  * View for Role administration.
  * Includes Role association with AccessRule.
  */
-class RoleAdmin extends View
+class RoleAdmin extends Crud
 {
-    // Imants: This class needs better implementation. We can take some ideas from UserAdmin view.
-    //         On other hand UserAdmin view will be simplified when RoleAdmin will be developed,
-    //         because it's role which have permissions set not User. UserAdmin should just show
-    //         permissions it get from roles and nothing more. Maybe not even that!
-
     use DebugTrait;
-
-    /** @var Crud */
-    public $crud;
-
-    /**
-     * Initialization.
-     */
-    protected function init(): void
-    {
-        parent::init();
-
-        //$this->crud = $this->add(CRUD::class, ['formDefault' => ['Form', 'layout' => 'Columns']]);
-        //// @TODO probably need special form here which will add conditional fields - all_visible vs. visible_fields etc.
-        $this->crud = Crud::addTo($this);
-    }
 
     /**
      * Initialize User Admin and add all the UI pieces.
      *
      * @return Model
      */
-    public function setModel(Model $role)
+    public function setModel(Model $role, $fields = null): Model
     {
-        // set model for CRUD
-        $this->crud->setModel($role);
+        parent::setModel($role);
 
         // Add new table column used for actions
-        $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
+        $column = $this->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
             $role->load($id);
@@ -59,8 +38,19 @@ class RoleAdmin extends View
             $crud = Crud::addTo($v);
             //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
             $crud->setModel((new \atk4\login\Model\AccessRule($role->persistence))->addCondition('role_id', $id));
+
+            $crud->onFormAddEdit(function ($f) use ($crud) {
+                // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
+                $f->setControlsDisplayRules(['visible_fields' => ['all_visible' => 'isNotChecked']]);
+                $f->setControlsDisplayRules(['editable_fields' => ['all_editable' => 'isNotChecked']]);
+                $f->setControlsDisplayRules(['actions' => ['all_actions' => 'isNotChecked']]);
+
+                // @todo Also it would be good to group all_visible + visible_fields field together in one group/line. Same for editable fields and actions.
+
+
+            });
         });
 
-        return parent::setModel($role);
+        return $this->model;
     }
 }

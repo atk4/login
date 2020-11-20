@@ -14,8 +14,3 @@ Header::addTo($app)->set('Roles');
 
 $crud = RoleAdmin::addTo($app);
 $crud->setModel(new Role($app->db));
-
-Header::addTo($app)->set('Roles new crud');
-
-$new_crud = \atk4\login\RoleAdmin2::addTo($app);
-$new_crud->setModel(new Role($app->db));
