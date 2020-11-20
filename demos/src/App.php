@@ -31,12 +31,12 @@ class App extends AbstractApp
         $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
-        $g = $this->layout->menuLeft->addGroup(['ACL']);
-        $g->addItem(['Client list (for testing)', 'icon' => 'table'], ['acl-clients']);
-
         $g = $this->layout->menuLeft->addGroup(['Admin']);
         $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
         $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+
+        $g = $this->layout->menuLeft->addGroup(['App demo with ACL']);
+        $g->addItem(['Client list (for ACL testing)', 'icon' => 'table'], ['acl-clients']);
 
         $this->initAuth(false);
 
