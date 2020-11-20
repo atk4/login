@@ -11,4 +11,11 @@ use atk4\ui\Header;
 include 'init.php';
 
 Header::addTo($app)->set('Roles');
-RoleAdmin::addTo($app)->setModel(new Role($app->db));
+
+$crud = RoleAdmin::addTo($app);
+$crud->setModel(new Role($app->db));
+
+Header::addTo($app)->set('Roles new crud');
+
+$new_crud = \atk4\login\RoleAdmin2::addTo($app);
+$new_crud->setModel(new Role($app->db));

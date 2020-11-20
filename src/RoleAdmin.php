@@ -57,7 +57,7 @@ class RoleAdmin extends View
             $v->add([Header::class, $role->getTitle() . ' Permissions']);
 
             $crud = Crud::addTo($v);
-            //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - looks like ATK bug
+            //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
             $crud->setModel((new \atk4\login\Model\AccessRule($role->persistence))->addCondition('role_id', $id));
         });
 
