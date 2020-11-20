@@ -12,9 +12,6 @@ local
 *.cache
 *.cache.*
 
-/demos_old/_demo-data/db.sqlite
-/demos_old/config.php
-
 /phpunit.xml
 /phpunit-*.xml
 /behat.yml
