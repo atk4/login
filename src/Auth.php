@@ -192,6 +192,12 @@ class Auth
             });
         }
 
+        // logout if requested
+        if (isset($_GET['logout'])) {
+            $this->logout();
+            $this->getApp()->redirect([$this->pageExit]);
+        }
+
         // validate user
         if ($this->check) {
             $this->check();
@@ -315,11 +321,6 @@ class Auth
             }
 
             $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
-        }
-
-        if (isset($_GET['logout'])) {
-            $this->logout();
-            $this->getApp()->redirect([$this->pageExit]);
         }
     }
 
