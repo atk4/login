@@ -332,7 +332,7 @@ class Auth
         $f = \atk4\ui\Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
-        $f->onSubmit(function($f){
+        $f->onSubmit(function($f) {
             $f->model->save();
 
             return $f->success('User preferences saved.');
