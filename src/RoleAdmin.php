@@ -21,8 +21,6 @@ class RoleAdmin extends Crud
 
     /**
      * Initialize User Admin and add all the UI pieces.
-     *
-     * @return Model
      */
     public function setModel(Model $role, $fields = null): Model
     {
@@ -46,8 +44,6 @@ class RoleAdmin extends Crud
                 $f->setControlsDisplayRules(['actions' => ['all_actions' => 'isNotChecked']]);
 
                 // @todo Also it would be good to group all_visible + visible_fields field together in one group/line. Same for editable fields and actions.
-
-
             });
         });
 
