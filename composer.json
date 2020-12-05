@@ -38,8 +38,13 @@
     "atk4/data": "~2.3.0"
   },
   "require-dev": {
+    "behat/behat": "^3.7",
+    "behat/mink": "^1.8",
+    "behat/mink-extension": "^2.3.1",
+    "behat/mink-selenium2-driver": "^1.4",
     "friendsofphp/php-cs-fixer": "^2.16",
-    "phpunit/phpunit": "*",
+    "phpunit/phpcov": "*",
+    "phpunit/phpunit": ">=9.3",
     "symfony/contracts": ">=1.1"
   },
   "require-dev-release": {
@@ -49,12 +54,14 @@
   },
   "autoload": {
     "psr-4": {
-      "atk4\\login\\": "src/"
+      "Atk4\\Login\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "atk4\\login\\tests\\": "tests/"
+      "Atk4\\Login\\Behat\\": "tests-behat/bootstrap/",
+      "Atk4\\Login\\Demo\\": "demos/src/",
+      "Atk4\\Login\\Tests\\": "tests/"
     }
   }
 }

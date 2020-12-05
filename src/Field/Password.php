@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Field;
+namespace Atk4\Login\Field;
 
-use atk4\core\InitializerTrait;
-use atk4\data\Exception;
-use atk4\data\Field;
-use atk4\data\Persistence;
-use atk4\ui\Persistence\UI;
+use Atk4\Core\InitializerTrait;
+use Atk4\Data\Exception;
+use Atk4\Data\Field;
+use Atk4\Data\Persistence;
+use Atk4\Ui\Persistence\UI;
 
 class Password extends Field
 {
@@ -25,7 +25,7 @@ class Password extends Field
      *
      * @var string
      */
-    protected $password_hash;
+    protected $passwordHash;
 
     /**
      * Optional callable for encrypting password.
@@ -90,7 +90,7 @@ class Password extends Field
      */
     public function normalize($value)
     {
-        $this->password_hash = null;
+        $this->passwordHash = null;
 
         return parent::normalize($value);
     }
@@ -100,7 +100,7 @@ class Password extends Field
      * your model.
      *
      * When storing password to persistence, it will be encrypted. We will
-     * also update $this->password_hash, in case you'll want to perform
+     * also update $this->passwordHash, in case you'll want to perform
      * verify right after.
      *
      * @param string $password plaintext password
@@ -115,12 +115,12 @@ class Password extends Field
 
         // encrypt password
         if (is_callable($this->encryptMethod)) {
-            $this->password_hash = call_user_func_array($this->encryptMethod, [$password]);
+            $this->passwordHash = call_user_func_array($this->encryptMethod, [$password]);
         } else {
-            $this->password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
         }
 
-        return $this->password_hash;
+        return $this->passwordHash;
     }
 
     /**
@@ -133,7 +133,7 @@ class Password extends Field
      */
     public function decrypt(?string $password, Field $f, Persistence $p)
     {
-        $this->password_hash = $password;
+        $this->passwordHash = $password;
         if ($p instanceof UI) {
             return $password;
         }
@@ -150,7 +150,7 @@ class Password extends Field
      */
     public function verify($password): bool
     {
-        if ($this->password_hash === null) {
+        if ($this->passwordHash === null) {
             // perhaps we currently hold a password and it's not saved yet.
             $v = $this->get();
 
@@ -164,8 +164,8 @@ class Password extends Field
 
         // verify password
         $v = is_callable($this->verifyMethod)
-                ? call_user_func_array($this->verifyMethod, [$password, $this->password_hash])
-                : password_verify($password, $this->password_hash);
+                ? call_user_func_array($this->verifyMethod, [$password, $this->passwordHash])
+                : password_verify($password, $this->passwordHash);
 
         return $v;
     }

@@ -9,11 +9,12 @@ nbproject
 local
 *.local
 *.local.*
-cache
 *.cache
 *.cache.*
 
 /phpunit.xml
 /phpunit-*.xml
+/behat.yml
 
-demos/config.php
+*.bak
+/demos/data/db.sqlite

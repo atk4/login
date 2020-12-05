@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
-use atk4\data\Model;
-use atk4\data\ValidationException;
+use Atk4\Data\Model;
+use Atk4\Data\ValidationException;
 
 /**
  * Adding this trait to your model will allow it to set fields which should be unique.
@@ -15,11 +15,9 @@ trait UniqueFieldValue
     /**
      * Set that field value should be unique.
      *
-     * @param string $field
-     *
      * @return $this
      */
-    public function setUnique($field)
+    public function setUnique(string $field)
     {
         $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
             if ($m->isDirty($field)) {

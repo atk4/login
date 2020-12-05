@@ -2,23 +2,30 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\ui\Button;
-use atk4\ui\Header;
-use atk4\ui\View;
+use Atk4\Ui\Button;
+use Atk4\Ui\Header;
+use Atk4\Ui\Message;
+use Atk4\Ui\View;
 
-require '../vendor/autoload.php';
-require 'db.php';
+require 'init.php';
 
-$app = new App(\atk4\ui\Layout\Centered::class, false, true);
 Header::addTo($app, ['Welcome to Auth Add-on demo app']);
-Button::addTo($app, ['Run migration wizard', 'icon' => 'gift'])->link(['wizard']);
 
-View::addTo($app, ['ui' => 'divider']);
-Button::addTo($app, ['Log-in', 'icon' => 'sign in'])->link(['login']);
-Button::addTo($app, ['Register', 'icon' => 'edit'])->link(['register']);
-Button::addTo($app, ['Dashboard', 'icon' => 'dashboard'])->link(['dashboard']);
+// Setup db by using migration
+$v = View::addTo($app, ['ui' => 'segment']);
+Button::addTo($v, ['Setup demo SQLite database', 'icon' => 'cogs'])->link(['admin-setup']);
 
-View::addTo($app, ['ui' => 'divider']);
-Button::addTo($app, ['Admin', 'icon' => 'lock open'])->link(['admin-users']);
+// Info
+if (isset($app->auth) && $app->auth->isLoggedIn()) {
+    $a = Message::addTo($app, ['type' => 'info'])->set('Currently logged in: ' . $app->auth->user->getTitle());
+    Button::addTo($a, ['Logout', 'icon' => 'sign out'])->on('click', $app->jsRedirect([$app->auth->pageDashboard, 'logout' => true]));
+} else {
+    $a = Message::addTo($app, ['type' => 'info'])->set('Currently there is no user logged in');
+    Button::addTo($a, ['Login', 'icon' => 'key'])->on('click', $app->jsRedirect(['form-login']));
+}
+
+// Addon description
+$v = View::addTo($app, ['ui' => 'segment']);
+$v->set('Here goes small description of this addon');

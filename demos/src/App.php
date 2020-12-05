@@ -2,66 +2,62 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\data\Persistence;
-use atk4\login\Acl;
-use atk4\login\Auth;
-use atk4\ui\Layout;
+use Atk4\Login\Acl;
+use Atk4\Login\Auth;
+use Atk4\Ui\Layout;
 
 /**
  * Example implementation of your Authenticated application.
  */
-class App extends \atk4\ui\App
+class App extends AbstractApp
 {
-    use \atk4\core\ConfigTrait;
-
-    public $db;
     public $auth;
-    public $title = 'Auth Demo App';
+    public $title = 'Demo App';
 
-    public function __construct($interface = 'front', $no_db_connect = false, $no_authenticate = false)
+    protected function init(): void
     {
-        parent::__construct();
+        parent::init();
 
-        $config_file = __DIR__ . '/../config.php';
+        $this->initLayout([Layout\Admin::class]);
 
-        if (!file_exists($config_file)) {
-            $this->redirect('wizard.php');
-            $this->callExit();
-        }
+        // Construct menu
+        $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
+        $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
-        $this->readConfig($config_file, 'php');
+        $g = $this->layout->menuLeft->addGroup(['Forms']);
+        $g->addItem(['Sign-up form', 'icon' => 'edit'], ['form-register']);
+        $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
+        $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
-        if ($interface === 'admin') {
-            $this->initLayout([Layout\Admin::class]);
-            $this->layout->menuLeft->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
-            $this->layout->menuLeft->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
-            $this->layout->menuLeft->addItem(['Back to Demo Index', 'icon' => 'arrow left'], ['index']);
-        } elseif ($interface === 'centered') {
-            $this->initLayout([Layout\Centered::class]);
-        } else {
-            $this->initLayout([\atk4\login\Layout\Narrow::class]);
-        }
+        $g = $this->layout->menuLeft->addGroup(['Admin']);
+        $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
+        $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
 
-        if (!$no_db_connect) {
-            $this->db = Persistence::connect($this->config['dsn']);
-            //$this->db->setApp($this);
-        }
+        $g = $this->layout->menuLeft->addGroup(['App demo with ACL']);
+        $g->addItem(['Client list (for ACL testing)', 'icon' => 'table'], ['acl-clients']);
 
-        if (!$no_authenticate) {
-            $this->authenticate();
+        $this->initAuth(false);
+
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->addUserMenu();
         }
     }
 
-    public function authenticate()
+    public function initAuth($check = true)
     {
-        $this->auth = new Auth(['check' => true]);
+        $this->auth = new Auth(['check' => $check, 'pageDashboard' => 'index']);
         $this->auth->setApp($this);
 
-        $m = new \atk4\login\Model\User($this->db);
+        // Can not setmodel at this stage :(
+        $m = new \Atk4\Login\Model\User($this->db);
         $this->auth->setModel($m);
+    }
 
+    public function initAcl()
+    {
+        // adding this requires user to be logged in, so we can't run this in wrapping app :(
         $this->auth->setAcl(new Acl(), $this->db);
     }
 }

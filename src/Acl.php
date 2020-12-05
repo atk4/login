@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace Atk4\Login;
 
-use atk4\core\Exception;
-use atk4\data\Model;
-use atk4\data\Persistence;
+use Atk4\Core\Exception;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -24,11 +24,11 @@ class Acl
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @return \atk4\login\Model\AccessRule
+     * @return \Atk4\Login\Model\AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var \atk4\login\Model\User */
+        /** @var \Atk4\Login\Model\User */
         $user = $this->auth->user;
 
         if (!$user->loaded()) {
@@ -49,18 +49,22 @@ class Acl
     {
         foreach ($this->getRules($m) as $rule) {
             // extract as arrays
-            $visible = is_array($rule->get('visible_fields')) ? $rule->get('visible_fields') : explode(',', $rule->get('visible_fields'));
-            $editable = is_array($rule->get('editable_fields')) ? $rule->get('editable_fields') : explode(',', $rule->get('editable_fields'));
-            $actions = is_array($rule->get('actions')) ? $rule->get('actions') : explode(',', $rule->get('actions'));
+            $visible = is_array($rule->get('visible_fields')) ? $rule->get('visible_fields') : explode(',', $rule->get('visible_fields') ?? '');
+            $editable = is_array($rule->get('editable_fields')) ? $rule->get('editable_fields') : explode(',', $rule->get('editable_fields') ?? '');
+            $actions = is_array($rule->get('actions')) ? $rule->get('actions') : explode(',', $rule->get('actions') ?? '');
 
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                $field->ui['visible'] = $rule->get('all_visible') || (array_search($name, $visible, true) !== false);
-                $field->ui['editable'] = $rule->get('all_editable') || (array_search($name, $editable, true) !== false);
+                if (!$rule->get('all_visible') && $visible) {
+                    $field->ui['visible'] = array_search($name, $visible, true) !== false;
+                }
+                if (!$rule->get('all_editable') && $editable) {
+                    $field->ui['editable'] = array_search($name, $editable, true) !== false;
+                }
             }
 
             // remove not allowed actions
-            if (!$rule->get('all_actions') && $rule->get('actions')) {
+            if (!$rule->get('all_actions') && $actions) {
                 $actions_to_remove = array_diff(array_keys($m->getUserActions()), $actions);
                 foreach ($actions_to_remove as $action) {
                     $m->getUserAction($action)->enabled = false;

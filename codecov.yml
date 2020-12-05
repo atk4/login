@@ -1,8 +1,9 @@
 ignore:
+  - demos
   - docs
-  - features
-  - saasty
   - template
+  - tests
+  - tests-behat
 comment: false
 coverage:
   status:

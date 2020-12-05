@@ -9,19 +9,19 @@ Install through composer `composer require atk4/login`
 Then add `Auth` into your app and set appropriate user controller:
 
 ```php
-$app = new \atk4\ui\App();
-$app->initLayout([\atk4\ui\Layout\Admin::class]);
-$app->db = new \atk4\data\Persistence($dsn);
+$app = new \Atk4\Ui\App();
+$app->initLayout([\Atk4\Ui\Layout\Admin::class]);
+$app->db = new \Atk4\Data\Persistence($dsn);
 
 // ADD THIS CODE:
-$app->add(new \atk4\login\Auth())
+$app->add(new \Atk4\Login\Auth())
     ->setModel(new User($app->db));
 
 // The rest of YOUR UI code will now be protected
-$app->add([\atk4\ui\CRUD:class])->setModel(new Client($app->db));
+$app->add([\Atk4\Ui\Crud:class])->setModel(new Client($app->db));
 ```
 
-(If you do not have User model yet, you can extend or use \atk4\login\Model\User).
+(If you do not have User model yet, you can extend or use \Atk4\Login\Model\User).
 
 ![Login](./docs/login-form.png)
 
@@ -57,11 +57,11 @@ For a more advanced usage, you can either tweak Automated mode or use individual
 When you initialize 'Auth' class you may inject property values:
 
 ```php
-$app->auth = $app->add(new \atk4\login\Auth([
+$app->auth = $app->add(new \Atk4\Login\Auth([
     'hasPreferences' => false, // do not show Preferences page/form
     'pageDashboard' => 'dashboard', // name of the page, where user arrives after login
     'pageExit' => 'goodbye', // where to send user after logout
-    
+
     // Oter options:
     // 'hasUserMenu' => false,  // will disable interaction with Admin Layout user menu
 ]));
@@ -73,7 +73,7 @@ $app->auth->setModel(new User($app->db));
 In the manual mode, no checks will be performed, and you are responsible for authenticating user yourself. This works best if you have a more complex auth logic.
 
 ``` php
-$app->auth = $app->add(new \atk4\login\Auth([
+$app->auth = $app->add(new \Atk4\Login\Auth([
     'check' => false
 ]));
 $app->auth->setModel(new User($app->db));
@@ -81,18 +81,18 @@ $app->auth->setModel(new User($app->db));
 
 // Now manually use login logic
 if (!$app->auth->user->loaded()) {
-  $app->add([new \atk4\login\LoginForm(), 'auth'=>$app->auth]);
+  $app->add([new \Atk4\Login\LoginForm(), 'auth'=>$app->auth]);
 }
 ```
 
 #### Adding sign-up form
 
 ``` php
-$app->add([\atk4\login\RegisterForm::class])
-    ->setModel(new \atk4\login\Model\User($app->db));
+$app->add([\Atk4\Login\RegisterForm::class])
+    ->setModel(new \Atk4\Login\Model\User($app->db));
 ```
 
-Displays email and 2 password fields (for confirmation). If filled successfully will create new record for `\atk4\login\Model\User`. Will cast email to lowercase before adding. Things to try:
+Displays email and 2 password fields (for confirmation). If filled successfully will create new record for `\Atk4\Login\Model\User`. Will cast email to lowercase before adding. Things to try:
 
 -   Extend or use your own User class
 -   Add more fields to registration form
@@ -105,7 +105,7 @@ Displays email and 2 password fields (for confirmation). If filled successfully 
 
 ``` php
 $app->add([
-  \atk4\login\LoginForm::class, 
+  \Atk4\Login\LoginForm::class,
   'auth'=>$app->auth,
   //'successLink'=>['dashboard'],
   //'forgotLink'=>['forgot'],
@@ -165,10 +165,10 @@ Things to try:
 Field 'password' is using a custom field class `Password`.  It appears as a regular password, but will be hashed before storing into the database. You can use this field in any model like this:
 
 ``` php
-$model->addField('mypass', [\atk4\login\Field\Password::class]);
+$model->addField('mypass', [\Atk4\Login\Field\Password::class]);
 ```
 
-Also the password will not be stored in session cache and will not be accessible directly. 
+Also the password will not be stored in session cache and will not be accessible directly.
 
 Things to try:
 
@@ -185,8 +185,8 @@ Although a basic User model is supplied, you can either extend it or use your ow
 We include a slightly extended "Admin" interface which includes page to see user details and change their password. To create admin page use:
 
 ``` php
-$app->add(new \atk4\login\UserAdmin())
-    ->setModel(new \atk4\login\Model\User($app->db));
+$app->add(new \Atk4\Login\UserAdmin())
+    ->setModel(new \Atk4\Login\Model\User($app->db));
 ```
 
 ![Login](./docs/admin-demo.png)
@@ -205,15 +205,15 @@ Things to try:
 
 #### Migrations
 
-Use of migration is optional, but can help by populating initial structure of your user model. Look inside file `demos/wizard.php`. It simply adds a console component, which will execute migration of 'User' model. 
+Use of migration is optional, but can help by populating initial structure of your user model. Look inside file `demos/wizard.php`. It simply adds a console component, which will execute migration of 'User' model.
 
-Migration relies on https://github.com/atk4/schema. 
+Migration relies on https://github.com/atk4/schema.
 
 When migration is executed it simply checks to make sure that table for 'user' exists and has all required fields. It will not delete or change existing fields or tables.
 
 ## Roadmap
 
-Generally we wish to keep this add-on clean, but very extensible, with various tutorials on how to implement various scenarios (noted above under "Things to try"). 
+Generally we wish to keep this add-on clean, but very extensible, with various tutorials on how to implement various scenarios (noted above under "Things to try").
 
 For some of those features we would like to add a better support in next releases:
 

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace Atk4\Login;
 
-use atk4\data\Model;
-use atk4\ui\Crud;
-use atk4\ui\Form;
-use atk4\ui\jsToast;
-use atk4\ui\Table\Column\ActionButtons;
-use atk4\ui\View;
+use Atk4\Core\DebugTrait;
+use Atk4\Data\Model;
+use Atk4\Ui\Crud;
+use Atk4\Ui\Form;
+use Atk4\Ui\JsToast;
+use Atk4\Ui\Table\Column\ActionButtons;
+use Atk4\Ui\View;
 
 /**
  * View for User administration.
@@ -17,7 +18,7 @@ use atk4\ui\View;
  */
 class UserAdmin extends View
 {
-    use \atk4\core\DebugTrait;
+    use DebugTrait;
 
     /** @var Crud */
     public $crud;
@@ -66,7 +67,7 @@ class UserAdmin extends View
 
                 return [
                     $v->getOwner()->hide(),
-                    new jsToast([
+                    new JsToast([
                         'message' => 'Password for ' . $this->model->get($this->model->title_field) . ' is changed!',
                         'class' => 'success',
                     ]),

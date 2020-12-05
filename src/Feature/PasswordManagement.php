@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
-use atk4\data\Model\UserAction;
-use atk4\login\Field\Password;
+use Atk4\Data\Model\UserAction;
+use Atk4\Login\Field\Password;
 
 /**
  * Enables your User model to perform various actions with the passwords.
@@ -17,20 +17,33 @@ trait PasswordManagement
      */
     public function initPasswordManagement()
     {
-        $this->addUserAction('generate_random_password', ['appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, 'system' => true]);
-        $this->addUserAction('reset_password', ['appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD]);
-        $this->addUserAction('check_password_strength', [/*'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, */'args' => ['password' => ['type' => 'string']]]);
+        $this->addUserAction('generate_random_password', [
+            'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
+            'system' => true,
+            'args' => [
+                'length' => ['type' => 'int'],
+                'words' => ['type' => 'int'],
+            ],
+        ]);
+        $this->addUserAction('reset_password', [
+            'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
+            'args' => [
+                'length' => ['type' => 'int'],
+                'words' => ['type' => 'int'],
+            ],
+        ]);
+        $this->addUserAction('check_password_strength', [
+            // 'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
+            'args' => [
+                'password' => ['type' => 'string'],
+            ],
+        ]);
     }
 
     /**
      * Generate random password for the user, returns it.
-     *
-     * @param int $length
-     * @param int $words
-     *
-     * @return string
      */
-    public function generate_random_password($length = 4, $words = 1)
+    public function generate_random_password(int $length = 4, int $words = 1): string
     {
         return (new Password())->suggestPassword($length, $words);
     }
@@ -39,35 +52,32 @@ trait PasswordManagement
      * Assumes that current model has 'password' and 'email' fields. Will set random password
      * and then will email user about it (if $app->outbox is set up correctly).
      *
-     * @param int $length
-     * @param int $words
-     *
-     * @return string
+     * @todo This method relies on default password field name and will not work
+     *       if different fieldPassword are set in Auth controller.
+     *       This has to be fixed somehow.
      */
-    public function reset_password($length = null, $words = null)
+    public function reset_password(int $length = null, int $words = null): string
     {
+        $fieldPassword = 'password';
+
         $password = $this->generate_random_password(
-            $length ?: $this->getApp()->addonConfig['atk4/login']['defaultPasswordLength'] ?? 4,
-            $words
+            $length ?: 4,
+            $words ?: 1
         );
 
-        $this->set('password', $password);
-        $this->save();
+        $this->save([$fieldPassword => $password]);
 
-        if ($this->hasField('email') && isset($this->getApp()->outbox)) {
-            $this->getApp()->outbox->sendEmail($this->get('email'), 'password_reset', ['new_password' => $password]);
-
-            return 'Password was emailed to ' . $this->get('email');
+        // if we have SendEmailAction in this model, then send new password by email
+        if ($this->hasUserAction('sendEmail')) {
+            $this->executeUserAction('sendEmail', 'Password reset', 'New password: ' . $password);
         }
 
         return $password;
     }
 
     /**
-     * Will verify password against several verification mechanisms, returns suggestion. Can be used in validation.
-     *
-     * @param string $password
-     * @param array  $settings as below
+     * Will verify password against several verification mechanisms, returns suggestion.
+     * Can be used in validation.
      *
      *  - strength=5: uses scale of 1 to 10 to measure how strong password is (see https://howsecureismypassword.net)
      *  https://gist.github.com/xrstf/2926619
@@ -82,7 +92,7 @@ trait PasswordManagement
      *
      * @return string|null
      */
-    public function check_password_strength($password, $settings = ['strength' => true])
+    public function check_password_strength(string $password, array $settings = ['strength' => 3])
     {
         $length = strlen($password);
         $nUpper = 0;
@@ -112,8 +122,8 @@ trait PasswordManagement
             return 'Password is not strong enough. Make it longer or use more capitals and symbols.';
         }
 
-        if (isset($settings['symbols']) && $nSymbol < $settings['symbols']) {
-            return 'Password requires at least ' . $settings['symbols'] . ' symbols';
+        if (isset($settings['len']) && $length < $settings['len']) {
+            return 'Password should be at least ' . $settings['len'] . ' characters long';
         }
 
         if (isset($settings['symbols']) && $nSymbol < $settings['symbols']) {
@@ -133,12 +143,8 @@ trait PasswordManagement
 
     /**
      * Calculate score for a password. Credit: https://gist.github.com/xrstf/2926619.
-     *
-     * @param string $pw the password to work on
-     *
-     * @return int score
      */
-    private function calculate_strength($pw)
+    private function calculate_strength(string $pw): int
     {
         $length = strlen($pw);
         $score = $length * 4;
@@ -254,12 +260,9 @@ trait PasswordManagement
      * For example if $charLocs is [0,2,3], then only $src[2:3] is a possible
      * substring with sequential chars.
      *
-     * @param array  $charLocs
-     * @param string $src
-     *
      * @return array [[c,c,c,c], [a,a,a], ...]
      */
-    private function findSequence($charLocs, $src)
+    private function findSequence(array $charLocs, string $src): array
     {
         $sequences = [];
         $sequence = [];
