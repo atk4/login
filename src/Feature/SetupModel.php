@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
 /*
  * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
  * $this->setupModel() from your models init() method after you define model fields.
  *
- * @package atk4\login\Feature
+ * @package Atk4\Login\Feature
  */
-use atk4\data\Model;
-use atk4\data\ValidationException;
-use atk4\login\Form\Control;
-use atk4\login\Model\AccessRule;
-use atk4\login\Model\Role;
-use atk4\login\Model\User;
+use Atk4\Data\Model;
+use Atk4\Data\ValidationException;
+use Atk4\Login\Form\Control;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\Role;
+use Atk4\Login\Model\User;
 
 trait SetupModel
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Field;
+namespace Atk4\Login\Field;
 
-use atk4\core\InitializerTrait;
-use atk4\data\Exception;
-use atk4\data\Field;
-use atk4\data\Persistence;
-use atk4\ui\Persistence\UI;
+use Atk4\Core\InitializerTrait;
+use Atk4\Data\Exception;
+use Atk4\Data\Field;
+use Atk4\Data\Persistence;
+use Atk4\Ui\Persistence\UI;
 
 class Password extends Field
 {

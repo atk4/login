@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests;
+namespace Atk4\Login\Tests;
 
-use atk4\data\Model;
-use atk4\login\Auth;
-use atk4\login\Model\AccessRule;
-use atk4\login\Model\Role;
-use atk4\login\Model\User;
+use Atk4\Data\Model;
+use Atk4\Login\Auth;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\Role;
+use Atk4\Login\Model\User;
 
 class AuthTest extends Generic
 {

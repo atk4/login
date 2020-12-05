@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Form;
+namespace Atk4\Login\Form;
 
-use atk4\ui\Form;
+use Atk4\Data\Model;
+use Atk4\Ui\Form;
 
 /**
  * Register form view.
@@ -37,9 +38,9 @@ class Register extends Form
      *
      * @param array $fields
      *
-     * @return \atk4\data\Model
+     * @return Model
      */
-    public function setModel(\atk4\data\Model $user, $fields = null)
+    public function setModel(Model $user, $fields = null)
     {
         parent::setModel($user, false);
 

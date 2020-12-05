@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\login\Model\Role;
-use atk4\login\RoleAdmin;
-use atk4\ui\Header;
+use Atk4\Login\Model\Role;
+use Atk4\Login\RoleAdmin;
+use Atk4\Ui\Header;
 
 include 'init.php';
 

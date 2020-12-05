@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests;
+namespace Atk4\Login\Tests;
 
-use atk4\login\Model\AccessRule;
-use atk4\login\Model\Role;
-use atk4\login\Model\User;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\Role;
+use Atk4\Login\Model\User;
 
-abstract class Generic extends \atk4\schema\PhpunitTestCase
+abstract class Generic extends \Atk4\Schema\PhpunitTestCase
 {
     protected function setupDefaultDb()
     {
@@ -22,9 +22,9 @@ abstract class Generic extends \atk4\schema\PhpunitTestCase
                 2 => ['id' => 2, 'name' => 'Admin Role'],
             ],
             'login_access_rule' => [
-                1 => ['id' => 1, 'role_id' => 1, 'model' => '\\atk4\login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                2 => ['id' => 2, 'role_id' => 2, 'model' => '\\atk4\login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                3 => ['id' => 3, 'role_id' => 2, 'model' => '\\atk4\login\\Model\\Role', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                1 => ['id' => 1, 'role_id' => 1, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                2 => ['id' => 2, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                3 => ['id' => 3, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\Role', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
             ],
         ]);
     }

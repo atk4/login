@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Form;
+namespace Atk4\Login\Form;
 
-use atk4\login\Auth;
-use atk4\ui\Form;
-use atk4\ui\Form\Control;
-use atk4\ui\View;
+use Atk4\Login\Auth;
+use Atk4\Ui\Form;
+use Atk4\Ui\Form\Control;
+use Atk4\Ui\View;
 
 /**
  * Login form view.

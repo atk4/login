@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
 /**
  * Application which use demo database.
  */
-abstract class AbstractApp extends \atk4\ui\App
+abstract class AbstractApp extends \Atk4\Ui\App
 {
     /** @var string DB filename */
     public $dbFile = '/data/db.sqlite';
@@ -21,6 +21,6 @@ abstract class AbstractApp extends \atk4\ui\App
 
         // set DB connection
         $this->dbFile = __DIR__ . '/..' . $this->dbFile;
-        $this->db = new \atk4\data\Persistence\Sql('sqlite:' . $this->dbFile);
+        $this->db = new \Atk4\Data\Persistence\Sql('sqlite:' . $this->dbFile);
     }
 }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Model;
+namespace Atk4\Login\Model;
 
-use atk4\data\Model;
-use atk4\login\Feature\SetupModel;
-use atk4\login\Feature\UniqueFieldValue;
+use Atk4\Data\Model;
+use Atk4\Login\Feature\SetupModel;
+use Atk4\Login\Feature\UniqueFieldValue;
 
 class Role extends Model
 {

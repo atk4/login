@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\login\Acl;
-use atk4\login\Auth;
-use atk4\ui\Layout;
+use Atk4\Login\Acl;
+use Atk4\Login\Auth;
+use Atk4\Ui\Layout;
 
 /**
  * Example implementation of your Authenticated application.
@@ -51,7 +51,7 @@ class App extends AbstractApp
         $this->auth->setApp($this);
 
         // Can not setmodel at this stage :(
-        $m = new \atk4\login\Model\User($this->db);
+        $m = new \Atk4\Login\Model\User($this->db);
         $this->auth->setModel($m);
     }
 

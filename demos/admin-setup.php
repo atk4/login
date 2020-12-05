@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\login\demo\Model\Client;
-use atk4\login\Model\AccessRule;
-use atk4\login\Model\Role;
-use atk4\login\Model\User;
-use atk4\ui\Button;
-use atk4\ui\Console;
-use atk4\ui\Header;
-use atk4\ui\Message;
-use atk4\ui\View;
+use Atk4\Login\Demo\Model\Client;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\Role;
+use Atk4\Login\Model\User;
+use Atk4\Ui\Button;
+use Atk4\Ui\Console;
+use Atk4\Ui\Header;
+use Atk4\Ui\Message;
+use Atk4\Ui\View;
 
 require 'init.php';
 

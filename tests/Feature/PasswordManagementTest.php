@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests\Feature;
+namespace Atk4\Login\Tests\Feature;
 
-use atk4\data\Model;
-use atk4\data\Persistence;
-use atk4\login\Feature\PasswordManagement;
-use atk4\login\Model\User;
-use atk4\login\tests\Generic;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
+use Atk4\Login\Feature\PasswordManagement;
+use Atk4\Login\Model\User;
+use Atk4\Login\Tests\Generic;
 
 class PasswordManagementTest extends Generic
 {

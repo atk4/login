@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Form\Control;
+namespace Atk4\Login\Form\Control;
 
 /**
  * Form field to choose one or multiple model fields.

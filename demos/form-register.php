@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\login\Form;
-use atk4\login\Model\User;
-use atk4\ui\Header;
-use atk4\ui\View;
+use Atk4\Login\Form;
+use Atk4\Login\Model\User;
+use Atk4\Ui\Header;
+use Atk4\Ui\View;
 
 require 'init.php';
 

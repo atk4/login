@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Model;
+namespace Atk4\Login\Model;
 
-use atk4\data\Model;
+use Atk4\Data\Model;
 // Features of User model
-use atk4\login\Feature\PasswordManagement;
-use atk4\login\Feature\SendEmailAction;
-use atk4\login\Feature\SetupModel;
-use atk4\login\Feature\Signup;
-use atk4\login\Feature\UniqueFieldValue;
-use atk4\login\Field\Password;
+use Atk4\Login\Feature\PasswordManagement;
+use Atk4\Login\Feature\SendEmailAction;
+use Atk4\Login\Feature\SetupModel;
+use Atk4\Login\Feature\Signup;
+use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\Field\Password;
 
 /**
  * Example user data model.

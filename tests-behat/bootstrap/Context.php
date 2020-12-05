@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\behat;
+namespace Atk4\Login\Behat;
 
 use Behat\Behat\Context\Context as BehatContext;
 //use Behat\Behat\Hook\Scope\AfterStepScope;

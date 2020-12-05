@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Model;
+namespace Atk4\Login\Model;
 
-use atk4\data\Model;
-use atk4\login\Feature\SetupModel;
+use Atk4\Data\Model;
+use Atk4\Login\Feature\SetupModel;
 
 /**
  * White-list access control rules.

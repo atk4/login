@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace Atk4\Login;
 
-use atk4\core\DebugTrait;
-use atk4\data\Model;
-use atk4\ui\Crud;
-use atk4\ui\Header;
-use atk4\ui\Table\Column\ActionButtons;
-use atk4\ui\View;
+use Atk4\Core\DebugTrait;
+use Atk4\Data\Model;
+use Atk4\Ui\Crud;
+use Atk4\Ui\Header;
+use Atk4\Ui\Table\Column\ActionButtons;
+use Atk4\Ui\View;
 
 /**
  * View for Role administration.
@@ -35,7 +35,7 @@ class RoleAdmin extends Crud
 
             $crud = Crud::addTo($v);
             //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
-            $crud->setModel((new \atk4\login\Model\AccessRule($role->persistence))->addCondition('role_id', $id));
+            $crud->setModel((new Model\AccessRule($role->persistence))->addCondition('role_id', $id));
 
             $crud->onFormAddEdit(function ($f) use ($crud) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works

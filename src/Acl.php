@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace Atk4\Login;
 
-use atk4\core\Exception;
-use atk4\data\Model;
-use atk4\data\Persistence;
+use Atk4\Core\Exception;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -24,11 +24,11 @@ class Acl
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @return \atk4\login\Model\AccessRule
+     * @return \Atk4\Login\Model\AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var \atk4\login\Model\User */
+        /** @var \Atk4\Login\Model\User */
         $user = $this->auth->user;
 
         if (!$user->loaded()) {

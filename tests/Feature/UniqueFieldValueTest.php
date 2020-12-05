@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests\Feature;
+namespace Atk4\Login\Tests\Feature;
 
-use atk4\data\Model;
-use atk4\data\ValidationException;
-use atk4\login\Feature\UniqueFieldValue;
-use atk4\login\tests\Generic;
+use Atk4\Data\Model;
+use Atk4\Data\ValidationException;
+use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\tests\Generic;
 
 class UniqueFieldValueTest extends Generic
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests;
+namespace Atk4\Login\Tests;
 
-use atk4\data\Model;
-use atk4\data\Persistence;
-use atk4\login\Field\Password;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
+use Atk4\Login\Field\Password;
 
 class PasswordFieldTest extends Generic
 {
@@ -80,7 +80,7 @@ class PasswordFieldTest extends Generic
 
         $m->addField('p', [Password::class]);
 
-        $this->expectException(\atk4\data\Exception::class);
+        $this->expectException(\Atk4\Data\Exception::class);
         $m->getField('p')->verify('mypass'); // tries to compare empty password field value with value 'mypass'
     }
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests\Feature;
+namespace Atk4\Login\Tests\Feature;
 
-use atk4\login\Model\User;
-use atk4\login\tests\Generic;
+use Atk4\Login\Model\User;
+use Atk4\Login\Tests\Generic;
 
 class SendEmailActionTest extends Generic
 {

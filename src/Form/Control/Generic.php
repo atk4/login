@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Form\Control;
+namespace Atk4\Login\Form\Control;
 
-use atk4\data\Model;
-use atk4\ui\Exception;
-use atk4\ui\Form\Control\Dropdown;
+use Atk4\Data\Model;
+use Atk4\Ui\Exception;
+use Atk4\Ui\Form\Control\Dropdown;
 
 /**
  * Form field to choose one or multiple entities.
@@ -36,7 +36,7 @@ abstract class Generic extends Dropdown
 
         $model = new $class($this->form->model->persistence);
         if (!$model instanceof Model) {
-            throw new Exception('Class should be instance of atk4\\data\\Model');
+            throw new Exception('Class should be instance of Atk4\\Data\\Model');
         }
 
         return $model;

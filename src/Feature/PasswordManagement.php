@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
-use atk4\data\Model\UserAction;
-use atk4\login\Field\Password;
+use Atk4\Data\Model\UserAction;
+use Atk4\Login\Field\Password;
 
 /**
  * Enables your User model to perform various actions with the passwords.

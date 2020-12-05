@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo;
+namespace Atk4\Login\Demo;
 
-use atk4\core\AppScopeTrait;
-use atk4\core\DynamicMethodTrait;
-use atk4\core\Factory;
-use atk4\core\HookTrait;
-use atk4\schema\Migration;
-use atk4\ui\Console;
+use Atk4\Core\AppScopeTrait;
+use Atk4\Core\DynamicMethodTrait;
+use Atk4\Core\Factory;
+use Atk4\Core\HookTrait;
+use Atk4\Schema\Migration;
+use Atk4\Ui\Console;
 
 /**
  * Makes sure your database is adjusted for one or several models,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\demo\Model;
+namespace Atk4\Login\Demo\Model;
 
-use atk4\data\Model;
+use Atk4\Data\Model;
 
 class Client extends Model
 {

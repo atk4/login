@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Cache;
+namespace Atk4\Login\Cache;
 
-//use atk4\login\Auth;
-use atk4\core\DiContainerTrait;
-use atk4\core\NameTrait;
-use atk4\core\SessionTrait;
+use Atk4\Core\DiContainerTrait;
+use Atk4\Core\NameTrait;
+use Atk4\Core\SessionTrait;
 
 /**
  * Session cache for authentication controller.

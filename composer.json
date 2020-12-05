@@ -54,14 +54,14 @@
   },
   "autoload": {
     "psr-4": {
-      "atk4\\login\\": "src/"
+      "Atk4\\Login\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "atk4\\login\\tests\\": "tests/",
-      "atk4\\login\\behat\\": "tests-behat/bootstrap/",
-      "atk4\\login\\demo\\": "demos/src/"
+      "Atk4\\Login\\Behat\\": "tests-behat/bootstrap/",
+      "Atk4\\Login\\Demo\\": "demos/src/",
+      "Atk4\\Login\\Tests\\": "tests/"
     }
   }
 }

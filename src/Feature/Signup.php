@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
-use atk4\data\Model\UserAction;
+use Atk4\Data\Model\UserAction;
 
 /**
  * Adding this trait to your user model will allow users to sign-up for your application. Additionally execute

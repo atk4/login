@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\tests\Feature;
+namespace Atk4\Login\Tests\Feature;
 
-use atk4\login\tests\Generic;
+use Atk4\Login\Tests\Generic;
 
 class SignupTest extends Generic
 {

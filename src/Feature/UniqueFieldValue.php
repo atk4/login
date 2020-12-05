@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\login\Feature;
+namespace Atk4\Login\Feature;
 
-use atk4\data\Model;
-use atk4\data\ValidationException;
+use Atk4\Data\Model;
+use Atk4\Data\ValidationException;
 
 /**
  * Adding this trait to your model will allow it to set fields which should be unique.

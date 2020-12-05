@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace atk4\login;
+namespace Atk4\Login;
 
-use atk4\core\AppScopeTrait;
-use atk4\core\ContainerTrait;
-use atk4\core\DiContainerTrait;
-use atk4\core\Factory;
-use atk4\core\HookTrait;
-use atk4\core\InitializerTrait;
-use atk4\core\TrackableTrait;
-use atk4\data\Model;
-use atk4\data\Persistence;
-use atk4\login\Layout\Narrow;
-use atk4\ui\Layout\Admin;
-use atk4\ui\VirtualPage;
+use Atk4\Core\AppScopeTrait;
+use Atk4\Core\ContainerTrait;
+use Atk4\Core\DiContainerTrait;
+use Atk4\Core\Factory;
+use Atk4\Core\HookTrait;
+use Atk4\Core\InitializerTrait;
+use Atk4\Core\TrackableTrait;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence;
+use Atk4\Login\Layout\Narrow;
+use Atk4\Ui\Layout\Admin;
+use Atk4\Ui\VirtualPage;
 
 /**
  * Authentication controller. Add this to your application somewhere
@@ -329,7 +329,7 @@ class Auth
      */
     public function setPreferencePage(VirtualPage $page): void
     {
-        $f = \atk4\ui\Form::addTo($page);
+        $f = \Atk4\Ui\Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
         $f->onSubmit(function ($f) {
