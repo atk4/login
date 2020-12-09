@@ -18,9 +18,9 @@ use Atk4\Login\Field\Password;
  */
 class User extends Model
 {
+    use PasswordManagement;
     use SendEmailAction;
     use SetupModel;
-    use PasswordManagement;
     use Signup;
     use UniqueFieldValue;
 

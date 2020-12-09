@@ -37,7 +37,7 @@ class RoleAdmin extends Crud
             //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
             $crud->setModel((new Model\AccessRule($role->persistence))->addCondition('role_id', $id));
 
-            $crud->onFormAddEdit(function ($f) use ($crud) {
+            $crud->onFormAddEdit(function ($f) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
                 $f->setControlsDisplayRules(['visible_fields' => ['all_visible' => 'isNotChecked']]);
                 $f->setControlsDisplayRules(['editable_fields' => ['all_editable' => 'isNotChecked']]);
