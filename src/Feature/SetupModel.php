@@ -87,7 +87,7 @@ trait SetupModel
         // all AccessRules for all user roles
         // @TODO in future when there can be multiple, then merge them together
         $this->hasMany('AccessRules', [
-            function ($m) {
+            'model' => function ($m) {
                 return $m->ref('role_id')->ref('AccessRules');
             },
             'our_field' => 'role_id',

@@ -31,16 +31,16 @@ abstract class Generic extends \Atk4\Schema\PhpunitTestCase
 
     protected function getUserModel()
     {
-        return new User($this->db, 'login_user');
+        return new User($this->db, ['table' => 'login_user']);
     }
 
     protected function getRoleModel()
     {
-        return new Role($this->db, 'login_role');
+        return new Role($this->db, ['table' => 'login_role']);
     }
 
     protected function getAccessRuleModel()
     {
-        return new AccessRule($this->db, 'login_access_rule');
+        return new AccessRule($this->db, ['table' => 'login_access_rule']);
     }
 }
