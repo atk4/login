@@ -35,7 +35,7 @@ class UniqueFieldValueTest extends Generic
             }
         };
 
-        return new $c($this->db, 'test');
+        return new $c($this->db, ['table' => 'test']);
     }
 
     public function testBasic()
