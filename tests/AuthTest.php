@@ -19,10 +19,10 @@ class AuthTest extends Generic
         $u = $this->getUserModel();
         $this->assertSame(2, count($u->export()));
 
-        $r = new Role($this->db, 'login_role');
+        $r = new Role($this->db, ['table' => 'login_role']);
         $this->assertSame(2, count($r->export()));
 
-        $a = new AccessRule($this->db, 'login_access_rule');
+        $a = new AccessRule($this->db, ['table' => 'login_access_rule']);
         $this->assertSame(3, count($a->export()));
 
         // password field should not be visible in UI by default
