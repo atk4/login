@@ -14,8 +14,8 @@ $app->initLayout([\Atk4\Ui\Layout\Admin::class]);
 $app->db = new \Atk4\Data\Persistence($dsn);
 
 // ADD THIS CODE:
-$app->add(new \Atk4\Login\Auth())
-    ->setModel(new User($app->db));
+$app->auth = new \atk4\login\Auth();
+$app->auth->model = new \atk4\login\Model\User($app->db);
 
 // The rest of YOUR UI code will now be protected
 $app->add([\Atk4\Ui\Crud:class])->setModel(new Client($app->db));
