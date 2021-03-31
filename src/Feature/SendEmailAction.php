@@ -20,8 +20,8 @@ trait SendEmailAction
         return $this->addUserAction('sendEmail', [
             'callback' => 'sendEmail',
             'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
+            'caption' => 'Email',
             'description' => 'Send e-mail to user',
-            'ui' => ['icon' => 'mail'],
             'args' => [
                 'subject' => ['caption' => 'Subject', 'type' => 'string'],
                 'message' => ['caption' => 'Message', 'type' => 'text'],
