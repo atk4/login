@@ -33,10 +33,10 @@ class AuthTest extends Generic
 
         // test traversal
         $this->assertSame(2, count((clone $u)->load(2)->ref('AccessRules')->export()));
-        $this->assertSame(1, count((clone $u)->load(2)->ref('role_id')->export()));
+        $this->assertSame(2, (clone $u)->load(2)->ref('role_id')->getId());
         $this->assertSame(2, count((clone $r)->load(2)->ref('AccessRules')->export()));
         $this->assertSame(1, count((clone $r)->load(2)->ref('Users')->export()));
-        $this->assertSame(1, count((clone $a)->load(2)->ref('role_id')->export()));
+        $this->assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
     public function testAuth($cacheEnabled = true)
