@@ -231,7 +231,7 @@ class Auth
         // first logout
         $this->logout();
 
-        $user = $this->user->newInstance();
+        $user = new $this->user($this->user->persistence);
 
         $user->tryLoadBy($this->fieldLogin, $email);
         if ($user->loaded()) {
