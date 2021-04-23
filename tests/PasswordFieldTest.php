@@ -44,7 +44,7 @@ class PasswordFieldTest extends Generic
         $m->save();
 
         // stored encoded password
-        $enc = $this->getProtected($p, 'data')['data'][1]['p'];
+        $enc = $this->getProtected($p, 'data')['data']['1']['p'];
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
