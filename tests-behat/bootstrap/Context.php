@@ -63,14 +63,14 @@ class Context extends RawMinkContext implements BehatContext
         $durationAnimation = 0.005;
         $durationToast = 5;
         $css = $toCssFx('*', [
-                'animation-delay' => $durationAnimation . 's',
-                'animation-duration' => $durationAnimation . 's',
-                'transition-delay' => $durationAnimation . 's',
-                'transition-duration' => $durationAnimation . 's',
-            ]) . $toCssFx('.ui.toast-container .toast-box .progressing.wait', [
-                'animation-duration' => $durationToast . 's',
-                'transition-duration' => $durationToast . 's',
-            ]);
+            'animation-delay' => $durationAnimation . 's',
+            'animation-duration' => $durationAnimation . 's',
+            'transition-delay' => $durationAnimation . 's',
+            'transition-duration' => $durationAnimation . 's',
+        ]) . $toCssFx('.ui.toast-container .toast-box .progressing.wait', [
+            'animation-duration' => $durationToast . 's',
+            'transition-duration' => $durationToast . 's',
+        ]);
 
         $this->getSession()->executeScript(
             'if (Array.prototype.filter.call(document.getElementsByTagName("style"), e => e.getAttribute("about") === "atk-test-behat").length === 0) {'

@@ -104,8 +104,6 @@ class Password extends Field
      * verify right after.
      *
      * @param string|null $password plaintext password
-     * @param Field       $f
-     * @param Persistence $p
      *
      * @return string|null encrypted password
      */
@@ -130,8 +128,6 @@ class Password extends Field
      * your model.
      *
      * @param string|null $password encrypted password
-     * @param Field       $f
-     * @param Persistence $p
      *
      * @return string|null encrypted password
      */

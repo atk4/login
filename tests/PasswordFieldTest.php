@@ -70,7 +70,6 @@ class PasswordFieldTest extends Generic
         $this->assertFalse($m->getField('p')->verify('mypass'));
         $this->assertTrue($m->getField('p')->verify('newpass'));
 
-
         $table = $this->getProtected($p, 'data')['data'];
         $tableRow = $table->getRow(0);
         $enc2 = $tableRow->getValue('p');

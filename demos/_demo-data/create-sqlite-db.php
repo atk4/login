@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Demos;
 
-use Atk4\Data\Model;
-
 include __DIR__ . '/../../vendor/autoload.php';
 
 $sqliteFile = __DIR__ . '/../data/db.sqlite';

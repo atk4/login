@@ -7,7 +7,6 @@ namespace Atk4\Login\Demo;
 use Atk4\Login\Model\User;
 use Atk4\Login\UserAdmin;
 use Atk4\Ui\Header;
-use Atk4\Ui\View;
 
 /** @var App $app */
 include __DIR__ . '/init.php';
