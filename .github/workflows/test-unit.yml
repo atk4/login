@@ -175,47 +175,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install JS dependencies (only for Slow)
-        if: matrix.type == 'Chrome Slow'
-        run: |
-          npm install --loglevel=error -g pug-cli less less-plugin-clean-css uglify-js
-          (cd js && npm ci --loglevel=error)
-
-      - name: Lint JS files (only for Slow)
-        if: matrix.type == 'Chrome Slow'
-        run: |
-          (cd js && npm run lint)
-
-      - name: Build/diff HTML files (only for Slow)
-        if: matrix.type == 'Chrome Slow'
-        run: |
-          for f in $(find template demos -name '*.pug' -o -name '*.html'); do
-            fpug=${f/.[a-z]*/.pug}
-            fhtml=${fpug/.pug/.html}
-            mv "$fhtml" "$fhtml.orig"
-            pug --silent --pretty "$fpug"
-            diff "$fhtml" "$fhtml.orig"
-            rm "$fhtml.orig"
-          done
-
-      - name: Build/diff CSS files (only for Slow)
-        if: matrix.type == 'Chrome Slow'
-        run: |
-          mv public/agileui.css public/agileui.css.orig
-          # prod: lessc public/agileui.less public/agileui.css --clean-css="--s1 --advanced" --source-map
-          lessc public/agileui.less public/agileui.css
-          diff public/agileui.css.orig public/agileui.css
-          rm public/agileui.css.orig
-
-      - name: Build/diff JS files (only for Slow)
-        if: matrix.type == 'Chrome Slow'
-        run: |
-          cp -r public public.orig && rm public/*.js
-          (cd js && npm run build)
-          sed -i "s~'https://raw.githack.com/atk4/ui/develop/public.*~'/public',~" src/App.php
-          diff -qr public public.orig
-          rm -r public.orig
-
       - name: Install PHP dependencies
         run: |
           composer remove --no-interaction --no-update phpunit/phpunit johnkary/phpunit-speedtrap phpunit/phpcov --dev
