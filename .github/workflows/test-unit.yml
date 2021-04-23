@@ -133,3 +133,112 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: build/logs/clover.xml
+
+  behat-test:
+    name: Behat
+    runs-on: ubuntu-latest
+    container:
+      image: atk4/image:${{ matrix.php }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['latest-npm']
+        type: ['Chrome', 'Firefox', 'Chrome Lowest', 'Chrome Slow']
+    env:
+      LOG_COVERAGE: ''
+    services:
+      selenium-chrome:
+        image: selenium/standalone-chrome:latest
+        options: --health-cmd "/opt/bin/check-grid.sh"
+      selenium-firefox:
+        image: selenium/standalone-firefox:latest
+        options: --health-cmd "/opt/bin/check-grid.sh"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure PHP
+        run: |
+          if [ -n "$LOG_COVERAGE" ]; then echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; else rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; fi
+          php --version
+
+      - name: Setup cache 1/2
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Setup cache 2/2
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.type }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install JS dependencies (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          npm install --loglevel=error -g pug-cli less less-plugin-clean-css uglify-js
+          (cd js && npm ci --loglevel=error)
+
+      - name: Lint JS files (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          (cd js && npm run lint)
+
+      - name: Build/diff HTML files (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          for f in $(find template demos -name '*.pug' -o -name '*.html'); do
+            fpug=${f/.[a-z]*/.pug}
+            fhtml=${fpug/.pug/.html}
+            mv "$fhtml" "$fhtml.orig"
+            pug --silent --pretty "$fpug"
+            diff "$fhtml" "$fhtml.orig"
+            rm "$fhtml.orig"
+          done
+
+      - name: Build/diff CSS files (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          mv public/agileui.css public/agileui.css.orig
+          # prod: lessc public/agileui.less public/agileui.css --clean-css="--s1 --advanced" --source-map
+          lessc public/agileui.less public/agileui.css
+          diff public/agileui.css.orig public/agileui.css
+          rm public/agileui.css.orig
+
+      - name: Build/diff JS files (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          cp -r public public.orig && rm public/*.js
+          (cd js && npm run build)
+          sed -i "s~'https://raw.githack.com/atk4/ui/develop/public.*~'/public',~" src/App.php
+          diff -qr public public.orig
+          rm -r public.orig
+
+      - name: Install PHP dependencies
+        run: |
+          composer remove --no-interaction --no-update phpunit/phpunit johnkary/phpunit-speedtrap phpunit/phpcov --dev
+          composer remove --no-interaction --no-update friendsofphp/php-cs-fixer --dev
+          composer remove --no-interaction --no-update phpstan/phpstan --dev
+          composer update --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
+          if [ "${{ matrix.type }}" == "Chrome Lowest" ]; then composer update  --ansi --prefer-dist --prefer-lowest --prefer-stable --no-interaction --no-progress --optimize-autoloader ; fi
+
+      - name: Init
+        run: |
+          mkdir -p build/logs
+          php demos/_demo-data/create-sqlite-db.php
+
+      - name: "Run tests: Behat"
+        run: |
+          php -S 172.18.0.2:8888 > /dev/null 2>&1 &
+          sleep 0.2
+          if [ "${{ matrix.type }}" == "Firefox" ]; then sed -i "s~chrome~firefox~" behat.yml.dist ; fi
+          if [ "${{ matrix.type }}" == "Chrome Slow" ]; then echo 'sleep(1);' >> demos/init-app.php ; fi
+
+          # remove once https://github.com/minkphp/Mink/pull/801
+          # and https://github.com/minkphp/MinkSelenium2Driver/pull/322 are released
+          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink/src/Element/Element.php
+          sed -i 's/usleep(100000)/usleep(5000)/' vendor/behat/mink-selenium2-driver/src/Selenium2Driver.php
+
+          vendor/bin/behat -vv --config behat.yml.dist
