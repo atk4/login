@@ -15,3 +15,1098 @@ parameters:
 
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
+
+        # TODO these rules are generated, this ignores should be fixed in the code
+        # level 1
+        -
+          message: "#^Class Atk4\\\\Ui\\\\Persistence\\\\UI not found\\.$#"
+          count: 1
+          path: src/Field/Password.php
+
+        -
+          message: "#^Instantiated class Atk4\\\\Data\\\\Model\\\\AccessRule not found\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Class Atk4\\\\Login\\\\Tests\\\\Generic referenced with incorrect case\\: Atk4\\\\Login\\\\tests\\\\Generic\\.$#"
+          count: 2
+          path: tests/Feature/UniqueFieldValueTest.php
+
+        # level 2
+        -
+          message: "#^Access to an undefined property Atk4\\\\Ui\\\\Layout\\:\\:\\$menuLeft\\.$#"
+          count: 5
+          path: demos/src/App.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$cache has unknown class Atk4\\\\Login\\\\Cache as its type\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Call to method setData\\(\\) on an unknown class Atk4\\\\Login\\\\Cache\\.$#"
+          count: 3
+          path: src/Auth.php
+
+        -
+          message: "#^Call to method getData\\(\\) on an unknown class Atk4\\\\Login\\\\Cache\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\AbstractView\\:\\:getUrl\\(\\)\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setUnique\\(\\)\\.$#"
+          count: 2
+          path: src/Model/AccessRule.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:withTitle\\(\\)\\.$#"
+          count: 1
+          path: src/Model/AccessRule.php
+
+        -
+          message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
+          count: 1
+          path: src/Form/Control/Actions.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Fields\\:\\:setModel\\(\\) should return Atk4\\\\Data\\\\Model but return statement is missing\\.$#"
+          count: 1
+          path: src/Form/Control/Fields.php
+
+        -
+          message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
+          count: 1
+          path: src/Form/Control/Fields.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:addAction\\(\\)\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:setInputAttr\\(\\)\\.$#"
+          count: 2
+          path: src/Form/Register.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:withTitle\\(\\)\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Call to method addCondition\\(\\) on an unknown class Atk4\\\\Data\\\\Model\\\\AccessRule\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
+          count: 1
+          path: src/UserAdmin.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:suggestPassword\\(\\)\\.$#"
+          count: 1
+          path: src/UserAdmin.php
+
+        -
+          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verify\\(\\)\\.$#"
+          count: 7
+          path: tests/PasswordFieldTest.php
+
+        # level 3
+        -
+          message: "#^Method Atk4\\\\Login\\\\Acl\\:\\:getRules\\(\\) should return Atk4\\\\Login\\\\Model\\\\AccessRule but returns Atk4\\\\Data\\\\Model\\.$#"
+          count: 1
+          path: src/Acl.php
+
+        -
+          message: "#^Property Atk4\\\\Ui\\\\App\\:\\:\\$html \\(Atk4\\\\Ui\\\\View\\) does not accept null\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Generic\\:\\:getModel\\(\\) should return Atk4\\\\Data\\\\Model\\|null but empty return statement found\\.$#"
+          count: 2
+          path: src/Form/Control/Generic.php
+
+        # level 4
+
+        -
+          message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+          count: 1
+          path: src/Field/Password.php
+
+        -
+          message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+          count: 1
+          path: src/Field/Password.php
+
+        -
+          message: "#^If condition is always true\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Negated boolean expression is always false\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        # level 5
+
+        -
+          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string\\|null, Closure\\(\\)\\: mixed given\\.$#"
+          count: 1
+          path: demos/admin-setup.php
+
+        -
+          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string\\|null, Atk4\\\\Ui\\\\JsExpression given\\.$#"
+          count: 2
+          path: demos/index.php
+
+        -
+          message: "#^Parameter \\#1 \\$page of method Atk4\\\\Login\\\\Auth\\:\\:setPreferencePage\\(\\) expects Atk4\\\\Ui\\\\VirtualPage, Atk4\\\\Ui\\\\AbstractView given\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Parameter \\#1 \\$title of method Atk4\\\\Ui\\\\Form\\:\\:addHeader\\(\\) expects string\\|null, array\\<int\\|string, mixed\\> given\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Parameter \\#2 \\$fields of method Atk4\\\\Ui\\\\Form\\:\\:setModel\\(\\) expects array\\|null, false given\\.$#"
+          count: 1
+          path: src/Form/Register.php
+
+        -
+          message: "#^Parameter \\#1 \\$object of method Atk4\\\\Ui\\\\View\\:\\:add\\(\\) expects Atk4\\\\Ui\\\\View, array\\<int, string\\> given\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Parameter \\#1 \\$id of method Behat\\\\Mink\\\\Element\\\\TraversableElement\\:\\:findById\\(\\) expects string, null given\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        # level 6
+        -
+          message: "#^Property Atk4\\\\Login\\\\Demo\\\\App\\:\\:\\$auth has no typehint specified\\.$#"
+          count: 1
+          path: demos/src/App.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Demo\\\\App\\:\\:initAuth\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: demos/src/App.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Demo\\\\App\\:\\:initAuth\\(\\) has parameter \\$check with no typehint specified\\.$#"
+          count: 1
+          path: demos/src/App.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Demo\\\\App\\:\\:initAcl\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: demos/src/App.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Demo\\\\MigratorConsole\\:\\:migrateModels\\(\\) has parameter \\$models with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: demos/src/MigratorConsole.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Acl\\:\\:applyRestrictions\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Acl.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Acl\\:\\:applyConditions\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Acl.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$cacheClass type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$cacheOptions type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$formLoginSeed type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$preferencePage type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Auth\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Auth\\:\\:displayLoginForm\\(\\) has parameter \\$seed with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Cache\\\\Session\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Cache/Session.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Cache\\\\Session\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Cache/Session.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Cache\\\\Session\\:\\:setData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Cache/Session.php
+
+        -
+          message: "#^Method class@anonymous/tests/Feature/PasswordManagementTest\\.php\\:17\\:\\:initPasswordManagement\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method class@anonymous/tests/Feature/PasswordManagementTest\\.php\\:17\\:\\:check_password_strength\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method class@anonymous/tests/Feature/PasswordManagementTest\\.php\\:17\\:\\:findSequence\\(\\) has parameter \\$charLocs with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method class@anonymous/tests/Feature/PasswordManagementTest\\.php\\:17\\:\\:findSequence\\(\\) return type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\PasswordManagementTest\\:\\:testGenerateRandomPassword\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\PasswordManagementTest\\:\\:testBasic\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/PasswordManagementTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:initPasswordManagement\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:check_password_strength\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:findSequence\\(\\) has parameter \\$charLocs with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:findSequence\\(\\) return type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:setupAccessRuleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:setupRoleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:setupUserModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:initSignup\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:register_new_user\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\User\\:\\:register_new_user\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Model/User.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setupAccessRuleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/AccessRule.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setupRoleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/AccessRule.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setupUserModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/AccessRule.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\Role\\:\\:setupAccessRuleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/Role.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\Role\\:\\:setupRoleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/Role.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Model\\\\Role\\:\\:setupUserModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Model/Role.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Field\\\\Password\\:\\:setDefaultTypecastMethods\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: src/Field/Password.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Actions\\:\\:setModel\\(\\) has parameter \\$fields with no typehint specified\\.$#"
+          count: 1
+          path: src/Form/Control/Actions.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Actions\\:\\:setModel\\(\\) has parameter \\$model with no typehint specified\\.$#"
+          count: 1
+          path: src/Form/Control/Actions.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Fields\\:\\:setModel\\(\\) has parameter \\$fields with no typehint specified\\.$#"
+          count: 1
+          path: src/Form/Control/Fields.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Fields\\:\\:setModel\\(\\) has parameter \\$model with no typehint specified\\.$#"
+          count: 1
+          path: src/Form/Control/Fields.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Form\\\\Login\\:\\:\\$linkForgot type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Form\\\\Login\\:\\:\\$linkSuccess type has no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Form\\\\Register\\:\\:setModel\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/Form/Register.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\RoleAdmin\\:\\:setModel\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iWait\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iWait\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressButton\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressButton\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressMenuButtonUsingClass\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressMenuButtonUsingClass\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressMenuButtonUsingClass\\(\\) has parameter \\$arg2 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSetCalendarInputNameWithValue\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSetCalendarInputNameWithValue\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSetCalendarInputNameWithValue\\(\\) has parameter \\$arg2 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickLink\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickLink\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickFilterColumnName\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickFilterColumnName\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickTabWithTitle\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickTabWithTitle\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickFirstCardOnPage\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickFirstElementUsingClass\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickFirstElementUsingClass\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickPaginatorPage\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickPaginatorPage\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSee\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSee\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:dump\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:dump\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iDontSee\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iDontSee\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:labelChangesToNumber\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:containerShouldHaveNumberOfItem\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:containerShouldHaveNumberOfItem\\(\\) has parameter \\$selector with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressModalButton\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iPressModalButton\\(\\) has parameter \\$arg with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:modalIsOpenWithText\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:modalIsOpenWithText\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:modalIsShowingText\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:modalIsShowingText\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:modalIsShowingText\\(\\) has parameter \\$arg2 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:activeTabShouldBe\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:activeTabShouldBe\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iHideJsModal\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iScrollToTop\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:toastDisplayShouldContainText\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:toastDisplayShouldContainText\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSelectValueInLookup\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSelectValueInLookup\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSelectValueInLookup\\(\\) has parameter \\$arg2 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSearchGridFor\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iSearchGridFor\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:pageUrlShouldContains\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:pageUrlShouldContains\\(\\) has parameter \\$text with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:waitForThePageToBeLoaded\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickIconUsingCss\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iClickIconUsingCss\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderRule\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderRule\\(\\) has parameter \\$name with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderRule\\(\\) has parameter \\$operator with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderRule\\(\\) has parameter \\$value with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderReferenceRule\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderReferenceRule\\(\\) has parameter \\$name with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderReferenceRule\\(\\) has parameter \\$operator with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderReferenceRule\\(\\) has parameter \\$value with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderSelectRule\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderSelectRule\\(\\) has parameter \\$name with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderSelectRule\\(\\) has parameter \\$operator with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderSelectRule\\(\\) has parameter \\$value with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderDateRule\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderDateRule\\(\\) has parameter \\$name with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderDateRule\\(\\) has parameter \\$operator with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderDateRule\\(\\) has parameter \\$value with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderBoolRule\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderBoolRule\\(\\) has parameter \\$name with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:scopeBuilderBoolRule\\(\\) has parameter \\$value with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareElementText\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareElementText\\(\\) has parameter \\$compareSelector with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareElementText\\(\\) has parameter \\$compareToSelector with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareInputValueToElementText\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareInputValueToElementText\\(\\) has parameter \\$inputName with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:compareInputValueToElementText\\(\\) has parameter \\$selector with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:textInContainerUsingShouldContains\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:textInContainerUsingShouldContains\\(\\) has parameter \\$containerCss with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:textInContainerUsingShouldContains\\(\\) has parameter \\$text with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:assertDropdownValue\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:assertSelectedValue\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:assertInputValue\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iWaitForLoadingToStartIn\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:iWaitForLoadingToStartIn\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:jqueryWait\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:jqueryWait\\(\\) has parameter \\$maxWaitdurationMs with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:theShouldStartWith\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:theShouldStartWith\\(\\) has parameter \\$arg1 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Behat\\\\Context\\:\\:theShouldStartWith\\(\\) has parameter \\$arg2 with no typehint specified\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\AuthTest\\:\\:testDb\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/AuthTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\AuthTest\\:\\:testAuth\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/AuthTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\AuthTest\\:\\:testAuth\\(\\) has parameter \\$cacheEnabled with no typehint specified\\.$#"
+          count: 1
+          path: tests/AuthTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\AuthTest\\:\\:testAuthNoCache\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/AuthTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\SendEmailActionTest\\:\\:testBasic\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/SendEmailActionTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\SignupTest\\:\\:testBasic\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/SignupTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\UniqueFieldValueTest\\:\\:setupDefaultDb\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/UniqueFieldValueTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\UniqueFieldValueTest\\:\\:getTestModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/UniqueFieldValueTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Feature\\\\UniqueFieldValueTest\\:\\:testBasic\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Feature/UniqueFieldValueTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Generic\\:\\:setupDefaultDb\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Generic.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Generic\\:\\:getUserModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Generic.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Generic\\:\\:getRoleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Generic.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\Generic\\:\\:getAccessRuleModel\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/Generic.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\PasswordFieldTest\\:\\:testPasswordField\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/PasswordFieldTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\PasswordFieldTest\\:\\:testPasswordPersistence\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/PasswordFieldTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\PasswordFieldTest\\:\\:testCanNotCompareEmptyException\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/PasswordFieldTest.php
+
+        -
+          message: "#^Method Atk4\\\\Login\\\\Tests\\\\PasswordFieldTest\\:\\:testSuggestPassword\\(\\) has no return typehint specified\\.$#"
+          count: 1
+          path: tests/PasswordFieldTest.php
+
+        # level 7
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$cache \\(Atk4\\\\Login\\\\Cache\\) does not accept object\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Field\\\\Password\\:\\:\\$passwordHash \\(string\\|null\\) does not accept string\\|false\\.$#"
+          count: 1
+          path: src/Field/Password.php
+
+        -
+          message: "#^Property Atk4\\\\Ui\\\\Form\\\\Control\\\\Dropdown\\:\\:\\$values \\(array\\) does not accept array\\|false\\.$#"
+          count: 1
+          path: src/Form/Control/Actions.php
+
+        -
+          message: "#^Property Atk4\\\\Ui\\\\Form\\\\Control\\\\Dropdown\\:\\:\\$values \\(array\\) does not accept array\\|false\\.$#"
+          count: 1
+          path: src/Form/Control/Fields.php
+
+        -
+          message: "#^Cannot call method set\\(\\) on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Cannot call method addClass\\(\\) on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Cannot access property \\$iconRight on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Login.php
+
+        -
+          message: "#^Cannot call method set\\(\\) on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Register.php
+
+        -
+          message: "#^Cannot call method addClass\\(\\) on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Register.php
+
+        -
+          message: "#^Cannot access property \\$iconRight on array\\|Atk4\\\\Ui\\\\Button\\|false\\.$#"
+          count: 1
+          path: src/Form/Register.php
+
+        -
+          message: "#^Cannot call method addColumn\\(\\) on Atk4\\\\Ui\\\\Table\\|false\\.$#"
+          count: 1
+          path: src/RoleAdmin.php
+
+        -
+          message: "#^Cannot call method addColumn\\(\\) on Atk4\\\\Ui\\\\Table\\|false\\.$#"
+          count: 1
+          path: src/UserAdmin.php
+
+        -
+          message: "#^Property Atk4\\\\Login\\\\Behat\\\\Context\\:\\:\\$buttonId \\(null\\) does not accept string\\|null\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Parameter \\#3 \\$subject of function preg_replace expects array\\|string, array\\|bool\\|string\\|null given\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Binary operation \"\\.\" between 'Input value does…' and array\\|bool\\|string\\|null results in an error\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Parameter \\#1 \\$haystack of function mb_strpos expects string, array\\|bool\\|string\\|null given\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Binary operation \"\\.\" between 'Field value ' and array\\|bool\\|string\\|null results in an error\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        # level 8
+
+        -
+          message: "#^Parameter \\#1 \\$p of method Atk4\\\\Login\\\\Acl\\:\\:applyRestrictions\\(\\) expects Atk4\\\\Data\\\\Persistence, Atk4\\\\Data\\\\Persistence\\|null given\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Cannot call method onHook\\(\\) on Atk4\\\\Data\\\\Persistence\\|null\\.$#"
+          count: 1
+          path: src/Auth.php
+
+        -
+          message: "#^Cannot call method getAttribute\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 3
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Cannot call method focus\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 2
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Cannot call method getOuterHtml\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Parameter \\#2 \\$needle of function mb_strpos expects string, string\\|null given\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Cannot call method getHtml\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 1
+          path: tests-behat/bootstrap/Context.php
+
+        -
+          message: "#^Cannot call method getText\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+          count: 2
+          path: tests-behat/bootstrap/Context.php
+
+
