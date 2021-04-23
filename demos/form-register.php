@@ -8,7 +8,6 @@ use Atk4\Login\Form;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Header;
-use Atk4\Ui\View;
 
 /** @var App $app */
 require __DIR__ . '/init.php';
