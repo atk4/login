@@ -34,8 +34,7 @@
   },
   "require-release": {
     "php": ">=7.3.0",
-    "atk4/ui": "~2.5.0",
-    "atk4/data": "~2.5.0"
+    "atk4/ui": "~2.5.0"
   },
   "require-dev": {
     "behat/behat": "^3.8",
