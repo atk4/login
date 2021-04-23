@@ -4,7 +4,7 @@ default:
       paths:
         features: '%paths.base%/tests-behat'
       contexts:
-        - atk4\login\behat\ContextDump
+        - Atk4\Login\Behat\ContextDump
         - Behat\MinkExtension\Context\MinkContext
   extensions:
     Behat\MinkExtension:
