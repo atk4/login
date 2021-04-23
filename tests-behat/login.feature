@@ -13,7 +13,6 @@ Scenario:
  And I fill in "email" with "admin"
  And I fill in "password" with "admin"
  And I press button "Sign in"
- And I wait for the page to be loaded
  Then I should see "Currently logged in"
 
 Scenario:
