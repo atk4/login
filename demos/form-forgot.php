@@ -11,9 +11,7 @@ use Atk4\Ui\View;
 require __DIR__ . '/init.php';
 
 Header::addTo($app, ['Forgot password form']);
-
-$v = View::addTo($app, ['ui' => 'segment']);
-$v->set('Not implemented');
+View::addTo($app, ['ui' => 'segment'])->set('Not implemented');
 /*
 $f = Form\ForgotPassword::addTo($v, [
     'linkSuccess' => ['index'],

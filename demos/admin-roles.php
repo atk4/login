@@ -13,5 +13,4 @@ include __DIR__ . '/init.php';
 
 Header::addTo($app)->set('Roles');
 
-$crud = RoleAdmin::addTo($app);
-$crud->setModel(new Role($app->db));
+RoleAdmin::addTo($app)->setModel(new Role($app->db));
