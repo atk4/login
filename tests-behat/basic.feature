@@ -10,9 +10,10 @@ Scenario:
 
 Scenario:
  Given I am on "form-login.php"
- When I fill in "email" with "admin"
+ And I fill in "email" with "admin"
  And I fill in "password" with "admin"
  And I press button "Sign in"
+ And I wait for the page to be loaded
  Then I should see "Currently logged in"
 
 Scenario:
@@ -28,5 +29,5 @@ Scenario:
  When I fill in "email" with ""
  And I fill in "password" with "admin"
  And I press button "Sign in"
- Then I should see "incorrect"
+ Then I should see "Must not be empty"
  And I should not see "Currently logged in"
