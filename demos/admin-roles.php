@@ -8,7 +8,8 @@ use Atk4\Login\Model\Role;
 use Atk4\Login\RoleAdmin;
 use Atk4\Ui\Header;
 
-include 'init.php';
+/** @var App $app */
+include __DIR__ . '/init.php';
 
 Header::addTo($app)->set('Roles');
 

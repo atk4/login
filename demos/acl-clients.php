@@ -8,7 +8,8 @@ use Atk4\Ui\Crud;
 use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 
-include 'init.php';
+/** @var App $app */
+include __DIR__ . '/init.php';
 
 Header::addTo($app, [
     'Client list for ACL testing',

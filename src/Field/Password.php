@@ -23,7 +23,7 @@ class Password extends Field
      * Keeping the actual hash protected, in case we have to validate password with
      * compare().
      *
-     * @var string
+     * @var string | null
      */
     protected $passwordHash;
 
@@ -103,7 +103,9 @@ class Password extends Field
      * also update $this->passwordHash, in case you'll want to perform
      * verify right after.
      *
-     * @param string $password plaintext password
+     * @param string|null $password plaintext password
+     * @param Field       $f
+     * @param Persistence $p
      *
      * @return string|null encrypted password
      */
@@ -127,7 +129,9 @@ class Password extends Field
      * DO NOT CALL THIS METHOD. It is automatically invoked when you load
      * your model.
      *
-     * @param string $password encrypted password
+     * @param string|null $password encrypted password
+     * @param Field       $f
+     * @param Persistence $p
      *
      * @return string|null encrypted password
      */

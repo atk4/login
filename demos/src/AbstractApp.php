@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Demo;
 
+use Atk4\Data\Persistence;
+
 /**
  * Application which use demo database.
  */
