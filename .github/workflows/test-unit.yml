@@ -186,7 +186,7 @@ jobs:
       - name: Init
         run: |
           mkdir -p build/logs
-#          php demos/_demo-data/create-sqlite-db.php
+          php demos/_demo-data/create-sqlite-db.php
 
       - name: "Run tests: Behat"
         run: |
