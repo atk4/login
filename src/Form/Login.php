@@ -27,7 +27,7 @@ class Login extends Form
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
     /**
-     * Intialization.
+     * Initialization.
      */
     protected function init(): void
     {
@@ -39,8 +39,8 @@ class Login extends Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addControl('email', null, ['required' => true]);
-        $p = $form->addControl('password', [Control\Password::class], ['required' => true]);
+        $form->addControl($this->auth->fieldLogin, null, ['required' => true]);
+        $p = $form->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])

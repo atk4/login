@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login\Form;
 
 use Atk4\Data\Model;
+use Atk4\Login\Auth;
 use Atk4\Ui\Form;
 
 /**
@@ -12,12 +13,8 @@ use Atk4\Ui\Form;
  */
 class Register extends Form
 {
-    /**
-     * Which field to look up user by.
-     *
-     * @var string
-     */
-    public $fieldLogin = 'email';
+    /** @var Auth object */
+    public $auth;
 
     /**
      * Initialization.
@@ -57,9 +54,9 @@ class Register extends Form
             // Look if user already exist?
             $c = clone $this->model;
             $c->unload();
-            $c->tryLoadBy($this->fieldLogin, strtolower($form->model->get('email')));
+            $c->tryLoadBy($this->auth->fieldLogin, strtolower($form->model->get($this->auth->fieldLogin)));
             if ($c->loaded()) {
-                return $form->error('email', 'User with this email already exist');
+                return $form->error($this->auth->fieldLogin, 'User with this email already exist');
             }
 
             // check if passwords match
