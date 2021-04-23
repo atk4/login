@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Ui\Demos;
+namespace Atk4\Login\Demos;
 
 use Atk4\Data\Model;
 
-require_once __DIR__ . '/../init-autoloader.php';
+require_once __DIR__ . '/../init.php';
 
 $sqliteFile = __DIR__ . '/db.sqlite';
 if (file_exists($sqliteFile)) {
