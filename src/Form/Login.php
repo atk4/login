@@ -26,9 +26,6 @@ class Login extends Form
     /** @var false|string show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         parent::init();

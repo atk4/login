@@ -23,7 +23,7 @@ class Password extends Field
      * Keeping the actual hash protected, in case we have to validate password with
      * compare().
      *
-     * @var string | null
+     * @var string|null
      */
     protected $passwordHash;
 

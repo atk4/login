@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Behat;
 
+/**
+ *
+ * Copied 1:1 from https://github.com/atk4/ui/blob/2.4.0/tests-behat/bootstrap/Context.php#L14
+ * DO NOT EDIT MANUALLY!
+ */
+
 use Behat\Behat\Context\Context as BehatContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeStepScope;

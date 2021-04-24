@@ -16,9 +16,6 @@ class Register extends Form
     /** @var Auth object */
     public $auth;
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         parent::init();
