@@ -43,10 +43,7 @@ class PasswordFieldTest extends Generic
         $m->save();
 
         // stored encoded password
-        /** @var Persistence\Array_\Db\Table $table */
-        $table = $this->getProtected($p, 'data')['data'];
-        $tableRow = $table->getRow(0);
-        $enc = $tableRow->getValue('p');
+        $enc = (new Model($m->persistence))->export(['p'])[1]['p'];
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
@@ -70,9 +67,7 @@ class PasswordFieldTest extends Generic
         $this->assertFalse($m->getField('p')->verify('mypass'));
         $this->assertTrue($m->getField('p')->verify('newpass'));
 
-        $table = $this->getProtected($p, 'data')['data'];
-        $tableRow = $table->getRow(0);
-        $enc2 = $tableRow->getValue('p');
+        $enc2 = (new Model($m->persistence))->export(['p'])[1]['p'];
         // will have new hash
         $this->assertNotSame($enc, $enc2);
     }
