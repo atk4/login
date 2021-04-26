@@ -166,6 +166,7 @@ class Context extends MinkContext
             . ' && typeof jQuery !== \'undefined\' && jQuery.active === 0'
             . ' && typeof atk !== \'undefined\' && atk.vueService.areComponentsLoaded()';
     }
+
     /**
      * Sleep for a certain time in ms.
      *
