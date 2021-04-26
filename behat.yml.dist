@@ -1,15 +1,14 @@
 default:
   suites:
-    atk4_ui:
+    atk4_login:
       paths:
         features: '%paths.base%/tests-behat'
       contexts:
         - Atk4\Login\Behat\Context
-        - Behat\MinkExtension\Context\MinkContext
   extensions:
     Behat\MinkExtension:
-      browser_name: chrome
-      base_url: 'http://172.18.0.2:8888/demos'
+      show_cmd: 'open %s'
+      base_url:  'http://172.18.0.2:8888/demos'
       sessions:
         default:
           selenium2:
@@ -20,4 +19,4 @@ default:
                 chrome:
                   args:
                     - '--headless'
-                    - '--window-size=1930,1200'
+                    - '--window-size=1280,720'

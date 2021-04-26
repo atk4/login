@@ -5,7 +5,7 @@ Feature: Login basic
 
 Scenario:
  Given I am on "form-login.php"
- Then I see button "Sign in" 
+ Then I should see "Sign in"
  And I should not see "Currently logged in"
 
 Scenario:
@@ -17,7 +17,7 @@ Scenario:
 
 Scenario:
  Given I am on "form-login.php"
- When I fill in "email" with "admin"
+ And I fill in "email" with "admin"
  And I fill in "password" with "wrong"
  And I press button "Sign in"
  Then I should see "incorrect"
