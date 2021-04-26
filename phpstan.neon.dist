@@ -159,16 +159,6 @@ parameters:
 
         # level 5
         -
-          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string\\|null, Closure\\(\\)\\: mixed given\\.$#"
-          count: 1
-          path: demos/admin-setup.php
-
-        -
-          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string\\|null, Atk4\\\\Ui\\\\JsExpression given\\.$#"
-          count: 2
-          path: demos/index.php
-
-        -
           message: "#^Parameter \\#1 \\$page of method Atk4\\\\Login\\\\Auth\\:\\:setPreferencePage\\(\\) expects Atk4\\\\Ui\\\\VirtualPage, Atk4\\\\Ui\\\\AbstractView given\\.$#"
           count: 1
           path: src/Auth.php
@@ -193,3 +183,7 @@ parameters:
           count: 1
           path: tests-behat/bootstrap/Context.php
 
+        -
+          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string|null, Closure\\(\\)\\: mixed given\\.$#"
+          count: 1
+          path: demos/admin-setup.php
