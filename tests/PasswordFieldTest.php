@@ -29,8 +29,7 @@ class PasswordFieldTest extends Generic
 
     public function testPasswordPersistence()
     {
-        $a = [];
-        $p = new Persistence\Array_($a);
+        $p = new Persistence\Array_();
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
@@ -74,8 +73,7 @@ class PasswordFieldTest extends Generic
 
     public function testCanNotCompareEmptyException()
     {
-        $a = [];
-        $p = new Persistence\Array_($a);
+        $p = new Persistence\Array_();
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
