@@ -115,6 +115,10 @@ class Context extends RawMinkContext implements BehatContext
      */
     public function iPressButton($arg1)
     {
+        $this->getSession()->wait(5000,
+        "$('*[text=\"" . $arg1 . "\"').children().length > 0"
+        );
+
         $button = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         // store button id.
         $this->buttonId = $button->getAttribute('id');
@@ -225,6 +229,10 @@ class Context extends RawMinkContext implements BehatContext
     public function iSee($arg1)
     {
         // var_dump($this->getSession()->getPage()->getHtml()); // WebDriver\Exception\NoSuchElement: Element not found with xpath, //html
+
+        $this->getSession()->wait(5000,
+            "$('*[text=\"" . $arg1 . "\"').children().length > 0"
+        );
 
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($element->getAttribute('style')) {
