@@ -28,11 +28,6 @@ parameters:
           count: 1
           path: src/RoleAdmin.php
 
-        -
-          message: "#^Class Atk4\\\\Login\\\\Tests\\\\Generic referenced with incorrect case\\: Atk4\\\\Login\\\\tests\\\\Generic\\.$#"
-          count: 2
-          path: tests/Feature/UniqueFieldValueTest.php
-
         # level 1
         -
           message: "#^Call to an undefined method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setUnique\\(\\)\\.$#"
