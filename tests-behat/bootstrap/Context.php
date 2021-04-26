@@ -224,6 +224,8 @@ class Context extends RawMinkContext implements BehatContext
      */
     public function iSee($arg1)
     {
+        // var_dump($this->getSession()->getPage()->getHtml()); // WebDriver\Exception\NoSuchElement: Element not found with xpath, //html
+
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
         if ($element->getAttribute('style')) {
             throw new Exception("Element with text \"{$arg1}\" must be invisible");
