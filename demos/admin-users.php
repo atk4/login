@@ -9,7 +9,7 @@ use Atk4\Login\UserAdmin;
 use Atk4\Ui\Header;
 
 /** @var App $app */
-include __DIR__ . '/init.php';
+include __DIR__ . '/init-app.php';
 
 Header::addTo($app)->set('Users');
 UserAdmin::addTo($app)->setModel(new User($app->db));
