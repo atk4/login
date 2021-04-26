@@ -225,8 +225,8 @@ class Context extends RawMinkContext implements BehatContext
     public function iSee($arg1)
     {
         var_dump($arg1);
-        $a = $this->getSession()->getPage()->find('xpath', '//label["Password"]');
-        var_dump(count($a));
+        $a = $this->getSession()->getPage()->find('xpath', '//form');
+        var_dump($a ? count($a) : null);
 
         //var_dump($this->getSession()->getPage()->getContent());
         $element = $this->getSession()->getPage()->find('xpath', '//div[text()="' . $arg1 . '"]');
