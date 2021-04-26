@@ -29,7 +29,8 @@ class PasswordFieldTest extends Generic
 
     public function testPasswordPersistence()
     {
-        $p = new Persistence\Array_();
+        $a = [];
+        $p = new Persistence\Array_($a);
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
@@ -43,7 +44,7 @@ class PasswordFieldTest extends Generic
         $m->save();
 
         // stored encoded password
-        $enc = (new Model($m->persistence))->export(['p'])[1]['p'];
+        $enc = $this->getProtected($p, 'data')['data']->getRowById($m, 1)->getValue('p');
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
@@ -67,14 +68,14 @@ class PasswordFieldTest extends Generic
         $this->assertFalse($m->getField('p')->verify('mypass'));
         $this->assertTrue($m->getField('p')->verify('newpass'));
 
-        $enc2 = (new Model($m->persistence))->export(['p'])[1]['p'];
         // will have new hash
-        $this->assertNotSame($enc, $enc2);
+        $this->assertNotSame($enc, $this->getProtected($p, 'data')['data']->getRowById($m, 1)->getValue('p'));
     }
 
     public function testCanNotCompareEmptyException()
     {
-        $p = new Persistence\Array_();
+        $a = [];
+        $p = new Persistence\Array_($a);
         $m = new Model($p);
 
         $m->addField('p', [Password::class]);
