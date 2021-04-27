@@ -51,21 +51,6 @@ parameters:
           path: demos/src/App.php
 
         -
-          message: "#^Property Atk4\\\\Login\\\\Auth\\:\\:\\$cache has unknown class Atk4\\\\Login\\\\Cache as its type\\.$#"
-          count: 1
-          path: src/Auth.php
-
-        -
-          message: "#^Call to method setData\\(\\) on an unknown class Atk4\\\\Login\\\\Cache\\.$#"
-          count: 3
-          path: src/Auth.php
-
-        -
-          message: "#^Call to method getData\\(\\) on an unknown class Atk4\\\\Login\\\\Cache\\.$#"
-          count: 1
-          path: src/Auth.php
-
-        -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\AbstractView\\:\\:getUrl\\(\\)\\.$#"
           count: 1
           path: src/Auth.php
@@ -152,11 +137,6 @@ parameters:
           count: 1
           path: src/Form/Login.php
 
-        -
-          message: "#^Negated boolean expression is always false\\.$#"
-          count: 1
-          path: tests-behat/bootstrap/Context.php
-
         # level 5
         -
           message: "#^Parameter \\#1 \\$page of method Atk4\\\\Login\\\\Auth\\:\\:setPreferencePage\\(\\) expects Atk4\\\\Ui\\\\VirtualPage, Atk4\\\\Ui\\\\AbstractView given\\.$#"
@@ -177,11 +157,6 @@ parameters:
           message: "#^Parameter \\#1 \\$object of method Atk4\\\\Ui\\\\View\\:\\:add\\(\\) expects Atk4\\\\Ui\\\\View, array\\<int, string\\> given\\.$#"
           count: 1
           path: src/RoleAdmin.php
-
-        -
-          message: "#^Parameter \\#1 \\$id of method Behat\\\\Mink\\\\Element\\\\TraversableElement\\:\\:findById\\(\\) expects string, null given\\.$#"
-          count: 1
-          path: tests-behat/bootstrap/Context.php
 
         -
           message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string|null, Closure\\(\\)\\: mixed given\\.$#"
