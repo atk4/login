@@ -212,9 +212,8 @@ class Auth
      */
     protected function loadFromCache(): void
     {
-        $data = &$this->user->getDataRef();
-        $data = $this->cache->getData();
-        $this->user->setId($data[$this->user->id_field] ?? null);
+        $this->user->setMulti($this->cache->getData());
+        $this->user->setId($this->cache->getData()[$this->user->id_field] ?? null);
     }
 
     /**
