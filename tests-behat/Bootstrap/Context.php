@@ -707,10 +707,6 @@ class Context extends RawMinkContext implements BehatContext
     {
         $field = $this->assertSession()->fieldExists($arg1);
 
-        if ($field == false) {
-            throw new Exception('Field' . $arg1 . ' does not exist');
-        }
-
         if (mb_strpos($field->getValue(), $arg2) === false) {
             throw new Exception('Field value ' . $field->getValue() . ' does not start with ' . $arg2);
         }
