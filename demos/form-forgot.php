@@ -7,12 +7,11 @@ namespace Atk4\Login\Demo;
 use Atk4\Ui\Header;
 use Atk4\Ui\View;
 
-require 'init.php';
+/** @var App $app */
+require __DIR__ . '/init-app.php';
 
 Header::addTo($app, ['Forgot password form']);
-
-$v = View::addTo($app, ['ui' => 'segment']);
-$v->set('Not implemented');
+View::addTo($app, ['ui' => 'segment'])->set('Not implemented');
 /*
 $f = Form\ForgotPassword::addTo($v, [
     'linkSuccess' => ['index'],

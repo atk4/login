@@ -7,7 +7,7 @@ namespace Atk4\Login\Tests\Feature;
 use Atk4\Data\Model;
 use Atk4\Data\ValidationException;
 use Atk4\Login\Feature\UniqueFieldValue;
-use Atk4\Login\tests\Generic;
+use Atk4\Login\Tests\Generic;
 
 class UniqueFieldValueTest extends Generic
 {

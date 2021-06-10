@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Atk4\Login\Demo;
 
 use Atk4\Login\Form;
+use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Header;
-use Atk4\Ui\View;
 
-require 'init.php';
+/** @var App $app */
+require __DIR__ . '/init-app.php';
 
+// @phpstan-ignore-next-line
+$app->html = null;
+$app->initLayout([Narrow::class]);
 Header::addTo($app, ['New user sign-up form']);
 
-$v = View::addTo($app, ['ui' => 'segment']);
-$f = Form\Register::addTo($v);
+$f = Form\Register::addTo($app, ['auth' => $app->auth]);
 $m = new User($app->db);
 $f->setModel($m);

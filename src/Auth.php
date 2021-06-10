@@ -13,6 +13,7 @@ use Atk4\Core\InitializerTrait;
 use Atk4\Core\TrackableTrait;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
+use Atk4\Login\Cache\Session;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Ui\Layout\Admin;
 use Atk4\Ui\VirtualPage;
@@ -93,7 +94,7 @@ class Auth
     /**
      * Cache object.
      *
-     * @var Cache
+     * @var Session
      */
     protected $cache;
 
@@ -211,8 +212,8 @@ class Auth
      */
     protected function loadFromCache(): void
     {
-        $this->user->data = $this->cache->getData();
-        $this->user->setId($this->user->data[$this->user->id_field] ?? null);
+        $this->user->setMulti($this->cache->getData());
+        $this->user->setId($this->cache->getData()[$this->user->id_field] ?? null);
     }
 
     /**
