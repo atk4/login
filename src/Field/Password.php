@@ -8,7 +8,7 @@ use Atk4\Core\InitializerTrait;
 use Atk4\Data\Exception;
 use Atk4\Data\Field;
 use Atk4\Data\Persistence;
-use Atk4\Ui\Persistence\UI;
+use Atk4\Ui\Persistence\Ui;
 
 class Password extends Field
 {
@@ -134,7 +134,7 @@ class Password extends Field
     public function decrypt(?string $password, Field $f, Persistence $p)
     {
         $this->passwordHash = $password;
-        if ($p instanceof UI) {
+        if ($p instanceof Ui) {
             return $password;
         }
 

@@ -2,7 +2,7 @@ includes:
     - vendor/mahalux/atk4-hintable/phpstan-ext.neon
 
 parameters:
-    level: 5
+    level: 4
     paths:
         - ./
     excludes_analyse:
@@ -18,10 +18,6 @@ parameters:
 
         # TODO these rules are generated, this ignores should be fixed in the code
         # level 0
-        -
-          message: "#^Class Atk4\\\\Ui\\\\Persistence\\\\UI not found\\.$#"
-          count: 1
-          path: src/Field/Password.php
 
         -
           message: "#^Instantiated class Atk4\\\\Data\\\\Model\\\\AccessRule not found\\.$#"
@@ -136,29 +132,3 @@ parameters:
           message: "#^If condition is always true\\.$#"
           count: 1
           path: src/Form/Login.php
-
-        # level 5
-        -
-          message: "#^Parameter \\#1 \\$page of method Atk4\\\\Login\\\\Auth\\:\\:setPreferencePage\\(\\) expects Atk4\\\\Ui\\\\VirtualPage, Atk4\\\\Ui\\\\AbstractView given\\.$#"
-          count: 1
-          path: src/Auth.php
-
-        -
-          message: "#^Parameter \\#1 \\$title of method Atk4\\\\Ui\\\\Form\\:\\:addHeader\\(\\) expects string\\|null, array\\<int\\|string, mixed\\> given\\.$#"
-          count: 1
-          path: src/Auth.php
-
-        -
-          message: "#^Parameter \\#2 \\$fields of method Atk4\\\\Ui\\\\Form\\:\\:setModel\\(\\) expects array\\|null, false given\\.$#"
-          count: 1
-          path: src/Form/Register.php
-
-        -
-          message: "#^Parameter \\#1 \\$object of method Atk4\\\\Ui\\\\View\\:\\:add\\(\\) expects Atk4\\\\Ui\\\\View, array\\<int, string\\> given\\.$#"
-          count: 1
-          path: src/RoleAdmin.php
-
-        -
-          message: "#^Parameter \\#2 \\$selector of method Atk4\\\\Ui\\\\View\\:\\:on\\(\\) expects string|null, Closure\\(\\)\\: mixed given\\.$#"
-          count: 1
-          path: demos/admin-setup.php
