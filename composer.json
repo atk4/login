@@ -44,6 +44,7 @@
     "ergebnis/composer-normalize": "^2.13",
     "friendsofphp/php-cs-fixer": "^2.17",
     "johnkary/phpunit-speedtrap": "^3.2",
+    "instaclick/php-webdriver": "^1.4.7",
     "phpstan/phpstan": "^0.12.82",
     "phpunit/phpcov": "*",
     "phpunit/phpunit": ">=9.3",
@@ -56,7 +57,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Atk4\\Login\\Behat\\": "tests-behat/bootstrap/",
+      "Atk4\\Login\\Behat\\": "tests-behat/Bootstrap/",
       "Atk4\\Login\\Demo\\": "demos/src/",
       "Atk4\\Login\\Tests\\": "tests/"
     }

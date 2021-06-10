@@ -4,7 +4,7 @@ default:
       paths:
         features: '%paths.base%/tests-behat'
       contexts:
-        - Atk4\Ui\Behat\Context
+        - Atk4\Login\Behat\Context
         - Behat\MinkExtension\Context\MinkContext
   extensions:
     Behat\MinkExtension:
@@ -20,4 +20,4 @@ default:
                 chrome:
                   args:
                     - '--headless'
-                    - '--window-size=1280,720'
+                    - '--window-size=1930,1200'
