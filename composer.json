@@ -29,12 +29,12 @@
   },
   "require": {
     "php": ">=7.3.0",
-    "atk4/ui": "2.4.*",
-    "atk4/data": "2.4.*"
+    "atk4/ui": "dev-develop",
+    "atk4/data": "dev-develop"
   },
   "require-release": {
     "php": ">=7.3.0",
-    "atk4/ui": "~2.4.0"
+    "atk4/ui": "~3.0.0"
   },
   "require-dev": {
     "behat/behat": "^3.8",
@@ -57,7 +57,6 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Atk4\\Login\\Behat\\": "tests-behat/Bootstrap/",
       "Atk4\\Login\\Demo\\": "demos/src/",
       "Atk4\\Login\\Tests\\": "tests/"
     }
