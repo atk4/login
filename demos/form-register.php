@@ -19,4 +19,4 @@ Header::addTo($app, ['New user sign-up form']);
 
 $f = Form\Register::addTo($app, ['auth' => $app->auth]);
 $m = new User($app->db);
-$f->setModel($m);
+$f->setModel($m->createEntity());
