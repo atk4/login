@@ -58,6 +58,11 @@ class Password extends Field
             $modelField = $m->getModel()->getField($this->short_name);
             $m->getField($this->short_name)->passwordHash = $modelField->passwordHash;
         });
+        $this->getOwner()->onHook(Model::HOOK_AFTER_UNLOAD, function($m) {
+            /** @var Password $modelField */
+            $modelField = $m->getModel()->getField($this->short_name);
+            $modelField->passwordHash = null;
+        });
     }
 
     /**
