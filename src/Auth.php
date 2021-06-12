@@ -13,7 +13,10 @@ use Atk4\Core\InitializerTrait;
 use Atk4\Core\TrackableTrait;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
+use Atk4\Login\Cache\Session;
+use Atk4\Login\Field\Password;
 use Atk4\Login\Layout\Narrow;
+use Atk4\Login\Model\User;
 use Atk4\Ui\Layout\Admin;
 use Atk4\Ui\VirtualPage;
 
@@ -93,7 +96,7 @@ class Auth
     /**
      * Cache object.
      *
-     * @var Cache
+     * @var Session
      */
     protected $cache;
 
@@ -171,7 +174,7 @@ class Auth
      */
     public function setModel($model, string $fieldLogin = null, string $fieldPassword = null)
     {
-        $this->user = $model;
+        $this->user = $model->createEntity();
 
         if ($fieldLogin !== null) {
             $this->fieldLogin = $fieldLogin;
@@ -211,8 +214,8 @@ class Auth
      */
     protected function loadFromCache(): void
     {
-        $this->user->data = $this->cache->getData();
-        $this->user->setId($this->user->data[$this->user->id_field] ?? null);
+        $this->user->setMulti($this->cache->getData());
+        $this->user->setId($this->cache->getData()[$this->user->id_field] ?? null);
     }
 
     /**
@@ -231,25 +234,27 @@ class Auth
         // first logout
         $this->logout();
 
-        $user = new $this->user($this->user->persistence);
+        /** @var User $userModel */
+        $userModel = new $this->user($this->user->persistence);
 
-        $user->tryLoadBy($this->fieldLogin, $email);
-        if ($user->loaded()) {
+        $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
+        if ($userEntity->loaded()) {
             // verify if the password matches
-            $pw_field = $user->getField($this->fieldPassword);
+            /** @var Password $pw_field */
+            $pw_field = $userEntity->getField($this->fieldPassword);
             if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
-                $this->hook(self::HOOK_LOGGED_IN, [$user]);
+                $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
                 if ($this->cacheEnabled) {
-                    $this->cache->setData($user->get());
+                    $this->cache->setData($userEntity->get());
                     $this->loadFromCache();
                 } else {
-                    $this->user = clone $user;
+                    $this->user = clone $userEntity;
                 }
 
                 return true;
             }
-            $user->unload();
+            $userEntity->unload();
             $this->hook(self::HOOK_BAD_LOGIN, [$email]);
         }
 

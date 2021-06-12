@@ -21,10 +21,10 @@ trait UniqueFieldValue
     {
         $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
             if ($m->isDirty($field)) {
-                $a = new static($m->persistence);
-                $a->addCondition($a->id_field, '!=', $m->getId());
-                $a->tryLoadBy($field, $m->get($field));
-                if ($a->loaded()) {
+                $model = new static($m->persistence);
+                $model->addCondition($model->id_field, '!=', $m->getId());
+                $entity = $model->tryLoadBy($field, $m->get($field));
+                if ($entity->loaded()) {
                     throw new ValidationException([$field => ucwords($field) . ' with such value already exists'], $this);
                 }
             }

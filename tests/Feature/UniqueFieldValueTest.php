@@ -7,7 +7,7 @@ namespace Atk4\Login\Tests\Feature;
 use Atk4\Data\Model;
 use Atk4\Data\ValidationException;
 use Atk4\Login\Feature\UniqueFieldValue;
-use Atk4\Login\tests\Generic;
+use Atk4\Login\Tests\Generic;
 
 class UniqueFieldValueTest extends Generic
 {
@@ -43,10 +43,13 @@ class UniqueFieldValueTest extends Generic
         $this->setupDefaultDb();
         $m = $this->getTestModel();
 
-        (clone $m)->save(['name' => 'Test2']);
+        $entity = $m->createEntity();
+        $entity->save(['name' => 'Test2']);
         $this->assertSame(2, count($m->export()));
 
         $this->expectException(ValidationException::class);
-        (clone $m)->save(['name' => 'Test1']);
+
+        $entity = $m->createEntity();
+        $entity->save(['name' => 'Test1']);
     }
 }

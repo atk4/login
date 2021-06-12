@@ -26,9 +26,6 @@ class Login extends Form
     /** @var false|string show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
-    /**
-     * Intialization.
-     */
     protected function init(): void
     {
         parent::init();
@@ -39,8 +36,8 @@ class Login extends Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addControl('email', null, ['required' => true]);
-        $p = $form->addControl('password', [Control\Password::class], ['required' => true]);
+        $form->addControl($this->auth->fieldLogin, null, ['required' => true]);
+        $p = $form->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])
@@ -57,7 +54,7 @@ class Login extends Form
         if ($this->auth) {
             $this->onSubmit(function ($form) {
                 // try to log user in
-                if ($this->auth->tryLogin($form->model->get('email'), $form->model->get('password'))) {
+                if ($this->auth->tryLogin($form->model->get($this->auth->fieldLogin), $form->model->get($this->auth->fieldPassword))) {
                     return $this->getApp()->jsRedirect($this->linkSuccess);
                 }
 

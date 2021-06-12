@@ -8,9 +8,9 @@ use Atk4\Login\Model\Role;
 use Atk4\Login\RoleAdmin;
 use Atk4\Ui\Header;
 
-include 'init.php';
+/** @var App $app */
+include __DIR__ . '/init-app.php';
 
 Header::addTo($app)->set('Roles');
 
-$crud = RoleAdmin::addTo($app);
-$crud->setModel(new Role($app->db));
+RoleAdmin::addTo($app)->setModel(new Role($app->db));
