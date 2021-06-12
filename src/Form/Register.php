@@ -49,10 +49,9 @@ class Register extends Form
         // on form submit save new user in persistence
         $form->onSubmit(function ($form) {
             // Look if user already exist?
-            $c = clone $this->model;
-            $c->unload();
-            $c->tryLoadBy($this->auth->fieldLogin, strtolower($form->model->get($this->auth->fieldLogin)));
-            if ($c->loaded()) {
+            $model = $this->model->getModel();
+            $entity = $model->tryLoadBy($this->auth->fieldLogin, strtolower($form->model->get($this->auth->fieldLogin)));
+            if ($entity->loaded()) {
                 return $form->error($this->auth->fieldLogin, 'User with this email already exist');
             }
 
