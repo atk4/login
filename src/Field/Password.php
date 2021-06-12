@@ -7,6 +7,7 @@ namespace Atk4\Login\Field;
 use Atk4\Core\InitializerTrait;
 use Atk4\Data\Exception;
 use Atk4\Data\Field;
+use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Ui\Persistence\Ui;
 
@@ -52,6 +53,11 @@ class Password extends Field
     {
         $this->_init();
         $this->setDefaultTypecastMethods();
+        $this->getOwner()->onHook(Model::HOOK_AFTER_LOAD, function($m) {
+            /** @var Password $modelField */
+            $modelField = $m->getModel()->getField($this->short_name);
+            $m->getField($this->short_name)->passwordHash = $modelField->passwordHash;
+        });
     }
 
     /**
