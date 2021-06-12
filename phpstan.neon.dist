@@ -132,3 +132,8 @@ parameters:
           message: "#^If condition is always true\\.$#"
           count: 1
           path: src/Form/Login.php
+
+        -
+          message: "#^Access to an undefined property Atk4\\\\Data\\\\Field\\:\\:\\$passwordHash\\.$#"
+          count: 1
+          path: src/Field/Password.php
