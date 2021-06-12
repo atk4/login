@@ -43,10 +43,13 @@ class UniqueFieldValueTest extends Generic
         $this->setupDefaultDb();
         $m = $this->getTestModel();
 
-        (clone $m)->save(['name' => 'Test2']);
+        $entity = $m->createEntity();
+        $entity->save(['name' => 'Test2']);
         $this->assertSame(2, count($m->export()));
 
         $this->expectException(ValidationException::class);
-        (clone $m)->save(['name' => 'Test1']);
+
+        $entity = $m->createEntity();
+        $entity->save(['name' => 'Test1']);
     }
 }
