@@ -10,5 +10,4 @@ categories:
       - "Documentation :books:"
 template: |
   ## What’s Changed
-
   $CHANGES

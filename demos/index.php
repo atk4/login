@@ -9,7 +9,8 @@ use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 use Atk4\Ui\View;
 
-require 'init.php';
+/** @var App $app */
+require __DIR__ . '/init-app.php';
 
 Header::addTo($app, ['Welcome to Auth Add-on demo app']);
 
@@ -20,10 +21,10 @@ Button::addTo($v, ['Setup demo SQLite database', 'icon' => 'cogs'])->link(['admi
 // Info
 if (isset($app->auth) && $app->auth->isLoggedIn()) {
     $a = Message::addTo($app, ['type' => 'info'])->set('Currently logged in: ' . $app->auth->user->getTitle());
-    Button::addTo($a, ['Logout', 'icon' => 'sign out'])->on('click', $app->jsRedirect([$app->auth->pageDashboard, 'logout' => true]));
+    Button::addTo($a, ['Logout', 'icon' => 'sign out'])->link([$app->auth->pageDashboard, 'logout' => true]);
 } else {
     $a = Message::addTo($app, ['type' => 'info'])->set('Currently there is no user logged in');
-    Button::addTo($a, ['Login', 'icon' => 'key'])->on('click', $app->jsRedirect(['form-login']));
+    Button::addTo($a, ['Login', 'icon' => 'key'])->link(['form-login']);
 }
 
 // Addon description

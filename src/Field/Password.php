@@ -8,7 +8,7 @@ use Atk4\Core\InitializerTrait;
 use Atk4\Data\Exception;
 use Atk4\Data\Field;
 use Atk4\Data\Persistence;
-use Atk4\Ui\Persistence\UI;
+use Atk4\Ui\Persistence\Ui;
 
 class Password extends Field
 {
@@ -23,7 +23,7 @@ class Password extends Field
      * Keeping the actual hash protected, in case we have to validate password with
      * compare().
      *
-     * @var string
+     * @var string|null
      */
     protected $passwordHash;
 
@@ -103,7 +103,7 @@ class Password extends Field
      * also update $this->passwordHash, in case you'll want to perform
      * verify right after.
      *
-     * @param string $password plaintext password
+     * @param string|null $password plaintext password
      *
      * @return string|null encrypted password
      */
@@ -127,14 +127,14 @@ class Password extends Field
      * DO NOT CALL THIS METHOD. It is automatically invoked when you load
      * your model.
      *
-     * @param string $password encrypted password
+     * @param string|null $password encrypted password
      *
      * @return string|null encrypted password
      */
     public function decrypt(?string $password, Field $f, Persistence $p)
     {
         $this->passwordHash = $password;
-        if ($p instanceof UI) {
+        if ($p instanceof Ui) {
             return $password;
         }
 

@@ -1,15 +1,16 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__])
     ->exclude([
         'cache',
         'build',
         'vendor',
-    ]);
+    ])
+    ->in(__DIR__)
+;
 
-return PhpCsFixer\Config::create()
-    ->setRiskyAllowed(true)
+$config = new PhpCsFixer\Config();
+$config->setRiskyAllowed(true)
     ->setRules([
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' =>true,
@@ -67,3 +68,5 @@ return PhpCsFixer\Config::create()
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/.php_cs.cache');
+
+return $config;

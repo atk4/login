@@ -8,8 +8,8 @@ use Atk4\Login\Model\User;
 use Atk4\Login\UserAdmin;
 use Atk4\Ui\Header;
 
-include 'init.php';
+/** @var App $app */
+include __DIR__ . '/init-app.php';
 
 Header::addTo($app)->set('Users');
-$app->add(new UserAdmin())
-    ->setModel(new User($app->db));
+UserAdmin::addTo($app)->setModel(new User($app->db));
