@@ -28,9 +28,6 @@ class AuthTest extends Generic
         // password field should not be visible in UI by default
         $this->assertFalse($u->getField('password')->isVisible());
 
-        // password field value should not load when loading record
-        $this->assertNull((clone $u)->load(1)->get('password'));
-
         // test traversal
         $this->assertSame(2, count((clone $u)->load(2)->ref('AccessRules')->export()));
         $this->assertSame(2, (clone $u)->load(2)->ref('role_id')->getId());

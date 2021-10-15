@@ -90,7 +90,7 @@ parameters:
           path: src/UserAdmin.php
         -
           message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verifyPassword\\(\\)\\.$#"
-          count: 7
+          count: 3
           path: tests/PasswordFieldTest.php
 
         #level 3
