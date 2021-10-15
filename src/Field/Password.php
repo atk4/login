@@ -33,7 +33,7 @@ class Password extends Field
      * Use it if you need to customize your password encryption algorithm.
      * Receives parameters - plaintext password.
      *
-     * @var callable
+     * @var callable|null
      */
     public $encryptMethod;
 
@@ -42,7 +42,7 @@ class Password extends Field
      * Use it if you need to customize your password verification algorithm.
      * Receives parameters - plaintext password, encrypted password.
      *
-     * @var callable
+     * @var callable|null
      */
     public $verifyMethod;
 
@@ -93,20 +93,6 @@ class Password extends Field
     }
 
     /**
-     * Normalize password - remove hash.
-     *
-     * @param string $value password
-     *
-     * @return mixed
-     */
-    public function normalize($value)
-    {
-        $this->passwordHash = null;
-
-        return parent::normalize($value);
-    }
-
-    /**
      * DO NOT CALL THIS METHOD. It is automatically invoked when you save
      * your model.
      *
@@ -128,7 +114,7 @@ class Password extends Field
         if (is_callable($this->encryptMethod)) {
             $this->passwordHash = call_user_func_array($this->encryptMethod, [$password]);
         } else {
-            $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $this->passwordHash = password_hash($password, \PASSWORD_DEFAULT);
         }
 
         return $this->passwordHash;

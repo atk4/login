@@ -2,10 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
-include __DIR__ . '/../vendor/autoload.php';
+date_default_timezone_set('UTC');
 
-// init App
+require_once __DIR__ . '/init-autoloader.php';
+
 $app = new App();
+
+try {
+    /** @var \Atk4\Data\Persistence\Sql $db */
+    require_once __DIR__ . '/init-db.php';
+    $app->db = $db;
+    unset($db);
+} catch (\Throwable $e) {
+    throw new \Atk4\Ui\Exception('Database error: ' . $e->getMessage());
+}
+
 $app->invokeInit();

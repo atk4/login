@@ -240,7 +240,6 @@ class Auth
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
         if ($userEntity->loaded()) {
             // verify if the password matches
-            /** @var Password $pw_field */
             $pw_field = $userEntity->getField($this->fieldPassword);
             if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
@@ -284,7 +283,7 @@ class Auth
      */
     public function setAcl(Acl $acl, Persistence $persistence = null)
     {
-        $persistence = $persistence ?? $this->user->persistence;
+        $persistence ??= $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
 

@@ -2,7 +2,7 @@ includes:
     - vendor/mahalux/atk4-hintable/phpstan-ext.neon
 
 parameters:
-    level: 4
+    level: 4 # should be 6
     paths:
         - ./
     excludes_analyse:
@@ -13,12 +13,23 @@ parameters:
     # TODO review once we drop PHP 7.x support
     treatPhpDocTypesAsCertain: false
 
+    # some extra rules
+    checkAlwaysTrueCheckTypeFunctionCall: true
+    checkAlwaysTrueInstanceof: true
+    checkAlwaysTrueStrictComparison: true
+    checkExplicitMixedMissingReturn: true
+    checkFunctionNameCase: true
+    # TODO checkMissingClosureNativeReturnTypehintRule: true
+    reportMaybesInMethodSignatures: true
+    reportStaticMethodSignatures: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkMissingIterableValueType: false # TODO
+
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
 
         # TODO these rules are generated, this ignores should be fixed in the code
         # level 0
-
         -
           message: "#^Instantiated class Atk4\\\\Data\\\\Model\\\\AccessRule not found\\.$#"
           count: 1
@@ -29,12 +40,10 @@ parameters:
           message: "#^Call to an undefined method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setUnique\\(\\)\\.$#"
           count: 2
           path: src/Model/AccessRule.php
-
         -
           message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
           count: 1
           path: src/Form/Control/Actions.php
-
         -
           message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
           count: 1
@@ -44,58 +53,47 @@ parameters:
         -
           message: "#^Access to an undefined property Atk4\\\\Ui\\\\Layout\\:\\:\\$menuLeft\\.$#"
           count: 5
-          path: demos/src/App.php
-
+          path: demos/_includes/App.php
         -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\AbstractView\\:\\:getUrl\\(\\)\\.$#"
           count: 1
           path: src/Auth.php
-
         -
           message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Fields\\:\\:setModel\\(\\) should return Atk4\\\\Data\\\\Model but return statement is missing\\.$#"
           count: 1
           path: src/Form/Control/Fields.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:addAction\\(\\)\\.$#"
           count: 1
           path: src/Form/Login.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:setInputAttr\\(\\)\\.$#"
           count: 2
           path: src/Form/Register.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:withTitle\\(\\)\\.$#"
           count: 1
           path: src/Model/AccessRule.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:withTitle\\(\\)\\.$#"
           count: 1
           path: src/Model/User.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
           count: 1
           path: src/RoleAdmin.php
-
         -
           message: "#^Call to method addCondition\\(\\) on an unknown class Atk4\\\\Data\\\\Model\\\\AccessRule\\.$#"
           count: 1
           path: src/RoleAdmin.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
           count: 1
           path: src/UserAdmin.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:suggestPassword\\(\\)\\.$#"
           count: 1
           path: src/UserAdmin.php
-
         -
           message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verify\\(\\)\\.$#"
           count: 7
@@ -106,12 +104,10 @@ parameters:
           message: "#^Method Atk4\\\\Login\\\\Acl\\:\\:getRules\\(\\) should return Atk4\\\\Login\\\\Model\\\\AccessRule but returns Atk4\\\\Data\\\\Model\\.$#"
           count: 1
           path: src/Acl.php
-
         -
           message: "#^Property Atk4\\\\Ui\\\\App\\:\\:\\$html \\(Atk4\\\\Ui\\\\View\\) does not accept null\\.$#"
           count: 1
           path: src/Auth.php
-
         -
           message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\Generic\\:\\:getModel\\(\\) should return Atk4\\\\Data\\\\Model\\|null but empty return statement found\\.$#"
           count: 2
@@ -119,20 +115,9 @@ parameters:
 
         # level 4
         -
-          message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-          count: 1
-          path: src/Field/Password.php
-
-        -
-          message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-          count: 1
-          path: src/Field/Password.php
-
-        -
           message: "#^If condition is always true\\.$#"
           count: 1
           path: src/Form/Login.php
-
         -
           message: "#^Access to an undefined property Atk4\\\\Data\\\\Field\\:\\:\\$passwordHash\\.$#"
           count: 1

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
 use Atk4\Ui\Crud;
 use Atk4\Ui\Header;

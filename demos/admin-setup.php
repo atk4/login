@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
-use Atk4\Login\Demo\Model\Client;
+use Atk4\Login\Demos\Model\Client;
 use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;

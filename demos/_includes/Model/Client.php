@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo\Model;
+namespace Atk4\Login\Demos\Model;
 
 use Atk4\Data\Model;
 
