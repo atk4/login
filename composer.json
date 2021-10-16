@@ -30,10 +30,6 @@
         "php": ">=7.4 <8.2",
         "atk4/ui": "~3.0.0"
     },
-    "require-release": {
-        "php": ">=7.4 <8.2",
-        "atk4/ui": "~3.0.0"
-    },
     "require-dev": {
         "behat/behat": "^3.8.2 || dev-master#6f38d11",
         "behat/gherkin": "^4.8.1 || dev-master#5fbf806",
