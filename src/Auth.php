@@ -241,7 +241,7 @@ class Auth
         if ($userEntity->loaded()) {
             // verify if the password matches
             $pw_field = $userEntity->getField($this->fieldPassword);
-            if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
+            if (method_exists($pw_field, 'verifyPassword') && $pw_field->verifyPassword($password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
                 if ($this->cacheEnabled) {

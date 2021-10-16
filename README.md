@@ -206,8 +206,6 @@ Things to try:
 
 Use of migration is optional, but can help by populating initial structure of your user model. Look inside file `demos/wizard.php`. It simply adds a console component, which will execute migration of 'User' model.
 
-Migration relies on https://github.com/atk4/schema.
-
 When migration is executed it simply checks to make sure that table for 'user' exists and has all required fields. It will not delete or change existing fields or tables.
 
 ## Roadmap

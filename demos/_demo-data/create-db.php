@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login\Demos;
 
 use Atk4\Data\Model;
-use Atk4\Schema\Migration;
+use Atk4\Data\Schema\Migration;
 
 require_once __DIR__ . '/../init-autoloader.php';
 

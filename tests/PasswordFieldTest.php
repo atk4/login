@@ -52,21 +52,21 @@ class PasswordFieldTest extends Generic
         $this->assertNull($entity->get('p'));
 
         // password value after load is null, but it still should validate/verify
-        $this->assertFalse($entity->getField('p')->verify('badpass'));
-        $this->assertTrue($entity->getField('p')->verify('mypass'));
+        $this->assertFalse($entity->getField('p')->verifyPassword('badpass'));
+        $this->assertTrue($entity->getField('p')->verifyPassword('mypass'));
 
         // password shouldn't be dirty here
         $this->assertFalse($entity->isDirty('p'));
 
         $entity->set('p', 'newpass');
         $this->assertTrue($entity->isDirty('p'));
-        $this->assertFalse($entity->getField('p')->verify('mypass'));
-        $this->assertTrue($entity->getField('p')->verify('newpass'));
+        $this->assertFalse($entity->getField('p')->verifyPassword('mypass'));
+        $this->assertTrue($entity->getField('p')->verifyPassword('newpass'));
 
         $entity->save();
         $this->assertFalse($entity->isDirty('p'));
-        $this->assertFalse($entity->getField('p')->verify('mypass'));
-        $this->assertTrue($entity->getField('p')->verify('newpass'));
+        $this->assertFalse($entity->getField('p')->verifyPassword('mypass'));
+        $this->assertTrue($entity->getField('p')->verifyPassword('newpass'));
 
         // will have new hash
         $this->assertNotSame($enc, $this->getProtected($p, 'data')['data']->getRowById($m, 1)->getValue('p'));
@@ -80,7 +80,7 @@ class PasswordFieldTest extends Generic
         $m->addField('p', [Password::class]);
 
         $this->expectException(\Atk4\Data\Exception::class);
-        $m->getField('p')->verify('mypass'); // tries to compare empty password field value with value 'mypass'
+        $m->getField('p')->verifyPassword('mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
     public function testSuggestPassword()

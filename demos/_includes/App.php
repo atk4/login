@@ -13,7 +13,9 @@ use Atk4\Ui\Layout;
  */
 class App extends \Atk4\Ui\App
 {
+    /** @var Auth */
     public $auth;
+
     public $title = 'Demo App';
 
     protected function init(): void

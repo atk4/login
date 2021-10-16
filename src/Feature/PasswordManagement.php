@@ -21,15 +21,13 @@ trait PasswordManagement
             'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'system' => true,
             'args' => [
-                'length' => ['type' => 'int'],
-                'words' => ['type' => 'int'],
+                'length' => ['type' => 'integer'],
             ],
         ]);
         $this->addUserAction('reset_password', [
             'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
             'args' => [
-                'length' => ['type' => 'int'],
-                'words' => ['type' => 'int'],
+                'length' => ['type' => 'integer'],
             ],
         ]);
         $this->addUserAction('check_password_strength', [
@@ -43,9 +41,9 @@ trait PasswordManagement
     /**
      * Generate random password for the user, returns it.
      */
-    public function generate_random_password(int $length = 4, int $words = 1): string
+    public function generate_random_password(int $length = 8): string
     {
-        return (new Password())->suggestPassword($length, $words);
+        return (new Password())->suggestPassword($length);
     }
 
     /**
@@ -56,14 +54,11 @@ trait PasswordManagement
      *       if different fieldPassword are set in Auth controller.
      *       This has to be fixed somehow.
      */
-    public function reset_password(int $length = null, int $words = null): string
+    public function reset_password(int $length = 8): string
     {
         $fieldPassword = 'password';
 
-        $password = $this->generate_random_password(
-            $length ?: 4,
-            $words ?: 1
-        );
+        $password = $this->generate_random_password($length);
 
         $this->save([$fieldPassword => $password]);
 

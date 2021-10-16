@@ -1,5 +1,5 @@
 includes:
-    - vendor/mahalux/atk4-hintable/phpstan-ext.neon
+    - vendor/mvorisek/atk4-hintable/phpstan-ext.neon
 
 parameters:
     level: 4 # should be 6
@@ -89,7 +89,7 @@ parameters:
           count: 1
           path: src/UserAdmin.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verify\\(\\)\\.$#"
+          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verifyPassword\\(\\)\\.$#"
           count: 7
           path: tests/PasswordFieldTest.php
 
@@ -112,7 +112,3 @@ parameters:
           message: "#^If condition is always true\\.$#"
           count: 1
           path: src/Form/Login.php
-        -
-          message: "#^Access to an undefined property Atk4\\\\Data\\\\Field\\:\\:\\$passwordHash\\.$#"
-          count: 1
-          path: src/Field/Password.php

@@ -8,7 +8,7 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 
-abstract class Generic extends \Atk4\Schema\PhpunitTestCase
+abstract class Generic extends \Atk4\Data\Schema\TestCase
 {
     protected function setupDefaultDb()
     {

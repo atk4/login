@@ -8,7 +8,7 @@ use Atk4\Core\AppScopeTrait;
 use Atk4\Core\DynamicMethodTrait;
 use Atk4\Core\Factory;
 use Atk4\Core\HookTrait;
-use Atk4\Schema\Migration;
+use Atk4\Data\Schema\Migration;
 use Atk4\Ui\Console;
 
 /**

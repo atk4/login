@@ -41,9 +41,9 @@ class Register extends Form
         $form = $this;
         $form->addControl('name', null, ['required' => 'true']);
         $form->addControl('email', null, ['required' => 'true']);
-        $form->addControl('password', null, ['type' => 'password', 'required' => true])
+        $form->addControl('password', null, ['type' => 'string', 'required' => true])
             ->setInputAttr('autocomplete', 'new-password');
-        $form->addControl('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
+        $form->addControl('password2', null, ['type' => 'string', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence

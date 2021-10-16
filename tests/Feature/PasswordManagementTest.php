@@ -44,9 +44,9 @@ class PasswordManagementTest extends Generic
         };
 
         $this->assertIsString($pass = $entity->executeUserAction('reset_password', 4));
-        $this->assertTrue($entity->getField('password')->verify($pass));
+        $this->assertTrue($entity->getField('password')->verifyPassword($pass));
         $entity->reload();
-        $this->assertTrue($entity->getField('password')->verify($pass));
+        $this->assertTrue($entity->getField('password')->verifyPassword($pass));
 
         // check password strength
         $this->assertIsString($entity->executeUserAction('check_password_strength', 'qwerty', ['strength' => 3])); // bad
