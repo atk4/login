@@ -1,65 +1,60 @@
 {
-  "name": "atk4/login",
-  "type": "library",
-  "description": "Login and User module for Agile UI",
-  "keywords": [
-    "user",
-    "acl",
-    "auth",
-    "login",
-    "atk4",
-    "agile",
-    "agile ui",
-    "data",
-    "framework"
-  ],
-  "homepage": "https://github.com/atk4/login",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Romans Malinovskis",
-      "email": "romans@agiletoolkit.org",
-      "homepage": "https://nearly.guru/"
-    }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true
-  },
-  "require": {
-    "php": ">=7.3.0",
-    "atk4/ui": "2.4.*",
-    "atk4/data": "2.4.*"
-  },
-  "require-release": {
-    "php": ">=7.3.0",
-    "atk4/ui": "~2.4.0"
-  },
-  "require-dev": {
-    "behat/behat": "^3.8",
-    "behat/mink": "^1.8",
-    "behat/mink-extension": "^2.3.1",
-    "behat/mink-selenium2-driver": "^1.4",
-    "ergebnis/composer-normalize": "^2.13",
-    "friendsofphp/php-cs-fixer": "^2.17",
-    "johnkary/phpunit-speedtrap": "^3.2",
-    "instaclick/php-webdriver": "^1.4.7",
-    "phpstan/phpstan": "^0.12.82",
-    "phpunit/phpcov": "*",
-    "phpunit/phpunit": ">=9.3",
-    "symfony/contracts": ">=1.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "Atk4\\Login\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Atk4\\Login\\Behat\\": "tests-behat/Bootstrap/",
-      "Atk4\\Login\\Demo\\": "demos/src/",
-      "Atk4\\Login\\Tests\\": "tests/"
-    }
-  }
+    "name": "atk4/login",
+    "type": "library",
+    "description": "Login and User module for Agile UI",
+    "keywords": [
+        "user",
+        "acl",
+        "auth",
+        "login",
+        "atk4",
+        "agile",
+        "agile ui",
+        "data",
+        "framework"
+    ],
+    "homepage": "https://github.com/atk4/login",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Romans Malinovskis",
+            "email": "romans@agiletoolkit.org",
+            "homepage": "https://nearly.guru/"
+        }
+    ],
+    "require": {
+        "php": ">=7.3.0",
+        "atk4/ui": "~2.4.0"
+    },
+    "require-dev": {
+        "behat/behat": "^3.8",
+        "behat/mink": "^1.8",
+        "behat/mink-extension": "^2.3.1",
+        "behat/mink-selenium2-driver": "^1.4",
+        "ergebnis/composer-normalize": "^2.13",
+        "friendsofphp/php-cs-fixer": "^2.17",
+        "instaclick/php-webdriver": "^1.4.7",
+        "johnkary/phpunit-speedtrap": "^3.2",
+        "phpstan/phpstan": "^0.12.82",
+        "phpunit/phpcov": "*",
+        "phpunit/phpunit": ">=9.3",
+        "symfony/contracts": ">=1.1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Atk4\\Login\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atk4\\Login\\Behat\\": "tests-behat/Bootstrap/",
+            "Atk4\\Login\\Demo\\": "demos/src/",
+            "Atk4\\Login\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
