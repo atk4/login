@@ -1,23 +1,18 @@
-<?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php" printerClass="Atk4\Core\AtkPhpunit\ResultPrinter" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-    <report>
-      <php outputFile="build/logs/clover.cov"/>
-    </report>
-  </coverage>
-  <php>
-    <var name="DB_DSN" value="sqlite::memory:"/>
-    <var name="DB_USER" value=""/>
-    <var name="DB_PASSWD" value=""/>
-    <var name="DB_DBNAME" value=""/>
-  </php>
-  <testsuites>
-    <testsuite name="dsql">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
-  <logging/>
+<phpunit bootstrap="vendor/autoload.php" printerClass="Atk4\Core\AtkPhpunit\ResultPrinter" colors="true">
+    <testsuites>
+        <testsuite name="tests">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <report>
+            <php outputFile="coverage/phpunit.cov" />
+        </report>
+    </coverage>
 </phpunit>

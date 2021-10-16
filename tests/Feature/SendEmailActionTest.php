@@ -16,17 +16,17 @@ class SendEmailActionTest extends Generic
 
         $this->assertTrue($m->hasUserAction('sendEmail'));
 
-        $m->load(1);
+        $entity = $m->load(1);
 
         // replace callback so we can catch it
-        $m->getUserAction('sendEmail')->callback = function () {
+        $entity->getUserAction('sendEmail')->callback = function () {
             $args = func_get_args();
             $this->assertInstanceOf(User::class, $args[0]);
             $this->assertSame('Email subject', $args[1]);
             $this->assertSame('Email body', $args[2]);
         };
 
-        $m->executeUserAction(
+        $entity->executeUserAction(
             'sendEmail',
             'Email subject',
             'Email body'

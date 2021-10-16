@@ -1,15 +1,13 @@
 ignore:
+  - src/Behat
   - demos
   - docs
-  - template
-  - tests
-  - tests-behat
 comment: false
 coverage:
   status:
     project:
       default:
         target: auto
-        threshold: 0.1
+        threshold: 0.025
     patch: false
     changes: false

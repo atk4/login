@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
 use Atk4\Core\AppScopeTrait;
 use Atk4\Core\DynamicMethodTrait;

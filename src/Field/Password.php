@@ -7,6 +7,7 @@ namespace Atk4\Login\Field;
 use Atk4\Core\InitializerTrait;
 use Atk4\Data\Exception;
 use Atk4\Data\Field;
+use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Ui\Persistence\Ui;
 
@@ -32,7 +33,7 @@ class Password extends Field
      * Use it if you need to customize your password encryption algorithm.
      * Receives parameters - plaintext password.
      *
-     * @var callable
+     * @var callable|null
      */
     public $encryptMethod;
 
@@ -41,7 +42,7 @@ class Password extends Field
      * Use it if you need to customize your password verification algorithm.
      * Receives parameters - plaintext password, encrypted password.
      *
-     * @var callable
+     * @var callable|null
      */
     public $verifyMethod;
 
@@ -52,6 +53,16 @@ class Password extends Field
     {
         $this->_init();
         $this->setDefaultTypecastMethods();
+        $this->getOwner()->onHook(Model::HOOK_AFTER_LOAD, function (Model $m) {
+            /** @var Password $modelField */
+            $modelField = $m->getModel()->getField($this->short_name);
+            $m->getField($this->short_name)->passwordHash = $modelField->passwordHash;
+        });
+        $this->getOwner()->onHook(Model::HOOK_AFTER_UNLOAD, function (Model $m) {
+            /** @var Password $modelField */
+            $modelField = $m->getModel()->getField($this->short_name);
+            $modelField->passwordHash = null;
+        });
     }
 
     /**
@@ -82,20 +93,6 @@ class Password extends Field
     }
 
     /**
-     * Normalize password - remove hash.
-     *
-     * @param string $value password
-     *
-     * @return mixed
-     */
-    public function normalize($value)
-    {
-        $this->passwordHash = null;
-
-        return parent::normalize($value);
-    }
-
-    /**
      * DO NOT CALL THIS METHOD. It is automatically invoked when you save
      * your model.
      *
@@ -117,7 +114,7 @@ class Password extends Field
         if (is_callable($this->encryptMethod)) {
             $this->passwordHash = call_user_func_array($this->encryptMethod, [$password]);
         } else {
-            $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $this->passwordHash = password_hash($password, \PASSWORD_DEFAULT);
         }
 
         return $this->passwordHash;

@@ -227,7 +227,7 @@ trait PasswordManagement
         if ($length > 2) {
             // consecutive letters and numbers
             foreach (['/[a-z]{2,}/', '/[A-Z]{2,}/', '/[0-9]{2,}/'] as $re) {
-                preg_match_all($re, $pw, $matches, PREG_SET_ORDER);
+                preg_match_all($re, $pw, $matches, \PREG_SET_ORDER);
                 if (!empty($matches)) {
                     foreach ($matches as $match) {
                         $score -= (strlen($match[0]) - 1) * 2;

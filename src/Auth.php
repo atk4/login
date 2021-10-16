@@ -14,7 +14,9 @@ use Atk4\Core\TrackableTrait;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
+use Atk4\Login\Field\Password;
 use Atk4\Login\Layout\Narrow;
+use Atk4\Login\Model\User;
 use Atk4\Ui\Layout\Admin;
 use Atk4\Ui\VirtualPage;
 
@@ -172,7 +174,7 @@ class Auth
      */
     public function setModel($model, string $fieldLogin = null, string $fieldPassword = null)
     {
-        $this->user = $model;
+        $this->user = $model->createEntity();
 
         if ($fieldLogin !== null) {
             $this->fieldLogin = $fieldLogin;
@@ -232,25 +234,26 @@ class Auth
         // first logout
         $this->logout();
 
-        $user = new $this->user($this->user->persistence);
+        /** @var User $userModel */
+        $userModel = new $this->user($this->user->persistence);
 
-        $user->tryLoadBy($this->fieldLogin, $email);
-        if ($user->loaded()) {
+        $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
+        if ($userEntity->loaded()) {
             // verify if the password matches
-            $pw_field = $user->getField($this->fieldPassword);
+            $pw_field = $userEntity->getField($this->fieldPassword);
             if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
-                $this->hook(self::HOOK_LOGGED_IN, [$user]);
+                $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
                 if ($this->cacheEnabled) {
-                    $this->cache->setData($user->get());
+                    $this->cache->setData($userEntity->get());
                     $this->loadFromCache();
                 } else {
-                    $this->user = clone $user;
+                    $this->user = clone $userEntity;
                 }
 
                 return true;
             }
-            $user->unload();
+            $userEntity->unload();
             $this->hook(self::HOOK_BAD_LOGIN, [$email]);
         }
 
@@ -280,7 +283,7 @@ class Auth
      */
     public function setAcl(Acl $acl, Persistence $persistence = null)
     {
-        $persistence = $persistence ?? $this->user->persistence;
+        $persistence ??= $this->user->persistence;
         $acl->auth = $this;
         $acl->applyRestrictions($this->user->persistence, $this->user);
 

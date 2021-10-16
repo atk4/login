@@ -38,8 +38,8 @@ trait SendEmailAction
     public function sendEmail(string $subject, string $message): bool
     {
         $to = $this->get('email');
-        $message = str_replace(["\r\n", "\r", "\n"], PHP_EOL, $message);
-        $message = wordwrap($message, 70, PHP_EOL);
+        $message = str_replace(["\r\n", "\r", "\n"], \PHP_EOL, $message);
+        $message = wordwrap($message, 70, \PHP_EOL);
 
         return mail($to, $subject, $message);
     }

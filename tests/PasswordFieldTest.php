@@ -15,16 +15,17 @@ class PasswordFieldTest extends Generic
         $m = new Model();
         $m->addField('p', [Password::class]);
 
-        $m->set('p', 'mypass');
+        $entity = $m->createEntity();
+        $entity->set('p', 'mypass');
 
         // when setting password, you can retrieve it back while it's not yet saved
-        $this->assertSame('mypass', $m->get('p'));
+        $this->assertSame('mypass', $entity->get('p'));
 
         // password changed, so it's dirty.
-        $this->assertTrue($m->isDirty('p'));
+        $this->assertTrue($entity->isDirty('p'));
 
-        $this->assertFalse($m->compare('p', 'badpass'));
-        $this->assertTrue($m->compare('p', 'mypass'));
+        $this->assertFalse($entity->compare('p', 'badpass'));
+        $this->assertTrue($entity->compare('p', 'mypass'));
     }
 
     public function testPasswordPersistence()
@@ -35,40 +36,40 @@ class PasswordFieldTest extends Generic
         $m->addField('p', [Password::class]);
 
         // making sure cloning does not break things
-        $m = clone $m;
+        $entity = $m->createEntity();
 
         // when setting password, you can retrieve it back while it's not yet saved
-        $m->set('p', 'mypass');
-        $this->assertSame('mypass', $m->get('p'));
-        $m->save();
+        $entity->set('p', 'mypass');
+        $this->assertSame('mypass', $entity->get('p'));
+        $entity->save();
 
         // stored encoded password
-        $enc = $this->getProtected($p, 'data')['data'][1]['p']; //->getRowById($m, 1)->getValue('p');
+        $enc = $this->getProtected($p, 'data')['data']->getRowById($m, 1)->getValue('p');
         $this->assertTrue(is_string($enc));
         $this->assertNotSame('mypass', $enc);
 
         // should have reloaded also
-        $this->assertNull($m->get('p'));
+        $this->assertNull($entity->get('p'));
 
         // password value after load is null, but it still should validate/verify
-        $this->assertFalse($m->getField('p')->verify('badpass'));
-        $this->assertTrue($m->getField('p')->verify('mypass'));
+        $this->assertFalse($entity->getField('p')->verify('badpass'));
+        $this->assertTrue($entity->getField('p')->verify('mypass'));
 
         // password shouldn't be dirty here
-        $this->assertFalse($m->isDirty('p'));
+        $this->assertFalse($entity->isDirty('p'));
 
-        $m->set('p', 'newpass');
-        $this->assertTrue($m->isDirty('p'));
-        $this->assertFalse($m->getField('p')->verify('mypass'));
-        $this->assertTrue($m->getField('p')->verify('newpass'));
+        $entity->set('p', 'newpass');
+        $this->assertTrue($entity->isDirty('p'));
+        $this->assertFalse($entity->getField('p')->verify('mypass'));
+        $this->assertTrue($entity->getField('p')->verify('newpass'));
 
-        $m->save();
-        $this->assertFalse($m->isDirty('p'));
-        $this->assertFalse($m->getField('p')->verify('mypass'));
-        $this->assertTrue($m->getField('p')->verify('newpass'));
+        $entity->save();
+        $this->assertFalse($entity->isDirty('p'));
+        $this->assertFalse($entity->getField('p')->verify('mypass'));
+        $this->assertTrue($entity->getField('p')->verify('newpass'));
 
         // will have new hash
-        $this->assertNotSame($enc, $this->getProtected($p, 'data')['data'][1]['p']); //->getRowById($m, 1)->getValue('p'));
+        $this->assertNotSame($enc, $this->getProtected($p, 'data')['data']->getRowById($m, 1)->getValue('p'));
     }
 
     public function testCanNotCompareEmptyException()

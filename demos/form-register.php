@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
 use Atk4\Login\Form;
 use Atk4\Login\Layout\Narrow;
@@ -19,4 +19,4 @@ Header::addTo($app, ['New user sign-up form']);
 
 $f = Form\Register::addTo($app, ['auth' => $app->auth]);
 $m = new User($app->db);
-$f->setModel($m);
+$f->setModel($m->createEntity());

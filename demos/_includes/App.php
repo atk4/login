@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atk4\Login\Demo;
+namespace Atk4\Login\Demos;
 
 use Atk4\Login\Acl;
 use Atk4\Login\Auth;
@@ -11,7 +11,7 @@ use Atk4\Ui\Layout;
 /**
  * Example implementation of your Authenticated application.
  */
-class App extends AbstractApp
+class App extends \Atk4\Ui\App
 {
     public $auth;
     public $title = 'Demo App';

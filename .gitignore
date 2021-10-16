@@ -1,20 +1,22 @@
-docs/build
-/build
+/docs/build
+/coverage
 /vendor
 /composer.lock
 .idea
 nbproject
+.vscode
 .DS_Store
 
 local
 *.local
 *.local.*
+cache
 *.cache
 *.cache.*
 
+/demos/db.php
+/demos/_demo-data/db.sqlite
+/demos/_demo-data/db.sqlite-journal
 /phpunit.xml
-/phpunit-*.xml
 /behat.yml
 
-*.bak
-/demos/data/db.sqlite
