@@ -6,6 +6,7 @@ namespace Atk4\Login;
 
 use Atk4\Core\DebugTrait;
 use Atk4\Data\Model;
+use Atk4\Login\Model\AccessRule;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Header;
 use Atk4\Ui\Table\Column\ActionButtons;
@@ -30,12 +31,12 @@ class RoleAdmin extends Crud
         $column = $this->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
-            $role->load($id);
+            $role = $role->load($id);
             $v->add([Header::class, $role->getTitle() . ' Permissions']);
 
             $crud = Crud::addTo($v);
             //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
-            $crud->setModel((new Model\AccessRule($role->persistence))->addCondition('role_id', $id));
+            $crud->setModel((new AccessRule($role->persistence))->addCondition('role_id', $id));
 
             $crud->onFormAddEdit(function ($f) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
