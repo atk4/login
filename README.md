@@ -18,7 +18,7 @@ $app->auth = new \Atk4\Login\Auth();
 $app->auth->setModel(new \Atk4\Login\Model\User($app->db));
 
 // The rest of YOUR UI code will now be protected
-$app->add([\Atk4\Ui\Crud:class])->setModel(new Client($app->db));
+\Atk4\Ui\Crud::addTo($app)->setModel(new Client($app->db));
 ```
 
 (If you do not have User model yet, you can extend or use \Atk4\Login\Model\User).
@@ -81,14 +81,14 @@ $app->auth->setModel(new User($app->db));
 
 // Now manually use login logic
 if (!$app->auth->user->loaded()) {
-  $app->add([new \Atk4\Login\LoginForm(), 'auth'=>$app->auth]);
+  \Atk4\Login\LoginForm::addTo($app, ['auth' => $app->auth]);
 }
 ```
 
 #### Adding sign-up form
 
 ``` php
-$app->add([\Atk4\Login\RegisterForm::class])
+\Atk4\Login\RegisterForm::addTo($app)
     ->setModel(new \Atk4\Login\Model\User($app->db));
 ```
 
@@ -104,8 +104,7 @@ Displays email and 2 password fields (for confirmation). If filled successfully 
 ![Login](./docs/login-form.png)
 
 ``` php
-$app->add([
-  \Atk4\Login\LoginForm::class,
+\Atk4\Login\LoginForm::addTo($app, [
   'auth'=>$app->auth,
   //'successLink'=>['dashboard'],
   //'forgotLink'=>['forgot'],
@@ -143,14 +142,14 @@ You may also access user data like this: `$app->auth->model['name']`; Things to 
 This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
 
 ``` php
-$app->add([Form::class])->setModel($app->auth->user);
+Form::addTo($app)->setModel($app->auth->user);
 ```
 
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-$app->add([Button::class, 'Profile', 'primary'])->on('click', $app->add([Modal::class])->set(function($p) {
-    $p->add([Form::class])->setModel($p->app->auth->user);
+Button::addTo($app, ['Profile', 'primary'])->on('click', Modal::addTo($app)->set(function($p) {
+    Form::addTo($p)->setModel($p->app->auth->user);
 })->show());
 ```
 
@@ -185,7 +184,7 @@ Although a basic User model is supplied, you can either extend it or use your ow
 We include a slightly extended "Admin" interface which includes page to see user details and change their password. To create admin page use:
 
 ``` php
-$app->add(new \Atk4\Login\UserAdmin())
+\Atk4\Login\UserAdmin::addTo($app)
     ->setModel(new \Atk4\Login\Model\User($app->db));
 ```
 

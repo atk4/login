@@ -53,7 +53,7 @@ class UserAdmin extends View
         $column->addModal(['icon' => 'key'], 'Change Password', function ($v, $id) {
             $userEntity = $this->model->load($id);
 
-            $form = $v->add([Form::class]);
+            $form = Form::addTo($v);
             $f = $form->addControl('visible_password', null, ['required' => true]);
             //$form->addControl('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
 
@@ -76,24 +76,24 @@ class UserAdmin extends View
         });
 
         /*
-        $column->addModal(['icon'=>'eye'], 'Details', function($v, $id, $userEntity) {
+        $column->addModal(['icon' => 'eye'], 'Details', function($v, $id, $userEntity) {
             $userEntity = $this->model->load($id);
 
-            $c = $v->add(Columns::class);
+            $c = Columns::addTo($v);
             $left = $c->addColumn();
             $right = $c->addColumn();
 
-            $left->add([Header::class, 'Role "'.$userEntity['role'].'" Access']);
-            $crud = $left->add([CRUD::class]);
+            Header::addTo($left, ['Role "' . $userEntity['role'] . '" Access']);
+            $crud = Crud::addTo($left);
             $crud->setModel($userEntity->ref('AccessRules'));
             $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
 
-            $right->add([Header::class, 'Role Details']);
+            Header::addTo($right, ['Role Details']);
             $rule = $right->stickyGet('rule');
             if (!$rule) {
-                $right->add([Message::class, 'Select role on the left', 'yellow']);
+                Message::addTo($right, ['Select role on the left', 'yellow']);
             } else {
-                $right->add([CRUD::class])->setModel($userEntity->ref('AccessRules')->load($rule));
+                Crud::addTo($right)->setModel($userEntity->ref('AccessRules')->load($rule));
             }
         })->setAttr('title', 'User Details');
         */

@@ -32,7 +32,7 @@ class RoleAdmin extends Crud
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
             $role = $role->load($id);
-            $v->add([Header::class, $role->getTitle() . ' Permissions']);
+            Header::addTo($v, [$role->getTitle() . ' Permissions']);
 
             $crud = Crud::addTo($v);
             //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
