@@ -18,6 +18,14 @@ unset($sqliteFile);
 /** @var \Atk4\Data\Persistence\Sql $db */
 require_once __DIR__ . '/../init-db.php';
 
+$model = new Model($db, ['table' => 'login_role']);
+$model->addField('name', ['type' => 'string']);
+(new Migration($model))->create();
+$model->import([
+    1 => ['id' => 1, 'name' => 'User Role'],
+    2 => ['id' => 2, 'name' => 'Admin Role'],
+]);
+
 $model = new Model($db, ['table' => 'login_user']);
 $model->addField('name', ['type' => 'string']);
 $model->addField('email', ['type' => 'string']);
@@ -29,15 +37,7 @@ $model->import([
     2 => ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', 'role_id' => 2], // admin/admin
 ]);
 
-$model = new Model($db, ['table' => 'login_role']);
-$model->addField('name', ['type' => 'string']);
-(new Migration($model))->create();
-$model->import([
-    1 => ['id' => 1, 'name' => 'User Role'],
-    2 => ['id' => 2, 'name' => 'Admin Role'],
-]);
-
-$model = new Model($db, ['table' => 'login_access_role']);
+$model = new Model($db, ['table' => 'login_access_rule']);
 $model->addField('role_id', ['type' => 'integer']);
 $model->addField('model', ['type' => 'string']);
 $model->addField('all_visible', ['type' => 'boolean']);
@@ -50,9 +50,17 @@ $model->addField('conditions', ['type' => 'boolean']);
 
 (new Migration($model))->create();
 $model->import([
-    1 => ['id' => 1, 'role_id' => 1, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-    2 => ['id' => 2, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-    3 => ['id' => 3, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\Role', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    1 => ['id' => 1, 'role_id' => 1, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    2 => ['id' => 2, 'role_id' => 2, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    3 => ['id' => 3, 'role_id' => 2, 'model' => \Atk4\Login\Model\Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
 ]);
+
+$model = new Model($db, ['table' => 'demo_client']);
+$model->addField('name', ['required' => true]);
+$model->addField('vat_number');
+$model->addField('balance', ['type' => 'atk4_money']);
+$model->addField('active', ['type' => 'boolean', 'default' => true]);
+
+(new Migration($model))->create();
 
 echo 'import complete!' . "\n\n";
