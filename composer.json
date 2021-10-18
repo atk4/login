@@ -43,6 +43,7 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "instaclick/php-webdriver": "^1.4.7",
         "johnkary/phpunit-speedtrap": "^3.3",
+        "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12.82",
         "phpunit/phpcov": "*",
         "phpunit/phpunit": "^9.5.5",
