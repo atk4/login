@@ -17,7 +17,7 @@ class Client extends Model
 
         $this->addField('name', ['required' => true]);
         $this->addField('vat_number');
-        $this->addField('balance', ['type' => 'money']);
+        $this->addField('balance', ['type' => 'atk4_money']);
         $this->addField('active', ['type' => 'boolean', 'default' => true]);
 
         // custom action

@@ -58,7 +58,7 @@ $model->import([
 $model = new Model($db, ['table' => 'demo_client']);
 $model->addField('name', ['required' => true]);
 $model->addField('vat_number');
-$model->addField('balance', ['type' => 'money']);
+$model->addField('balance', ['type' => 'atk4_money']);
 $model->addField('active', ['type' => 'boolean', 'default' => true]);
 
 (new Migration($model))->create();
