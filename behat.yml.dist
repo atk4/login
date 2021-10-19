@@ -6,6 +6,7 @@ default:
       contexts:
         - Behat\MinkExtension\Context\MinkContext
         - Atk4\Ui\Behat\Context
+        - Atk4\Ui\Behat\DumpContext
   extensions:
     Behat\MinkExtension:
       base_url: 'http://127.0.0.1:8888/demos'
