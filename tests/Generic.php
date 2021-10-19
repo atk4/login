@@ -22,9 +22,9 @@ abstract class Generic extends \Atk4\Schema\PhpunitTestCase
                 2 => ['id' => 2, 'name' => 'Admin Role'],
             ],
             'login_access_rule' => [
-                1 => ['id' => 1, 'role_id' => 1, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                2 => ['id' => 2, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\User', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                3 => ['id' => 3, 'role_id' => 2, 'model' => '\\Atk4\Login\\Model\\Role', 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                1 => ['id' => 1, 'role_id' => 1, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                2 => ['id' => 2, 'role_id' => 2, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                3 => ['id' => 3, 'role_id' => 2, 'model' => \Atk4\Login\Model\Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
             ],
         ]);
     }

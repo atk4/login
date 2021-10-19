@@ -31,11 +31,10 @@
         "atk4/ui": "~3.0.0"
     },
     "require-dev": {
-        "behat/behat": "^3.8.2 || dev-master#6f38d11",
-        "behat/gherkin": "^4.8.1 || dev-master#5fbf806",
-        "behat/mink": "^1.8.2 || dev-master#1ab79d6",
+        "behat/behat": "^3.9",
+        "behat/mink": "^1.9",
         "behat/mink-extension": "^2.3.1",
-        "behat/mink-selenium2-driver": "^1.4",
+        "behat/mink-selenium2-driver": "^1.5",
         "ergebnis/composer-normalize": "^2.13",
         "friendsofphp/php-cs-fixer": "^3.0",
         "instaclick/php-webdriver": "^1.4.7",
@@ -43,7 +42,8 @@
         "phpstan/phpstan": "^0.12.82",
         "phpunit/phpcov": "*",
         "phpunit/phpunit": "^9.5.5",
-        "symfony/contracts": ">=1.1"
+        "symfony/console": "^4.4.30 || ^5.3.7",
+        "symfony/css-selector": "^4.4.24 || ^5.2.9"
     },
     "config": {
         "sort-packages": true

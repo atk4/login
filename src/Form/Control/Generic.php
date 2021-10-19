@@ -36,7 +36,7 @@ abstract class Generic extends Dropdown
 
         $model = new $class($this->form->model->persistence);
         if (!$model instanceof Model) {
-            throw new Exception('Class should be instance of Atk4\\Data\\Model');
+            throw new Exception('Class should be instance of ' . Model::class);
         }
 
         return $model;

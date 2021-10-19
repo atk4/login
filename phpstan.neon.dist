@@ -29,12 +29,6 @@ parameters:
         - '~^Unsafe usage of new static\(\)\.$~'
 
         # TODO these rules are generated, this ignores should be fixed in the code
-        # level 0
-        -
-          message: "#^Instantiated class Atk4\\\\Data\\\\Model\\\\AccessRule not found\\.$#"
-          count: 1
-          path: src/RoleAdmin.php
-
         # level 1
         -
           message: "#^Call to an undefined method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setUnique\\(\\)\\.$#"
@@ -83,11 +77,11 @@ parameters:
           count: 1
           path: src/RoleAdmin.php
         -
-          message: "#^Call to method addCondition\\(\\) on an unknown class Atk4\\\\Data\\\\Model\\\\AccessRule\\.$#"
-          count: 1
-          path: src/RoleAdmin.php
-        -
           message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
+          count: 1
+          path: src/UserAdmin.php
+        -
+          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:addAction\\(\\)\\.$#"
           count: 1
           path: src/UserAdmin.php
         -
