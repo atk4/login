@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Feature;
 
-/*
- * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
- * $this->setupModel() from your models init() method after you define model fields.
- *
- * @package Atk4\Login\Feature
- */
 use Atk4\Data\Model;
-use Atk4\Data\ValidationException;
 use Atk4\Login\Form\Control;
 use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 
+/*
+ * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
+ * $this->setupModel() from your models init() method after you define model fields.
+ */
 trait SetupModel
 {
     /**
@@ -82,6 +79,7 @@ trait SetupModel
         $this->getField('name')->required = true;
         $this->getField('email')->required = true;
         $this->setUnique('email');
+        $this->getField('password')->required = true;
         $this->getField('password')->ui['visible'] = false;
 
         // all AccessRules for all user roles
@@ -93,14 +91,5 @@ trait SetupModel
             'our_field' => 'role_id',
             'their_field' => 'role_id',
         ]);
-
-        // add some validations
-        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) {
-            // password should be set when trying to insert new record
-            // but it can be empty if you update record (then it will not change password)
-            if (!$m->loaded() && !$m->get('password')) {
-                throw new ValidationException(['password' => 'Password is required'], $this);
-            }
-        });
     }
 }
