@@ -11,7 +11,7 @@ use Atk4\Core\SessionTrait;
 /**
  * Session cache for authentication controller.
  */
-class Session // implementes CacheInterface
+class Session // implements CacheInterface
 {
     use DiContainerTrait;
     use NameTrait;
