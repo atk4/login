@@ -58,7 +58,7 @@ class Session // implements CacheInterface
     {
         $this->init();
 
-        return $this->key ?? $this->name ?? static::class;
+        return static::class . ':' . ($this->key ?? $this->name);
     }
 
     /**
