@@ -2,7 +2,7 @@ parameters:
     level: 4 # should be 6
     paths:
         - ./
-    excludes_analyse:
+    excludePaths:
         - cache/
         - build/
         - vendor/
