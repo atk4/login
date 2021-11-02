@@ -27,7 +27,7 @@ class Session // implementes CacheInterface
     /**
      * Cache key. Set this if you want to use multiple cache objects at same time.
      *
-     * @var string
+     * @var string|null
      */
     public $key;
 

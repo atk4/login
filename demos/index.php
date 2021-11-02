@@ -19,7 +19,7 @@ $v = View::addTo($app, ['ui' => 'segment']);
 Button::addTo($v, ['Setup demo SQLite database', 'icon' => 'cogs'])->link(['admin-setup']);
 
 // Info
-if (isset($app->auth) && $app->auth->isLoggedIn()) {
+if ($app->auth->isLoggedIn()) {
     $a = Message::addTo($app, ['type' => 'info'])->set('Currently logged in: ' . $app->auth->user->getTitle());
     Button::addTo($a, ['Logout', 'icon' => 'sign out'])->link([$app->auth->pageDashboard, 'logout' => true]);
 } else {
