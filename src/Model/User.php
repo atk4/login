@@ -36,7 +36,8 @@ class User extends Model
         $this->addField('password', [Password::class]);
 
         // currently user can have only one role. In future it should be n:n relation
-        $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])->withTitle();
+        $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])
+            ->addTitle();
 
         // traits
         $this->setupUserModel();

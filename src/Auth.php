@@ -14,7 +14,6 @@ use Atk4\Core\TrackableTrait;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
-use Atk4\Login\Field\Password;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Layout\Admin;
@@ -31,7 +30,7 @@ class Auth
     use DiContainerTrait;
     use HookTrait;
     use InitializerTrait {
-        init as _init;
+        init as private _init;
     }
     use TrackableTrait;
 
