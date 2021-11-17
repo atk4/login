@@ -17,15 +17,17 @@ trait UniqueFieldValueTrait
      *
      * @return $this
      */
-    public function setUnique(string $field)
+    public function setUnique(string $fieldName)
     {
-        $this->onHook(Model::HOOK_BEFORE_SAVE, function ($m) use ($field) {
-            if ($m->isDirty($field)) {
-                $model = new static($m->persistence);
-                $model->addCondition($model->id_field, '!=', $m->getId());
-                $entity = $model->tryLoadBy($field, $m->get($field));
-                if ($entity->loaded()) {
-                    throw new ValidationException([$field => ucwords($field) . ' with such value already exists'], $this);
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function (Model $entity) use ($fieldName) {
+            if ($entity->isDirty($fieldName)) {
+                $clonedModel = clone $entity->getModel();
+                if ($entity->getId() !== null) {
+                    $clonedModel->addCondition($entity->id_field, '!=', $entity->getId());
+                }
+                $clonedModel->addCondition($fieldName, $entity->get($fieldName));
+                if ($clonedModel->action('exists')->getOne()) {
+                    throw new ValidationException([$fieldName => 'Field with such value already exists'], $this);
                 }
             }
         });
