@@ -10,7 +10,7 @@ use Atk4\Login\Field\Password;
 /**
  * Enables your User model to perform various actions with the passwords.
  */
-trait PasswordManagement
+trait PasswordManagementTrait
 {
     /**
      * This must be consistent with config.yaml.

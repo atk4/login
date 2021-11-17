@@ -6,11 +6,11 @@ namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
 // Features of User model
-use Atk4\Login\Feature\PasswordManagement;
-use Atk4\Login\Feature\SendEmailAction;
-use Atk4\Login\Feature\SetupModel;
-use Atk4\Login\Feature\Signup;
-use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\Feature\PasswordManagementTrait;
+use Atk4\Login\Feature\SendEmailActionTrait;
+use Atk4\Login\Feature\SetupModelTrait;
+use Atk4\Login\Feature\SignupTrait;
+use Atk4\Login\Feature\UniqueFieldValueTrait;
 use Atk4\Login\Field\Password;
 
 /**
@@ -18,11 +18,11 @@ use Atk4\Login\Field\Password;
  */
 class User extends Model
 {
-    use PasswordManagement;
-    use SendEmailAction;
-    use SetupModel;
-    use Signup;
-    use UniqueFieldValue;
+    use PasswordManagementTrait;
+    use SendEmailActionTrait;
+    use SetupModelTrait;
+    use SignupTrait;
+    use UniqueFieldValueTrait;
 
     public $table = 'login_user';
     public $caption = 'User';

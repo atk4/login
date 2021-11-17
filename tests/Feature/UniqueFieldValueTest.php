@@ -6,7 +6,7 @@ namespace Atk4\Login\Tests\Feature;
 
 use Atk4\Data\Model;
 use Atk4\Data\ValidationException;
-use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\Feature\UniqueFieldValueTrait;
 use Atk4\Login\Tests\Generic;
 
 class UniqueFieldValueTest extends Generic
@@ -23,7 +23,7 @@ class UniqueFieldValueTest extends Generic
     protected function getTestModel()
     {
         $c = new class() extends Model {
-            use UniqueFieldValue;
+            use UniqueFieldValueTrait;
 
             public $table = 'test';
 

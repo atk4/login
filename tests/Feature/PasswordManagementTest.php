@@ -6,7 +6,7 @@ namespace Atk4\Login\Tests\Feature;
 
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
-use Atk4\Login\Feature\PasswordManagement;
+use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Model\User;
 use Atk4\Login\Tests\Generic;
 
@@ -15,7 +15,7 @@ class PasswordManagementTest extends Generic
     public function testGenerateRandomPassword()
     {
         $class = new class() extends Model {
-            use PasswordManagement;
+            use PasswordManagementTrait;
         };
         $model = new $class(new Persistence\Array_());
         $this->assertIsString($model->generate_random_password(4));

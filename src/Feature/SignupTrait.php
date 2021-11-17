@@ -10,7 +10,7 @@ use Atk4\Data\Model\UserAction;
  * Adding this trait to your user model will allow users to sign-up for your application. Additionally execute
  * $this->initSignup() from your init() method.
  */
-trait Signup
+trait SignupTrait
 {
     /**
      * Adds register_new_user action.

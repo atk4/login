@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
-use Atk4\Login\Feature\SetupModel;
-use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\Feature\SetupModelTrait;
+use Atk4\Login\Feature\UniqueFieldValueTrait;
 
 class Role extends Model
 {
-    use SetupModel;
-    use UniqueFieldValue;
+    use SetupModelTrait;
+    use UniqueFieldValueTrait;
 
     public $table = 'login_role';
     public $caption = 'Role';

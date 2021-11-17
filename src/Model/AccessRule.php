@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
-use Atk4\Login\Feature\SetupModel;
+use Atk4\Login\Feature\SetupModelTrait;
 
 /**
  * White-list access control rules.
  */
 class AccessRule extends Model
 {
-    use SetupModel;
+    use SetupModelTrait;
 
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';

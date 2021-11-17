@@ -14,7 +14,7 @@ use Atk4\Login\Model\User;
  * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
  * $this->setupModel() from your models init() method after you define model fields.
  */
-trait SetupModel
+trait SetupModelTrait
 {
     /**
      * Setup AccessRule model.

@@ -10,7 +10,7 @@ use Atk4\Data\ValidationException;
 /**
  * Adding this trait to your model will allow it to set fields which should be unique.
  */
-trait UniqueFieldValue
+trait UniqueFieldValueTrait
 {
     /**
      * Set that field value should be unique.
