@@ -52,8 +52,8 @@ class UserAdmin extends View
             $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
-            $f = $form->addControl('visible_password', null, ['required' => true]);
-            //$form->addControl('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
+            $f = $form->addControl('visible_password', [], ['required' => true]);
+            //$form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
                 return $f->jsInput()->val($userEntity->getField('password')->suggestPassword());

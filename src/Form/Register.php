@@ -29,14 +29,14 @@ class Register extends Form
 
     public function setModel(Model $user, array $fields = null): void
     {
-        parent::setModel($user, false);
+        parent::setModel($user, []);
 
         $form = $this;
-        $form->addControl('name', null, ['required' => 'true']);
-        $form->addControl('email', null, ['required' => 'true']);
-        $form->addControl('password', null, ['type' => 'string', 'required' => true])
+        $form->addControl('name', [], ['required' => 'true']);
+        $form->addControl('email', [], ['required' => 'true']);
+        $form->addControl('password', [], ['type' => 'string', 'required' => true])
             ->setInputAttr('autocomplete', 'new-password');
-        $form->addControl('password2', null, ['type' => 'string', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
+        $form->addControl('password2', [], ['type' => 'string', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence

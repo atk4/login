@@ -1,5 +1,5 @@
 parameters:
-    level: 4 # should be 6
+    level: 5 # should be 6
     paths:
         - ./
     excludePaths:
@@ -25,83 +25,95 @@ parameters:
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
 
+        # TODO
+        -
+          message: '~^Method Atk4\\Data\\Field::get\(\) invoked with 0 parameters, 1 required\.$~'
+          count: 4
+          path: src/Field/Password.php
+
         # TODO these rules are generated, this ignores should be fixed in the code
         # level 1
         -
-          message: "#^Call to an undefined method Atk4\\\\Login\\\\Model\\\\AccessRule\\:\\:setUnique\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Login\\Model\\AccessRule::setUnique\(\)\.$~'
           count: 2
           path: src/Model/AccessRule.php
         -
-          message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
+          message: '~^Method Atk4\\Ui\\View::setModel\(\) invoked with 2 parameters, 1 required\.$~'
           count: 1
           path: src/Form/Control/Actions.php
         -
-          message: "#^Method Atk4\\\\Ui\\\\View\\:\\:setModel\\(\\) invoked with 2 parameters, 1 required\\.$#"
+          message: '~^Method Atk4\\Ui\\View::setModel\(\) invoked with 2 parameters, 1 required\.$~'
           count: 1
           path: src/Form/Control/Fields.php
 
         # level 2
         -
-          message: "#^Access to an undefined property Atk4\\\\Ui\\\\Layout\\:\\:\\$menuLeft\\.$#"
+          message: '~^Access to an undefined property Atk4\\Ui\\Layout::\$menuLeft\.$~'
           count: 5
           path: demos/_includes/App.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\AbstractView\\:\\:getUrl\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\AbstractView::getUrl\(\)\.$~'
           count: 1
           path: src/Auth.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:addAction\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
           count: 1
           path: src/Form/Login.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:setInputAttr\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::setInputAttr\(\)\.$~'
           count: 2
           path: src/Form/Register.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:addTitle\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
           count: 1
           path: src/Model/AccessRule.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Data\\\\Reference\\\\HasOne\\:\\:addTitle\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
           count: 1
           path: src/Model/User.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\Table\\Column::addModal\(\)\.$~'
           count: 1
           path: src/RoleAdmin.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Table\\\\Column\\:\\:addModal\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\Table\\Column::addModal\(\)\.$~'
           count: 1
           path: src/UserAdmin.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Ui\\\\Form\\\\Control\\:\\:addAction\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
           count: 1
           path: src/UserAdmin.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:suggestPassword\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Data\\Field::suggestPassword\(\)\.$~'
           count: 1
           path: src/UserAdmin.php
         -
-          message: "#^Call to an undefined method Atk4\\\\Data\\\\Field\\:\\:verifyPassword\\(\\)\\.$#"
+          message: '~^Call to an undefined method Atk4\\Data\\Field::verifyPassword\(\)\.$~'
           count: 3
           path: tests/PasswordFieldTest.php
 
         #level 3
         -
-          message: "#^Method Atk4\\\\Login\\\\Acl\\:\\:getRules\\(\\) should return Atk4\\\\Login\\\\Model\\\\AccessRule but returns Atk4\\\\Data\\\\Model\\.$#"
+          message: '~^Method Atk4\\Login\\Acl::getRules\(\) should return Atk4\\Login\\Model\\AccessRule but returns Atk4\\Data\\Model\.$~'
           count: 1
           path: src/Acl.php
         -
-          message: "#^Property Atk4\\\\Ui\\\\App\\:\\:\\$html \\(Atk4\\\\Ui\\\\View\\) does not accept null\\.$#"
+          message: '~^Property Atk4\\Ui\\App::\$html \(Atk4\\Ui\\View\) does not accept null\.$~'
           count: 1
           path: src/Auth.php
         -
-          message: "#^Method Atk4\\\\Login\\\\Form\\\\Control\\\\GenericDropdown\\:\\:getModel\\(\\) should return Atk4\\\\Data\\\\Model\\|null but empty return statement found\\.$#"
+          message: '~^Method Atk4\\Login\\Form\\Control\\GenericDropdown::getModel\(\) should return Atk4\\Data\\Model\\|null but empty return statement found\.$~'
           count: 2
           path: src/Form/Control/GenericDropdown.php
 
         # level 4
         -
-          message: "#^If condition is always true\\.$#"
+          message: '~^If condition is always true\.$~'
           count: 1
           path: src/Form/Login.php
+
+        # level 5
+        -
+          message: '~^Parameter #1 \$page of method Atk4\\Login\\Auth::setPreferencePage\(\) expects Atk4\\Ui\\VirtualPage, Atk4\\Ui\\AbstractView given\.$~'
+          count: 1
+          path: src/Auth.php
