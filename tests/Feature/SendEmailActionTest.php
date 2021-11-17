@@ -9,7 +9,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class SendEmailActionTest extends GenericTestCase
 {
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
         $m = $this->createUserModel();

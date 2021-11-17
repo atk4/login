@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests;
 
-use Atk4\Data\Model;
 use Atk4\Login\Auth;
 use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
-use Atk4\Login\Model\User;
 
 class AuthTest extends GenericTestCase
 {
-    public function testDb()
+    public function testDb(): void
     {
         $this->setupDefaultDb();
 
@@ -36,7 +34,7 @@ class AuthTest extends GenericTestCase
         $this->assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
-    public function testAuth($cacheEnabled = true)
+    public function testAuth($cacheEnabled = true): void
     {
         $this->setupDefaultDb();
 
@@ -122,7 +120,7 @@ class AuthTest extends GenericTestCase
         }
     }
 
-    public function testAuthNoCache()
+    public function testAuthNoCache(): void
     {
         $this->testAuth(false);
     }

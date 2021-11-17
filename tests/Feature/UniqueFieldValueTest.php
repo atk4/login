@@ -38,7 +38,7 @@ class UniqueFieldValueTest extends GenericTestCase
         return new $c($this->db, ['table' => 'test']);
     }
 
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
         $m = $this->getTestModel();

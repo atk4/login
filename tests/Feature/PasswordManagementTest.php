@@ -12,7 +12,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class PasswordManagementTest extends GenericTestCase
 {
-    public function testGenerateRandomPassword()
+    public function testGenerateRandomPassword(): void
     {
         $class = new class() extends Model {
             use PasswordManagementTrait;
@@ -21,7 +21,7 @@ class PasswordManagementTest extends GenericTestCase
         $this->assertIsString($model->generate_random_password(4));
     }
 
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
         $model = $this->createUserModel();

@@ -8,7 +8,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class SignupTest extends GenericTestCase
 {
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
         $m = $this->createUserModel();

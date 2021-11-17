@@ -10,7 +10,7 @@ use Atk4\Login\Field\Password;
 
 class PasswordFieldTest extends GenericTestCase
 {
-    public function testPasswordField()
+    public function testPasswordField(): void
     {
         $m = new Model();
         $m->addField('p', [Password::class]);
@@ -28,7 +28,7 @@ class PasswordFieldTest extends GenericTestCase
         $this->assertSame($v, $entity->get('p'));
     }
 
-    public function testPasswordPersistence()
+    public function testPasswordPersistence(): void
     {
         $db = new Persistence\Array_();
 
@@ -48,7 +48,7 @@ class PasswordFieldTest extends GenericTestCase
         $this->assertTrue($entity->isDirty('p'));
     }
 
-    public function testCanNotCompareEmptyException()
+    public function testCanNotCompareEmptyException(): void
     {
         $p = new Persistence\Array_();
         $m = new Model($p);
@@ -59,7 +59,7 @@ class PasswordFieldTest extends GenericTestCase
         $m->getField('p')->verifyPassword('mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
-    public function testSuggestPassword()
+    public function testSuggestPassword(): void
     {
         $field = new Password();
         $pwd = $field->suggestPassword(6);
