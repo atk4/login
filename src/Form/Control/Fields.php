@@ -9,7 +9,7 @@ use Atk4\Data\Model;
 /**
  * Form field to choose one or multiple model fields.
  */
-class Fields extends Generic
+class Fields extends GenericDropdown
 {
     public function setModel(Model $model, array $fields = null): void
     {

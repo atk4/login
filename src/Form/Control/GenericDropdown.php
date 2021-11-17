@@ -11,7 +11,7 @@ use Atk4\Ui\Form\Control\Dropdown;
 /**
  * Form field to choose one or multiple entities.
  */
-abstract class Generic extends Dropdown
+abstract class GenericDropdown extends Dropdown
 {
     /** @var bool Dropdown with multiselect */
     public $isMultiple = true;
