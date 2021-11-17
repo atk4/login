@@ -27,14 +27,7 @@ class Register extends Form
         $form->buttonSave->iconRight = 'right arrow';
     }
 
-    /**
-     * Sets user model.
-     *
-     * @param array $fields
-     *
-     * @return Model
-     */
-    public function setModel(Model $user, $fields = null)
+    public function setModel(Model $user, array $fields = null): void
     {
         parent::setModel($user, false);
 
@@ -65,7 +58,5 @@ class Register extends Form
 
             return $form->success('Account has been created');
         });
-
-        return $form->model;
     }
 }

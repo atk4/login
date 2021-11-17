@@ -35,10 +35,8 @@ class UserAdmin extends View
 
     /**
      * Initialize User Admin and add all the UI pieces.
-     *
-     * @return Model
      */
-    public function setModel(Model $user)
+    public function setModel(Model $user): void
     {
         //$user->getUserAction('register_new_user')->system = true;
         $user->getUserAction('add')->system = true;
@@ -98,6 +96,6 @@ class UserAdmin extends View
         })->setAttr('title', 'User Details');
         */
 
-        return parent::setModel($user);
+        parent::setModel($user);
     }
 }

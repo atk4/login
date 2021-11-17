@@ -165,13 +165,9 @@ class Auth
     /**
      * Specify a model for a user check here.
      *
-     * @param Model  $model
-     * @param string $fieldLogin
-     * @param string $fieldPassword
-     *
      * @return $this
      */
-    public function setModel($model, string $fieldLogin = null, string $fieldPassword = null)
+    public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
     {
         $this->user = $model->createEntity();
 

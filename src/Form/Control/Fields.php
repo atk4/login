@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Form\Control;
 
+use Atk4\Data\Model;
+
 /**
  * Form field to choose one or multiple model fields.
  */
 class Fields extends Generic
 {
-    public function setModel($model, $fields = null)
+    public function setModel(Model $model, array $fields = null): void
     {
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($field) {
