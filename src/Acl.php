@@ -6,7 +6,6 @@ namespace Atk4\Login;
 
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
-use Atk4\Data\Persistence;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -45,7 +44,7 @@ class Acl
      *
      * Extend this method if you wish.
      */
-    public function applyRestrictions(Persistence $p, Model $m): void
+    public function applyRestrictions(Model $m): void
     {
         foreach ($this->getRules($m) as $rule) {
             // extract as arrays

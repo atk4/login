@@ -282,9 +282,11 @@ class Auth
     {
         $persistence ??= $this->user->persistence;
         $acl->auth = $this;
-        $acl->applyRestrictions($this->user->persistence, $this->user);
+        $acl->applyRestrictions($this->user);
 
-        $persistence->onHook(Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
+        $persistence->onHook(Persistence::HOOK_AFTER_ADD, function (Persistence $p, Model $m) use ($acl) {
+            $acl->applyRestrictions($m);
+        });
 
         return $this;
     }
