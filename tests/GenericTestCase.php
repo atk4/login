@@ -11,7 +11,7 @@ use Atk4\Login\Model\User;
 
 abstract class GenericTestCase extends \Atk4\Data\Schema\TestCase
 {
-    protected function setupDefaultDb()
+    protected function setupDefaultDb(): void
     {
         $this->setDb([
             'login_user' => [

@@ -7,7 +7,6 @@ namespace Atk4\Login\Feature;
 use Atk4\Data\Model;
 use Atk4\Login\Form\Control;
 use Atk4\Login\Model\AccessRule;
-use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 
 /*

@@ -56,7 +56,7 @@ class UserAdmin extends View
             //$form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
-                return $f->jsInput()->val($userEntity->getField('password')->suggestPassword());
+                return $f->jsInput()->val(Field\Password::assertInstanceOf($userEntity->getField('password'))->suggestPassword());
             });
 
             $form->onSubmit(function ($form) use ($v, $userEntity) {

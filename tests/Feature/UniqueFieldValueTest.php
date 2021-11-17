@@ -11,7 +11,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class UniqueFieldValueTest extends GenericTestCase
 {
-    protected function setupDefaultDb()
+    protected function setupDefaultDb(): void
     {
         $this->setDb([
             'test' => [
@@ -20,9 +20,9 @@ class UniqueFieldValueTest extends GenericTestCase
         ]);
     }
 
-    protected function getTestModel()
+    protected function createTestModel(): Model
     {
-        $c = new class() extends Model {
+        return new class($this->db, ['table' => 'test']) extends Model {
             use UniqueFieldValueTrait;
 
             public $table = 'test';
@@ -34,14 +34,12 @@ class UniqueFieldValueTest extends GenericTestCase
                 $this->setUnique('name');
             }
         };
-
-        return new $c($this->db, ['table' => 'test']);
     }
 
     public function testBasic(): void
     {
         $this->setupDefaultDb();
-        $m = $this->getTestModel();
+        $m = $this->createTestModel();
 
         $entity = $m->createEntity();
         $entity->save(['name' => 'Test2']);

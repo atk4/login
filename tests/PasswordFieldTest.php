@@ -7,6 +7,7 @@ namespace Atk4\Login\Tests;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Field\Password;
+use Atk4\Login\Field\Password as PasswordField;
 
 class PasswordFieldTest extends GenericTestCase
 {
@@ -19,8 +20,8 @@ class PasswordFieldTest extends GenericTestCase
         // password is immediately hashed, only verify can be used to check if it matches
         $entity->set('p', 'mypass');
         $this->assertNotSame('mypass', $entity->get('p'));
-        $this->assertFalse($entity->getField('p')->verifyPassword('badpass'));
-        $this->assertTrue($entity->getField('p')->verifyPassword('mypass'));
+        $this->assertFalse(PasswordField::assertInstanceOf($entity->getField('p'))->verifyPassword('badpass'));
+        $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('p'))->verifyPassword('mypass'));
 
         // setting password to the same value does not rehash
         $v = $entity->get('p');
@@ -56,7 +57,7 @@ class PasswordFieldTest extends GenericTestCase
         $m->addField('p', [Password::class]);
 
         $this->expectException(\Atk4\Data\Exception::class);
-        $m->getField('p')->verifyPassword('mypass'); // tries to compare empty password field value with value 'mypass'
+        PasswordField::assertInstanceOf($m->getField('p'))->verifyPassword('mypass'); // tries to compare empty password field value with value 'mypass'
     }
 
     public function testSuggestPassword(): void

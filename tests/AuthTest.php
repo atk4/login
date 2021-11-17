@@ -34,7 +34,7 @@ class AuthTest extends GenericTestCase
         $this->assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
-    public function testAuth($cacheEnabled = true): void
+    public function testAuth(bool $cacheEnabled = true): void
     {
         $this->setupDefaultDb();
 

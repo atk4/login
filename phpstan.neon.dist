@@ -1,5 +1,5 @@
 parameters:
-    level: 5 # should be 6
+    level: 6
     paths:
         - ./
     excludePaths:
@@ -83,14 +83,6 @@ parameters:
           message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
           count: 1
           path: src/UserAdmin.php
-        -
-          message: '~^Call to an undefined method Atk4\\Data\\Field::suggestPassword\(\)\.$~'
-          count: 1
-          path: src/UserAdmin.php
-        -
-          message: '~^Call to an undefined method Atk4\\Data\\Field::verifyPassword\(\)\.$~'
-          count: 3
-          path: tests/PasswordFieldTest.php
 
         #level 3
         -
