@@ -10,7 +10,7 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 
-class AuthTest extends Generic
+class AuthTest extends GenericTestCase
 {
     public function testDb()
     {

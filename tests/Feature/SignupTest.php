@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests\Feature;
 
-use Atk4\Login\Tests\Generic;
+use Atk4\Login\Tests\GenericTestCase;
 
-class SignupTest extends Generic
+class SignupTest extends GenericTestCase
 {
     public function testBasic()
     {

@@ -8,7 +8,7 @@ use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Field\Password;
 
-class PasswordFieldTest extends Generic
+class PasswordFieldTest extends GenericTestCase
 {
     public function testPasswordField()
     {

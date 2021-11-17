@@ -7,9 +7,9 @@ namespace Atk4\Login\Tests\Feature;
 use Atk4\Data\Model;
 use Atk4\Data\ValidationException;
 use Atk4\Login\Feature\UniqueFieldValueTrait;
-use Atk4\Login\Tests\Generic;
+use Atk4\Login\Tests\GenericTestCase;
 
-class UniqueFieldValueTest extends Generic
+class UniqueFieldValueTest extends GenericTestCase
 {
     protected function setupDefaultDb()
     {

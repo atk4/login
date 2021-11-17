@@ -8,9 +8,9 @@ use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Model\User;
-use Atk4\Login\Tests\Generic;
+use Atk4\Login\Tests\GenericTestCase;
 
-class PasswordManagementTest extends Generic
+class PasswordManagementTest extends GenericTestCase
 {
     public function testGenerateRandomPassword()
     {
