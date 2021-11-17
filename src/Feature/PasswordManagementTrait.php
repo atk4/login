@@ -12,10 +12,7 @@ use Atk4\Login\Field\Password;
  */
 trait PasswordManagementTrait
 {
-    /**
-     * This must be consistent with config.yaml.
-     */
-    public function initPasswordManagement()
+    public function initPasswordManagement(): void
     {
         $this->addUserAction('generate_random_password', [
             'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,

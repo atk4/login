@@ -11,7 +11,7 @@ class SignupTest extends Generic
     public function testBasic()
     {
         $this->setupDefaultDb();
-        $m = $this->getUserModel();
+        $m = $this->createUserModel();
 
         $this->assertTrue($m->hasUserAction('register_new_user'));
 

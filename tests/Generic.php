@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests;
 
+use Atk4\Data\Model;
 use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
@@ -29,18 +30,18 @@ abstract class Generic extends \Atk4\Data\Schema\TestCase
         ]);
     }
 
-    protected function getUserModel()
+    protected function createUserModel(): Model
     {
-        return new User($this->db, ['table' => 'login_user']);
+        return new User($this->db);
     }
 
-    protected function getRoleModel()
+    protected function createRoleModel(): Model
     {
-        return new Role($this->db, ['table' => 'login_role']);
+        return new Role($this->db);
     }
 
-    protected function getAccessRuleModel()
+    protected function createAccessRuleModel(): Model
     {
-        return new AccessRule($this->db, ['table' => 'login_access_rule']);
+        return new AccessRule($this->db);
     }
 }

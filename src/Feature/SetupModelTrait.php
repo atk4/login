@@ -16,10 +16,7 @@ use Atk4\Login\Model\User;
  */
 trait SetupModelTrait
 {
-    /**
-     * Setup AccessRule model.
-     */
-    public function setupAccessRuleModel()
+    public function setupAccessRuleModel(): void
     {
         $this->getField('model')->required = true;
         $this->getField('model')->caption = 'Model Class';
@@ -62,19 +59,13 @@ trait SetupModelTrait
         });
     }
 
-    /**
-     * Setup Role model.
-     */
-    public function setupRoleModel()
+    public function setupRoleModel(): void
     {
         $this->getField('name')->required = true;
         $this->setUnique('name');
     }
 
-    /**
-     * Setup User model.
-     */
-    public function setupUserModel()
+    public function setupUserModel(): void
     {
         $this->getField('name')->required = true;
         $this->getField('email')->required = true;

@@ -15,7 +15,7 @@ trait SignupTrait
     /**
      * Adds register_new_user action.
      */
-    public function initSignup()
+    public function initSignup(): void
     {
         $this->addUserAction('register_new_user', ['appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, 'fields' => ['name', 'email', 'password']]);
     }
@@ -25,7 +25,7 @@ trait SignupTrait
      *
      * @param array $data Optionally can pass field values of User model
      */
-    public function register_new_user($data = [])
+    public function register_new_user($data = []): void
     {
         $this->save($data);
     }

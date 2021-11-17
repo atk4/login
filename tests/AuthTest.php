@@ -16,7 +16,7 @@ class AuthTest extends Generic
     {
         $this->setupDefaultDb();
 
-        $u = $this->getUserModel();
+        $u = $this->createUserModel();
         $this->assertSame(2, count($u->export()));
 
         $r = new Role($this->db, ['table' => 'login_role']);
@@ -42,7 +42,7 @@ class AuthTest extends Generic
 
         // test Auth without automatic check to avoid UI involvement (login form, user menu etc)
         $auth = new Auth(['check' => false, 'cacheEnabled' => $cacheEnabled]);
-        $auth->setModel($this->getUserModel());
+        $auth->setModel($this->createUserModel());
         $this->assertFalse($auth->isLoggedIn());
 
         // wrong login
@@ -60,7 +60,7 @@ class AuthTest extends Generic
         $this->assertFalse($auth->isLoggedIn());
 
         // now login again, try to change some property, save and check if it's changed in actual DB
-        $auth->setModel($this->getUserModel());
+        $auth->setModel($this->createUserModel());
 
         $auth->tryLogin('user', 'user');
         $this->assertTrue($auth->isLoggedIn());
@@ -70,7 +70,7 @@ class AuthTest extends Generic
         $auth->user->save();
         $this->assertSame('Test User', $auth->user->get('name'));
 
-        $auth->setModel($this->getUserModel());
+        $auth->setModel($this->createUserModel());
         $auth->tryLogin('user', 'user');
         $this->assertTrue($auth->isLoggedIn());
         $this->assertSame('user', $auth->user->get($auth->fieldLogin));
@@ -80,7 +80,7 @@ class AuthTest extends Generic
         // last logged user from cache
         if ($cacheEnabled) {
             $auth = new Auth(['check' => false, 'cacheEnabled' => $cacheEnabled]);
-            $auth->setModel($this->getUserModel());
+            $auth->setModel($this->createUserModel());
             $this->assertTrue($auth->isLoggedIn());
             $this->assertSame('user', $auth->user->get($auth->fieldLogin));
             $this->assertSame('Test User', $auth->user->get('name'));
@@ -89,15 +89,15 @@ class AuthTest extends Generic
         // custom login and password fields
         $auth = new Auth(['check' => false, 'cacheEnabled' => $cacheEnabled]);
 
-        $auth->setModel($this->getUserModel(), 'name', 'password');
+        $auth->setModel($this->createUserModel(), 'name', 'password');
         $auth->tryLogin('admin', 'admin'); // name<>admin
         $this->assertFalse($auth->isLoggedIn());
 
-        $auth->setModel($this->getUserModel(), 'name', 'password');
+        $auth->setModel($this->createUserModel(), 'name', 'password');
         $auth->tryLogin('Administrator', 'admin'); // name=Administrator
         $this->assertTrue($auth->isLoggedIn());
 
-        $auth->setModel($this->getUserModel(), 'email', 'name');
+        $auth->setModel($this->createUserModel(), 'email', 'name');
         $auth->tryLogin('admin', 'admin'); // wrong password field
         $this->assertFalse($auth->isLoggedIn());
 
@@ -109,15 +109,15 @@ class AuthTest extends Generic
                 'cacheOptions' => ['expireTime' => 2], // 2 seconds
             ]);
 
-            $auth->setModel($this->getUserModel());
+            $auth->setModel($this->createUserModel());
             $auth->tryLogin('admin', 'admin'); // saves in cache and set timer
 
-            $auth->setModel($this->getUserModel());
+            $auth->setModel($this->createUserModel());
             $this->assertTrue($auth->isLoggedIn());
 
             // now sleep 3 seconds (cache should expire) and try again
             sleep(3);
-            $auth->setModel($this->getUserModel());
+            $auth->setModel($this->createUserModel());
             $this->assertFalse($auth->isLoggedIn());
         }
     }

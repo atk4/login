@@ -12,7 +12,7 @@ class SendEmailActionTest extends Generic
     public function testBasic()
     {
         $this->setupDefaultDb();
-        $m = $this->getUserModel();
+        $m = $this->createUserModel();
 
         $this->assertTrue($m->hasUserAction('sendEmail'));
 

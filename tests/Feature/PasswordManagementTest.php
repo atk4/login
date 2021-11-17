@@ -24,7 +24,7 @@ class PasswordManagementTest extends Generic
     public function testBasic()
     {
         $this->setupDefaultDb();
-        $model = $this->getUserModel();
+        $model = $this->createUserModel();
 
         $this->assertTrue($model->hasUserAction('generate_random_password'));
         $this->assertTrue($model->hasUserAction('reset_password'));
