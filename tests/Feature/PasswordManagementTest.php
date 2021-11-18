@@ -32,7 +32,7 @@ class PasswordManagementTest extends GenericTestCase
         $this->assertTrue($model->hasUserAction('check_password_strength'));
 
         // simply generate password and return it
-        $this->assertIsString($model->executeUserAction('generate_random_password', 4));
+        $this->assertIsString($model->executeUserAction('generate_random_password', 8));
 
         // generate new password and set model record password field and save it and email if possible
         $entity = $model->load(1);
@@ -44,7 +44,7 @@ class PasswordManagementTest extends GenericTestCase
             $this->assertIsString($args[2]);
         };
 
-        $this->assertIsString($pass = $entity->executeUserAction('reset_password', 4));
+        $this->assertIsString($pass = $entity->executeUserAction('reset_password', 8));
         $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
         $entity->reload();
         $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
