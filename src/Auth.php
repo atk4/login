@@ -239,8 +239,8 @@ class Auth
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
         if ($userEntity->loaded()) {
             // verify if the password matches
-            $passwordField = $userEntity->getField($this->fieldPassword);
-            if (method_exists($passwordField, 'verifyPassword') && $passwordField->verifyPassword($userEntity, $password)) {
+            $passwordField = Password::assertInstanceOf($userEntity->getField($this->fieldPassword));
+            if ($passwordField->verifyPassword($userEntity, $password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
                 if ($this->cacheEnabled) {

@@ -39,7 +39,7 @@ class AuthTest extends GenericTestCase
         $this->assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
-    private function _testAuth(bool $cacheEnabled): void
+    public function _testAuth(bool $cacheEnabled): void
     {
         $this->setupDefaultDb();
 
@@ -89,22 +89,6 @@ class AuthTest extends GenericTestCase
             $this->assertSame('Test User', $auth->user->get('name'));
         }
 
-        // custom login and password fields
-        $auth = new Auth(['check' => false, 'cacheEnabled' => $cacheEnabled]);
-
-        $auth->setModel($this->createUserModel(), 'name', 'password');
-        $auth->tryLogin('admin', 'admin'); // name<>admin
-        $this->assertFalse($auth->isLoggedIn());
-
-        $auth->setModel($this->createUserModel(), 'name', 'password');
-        $auth->tryLogin('Administrator', 'admin'); // name=Administrator
-        $this->assertTrue($auth->isLoggedIn());
-
-        $auth->setModel($this->createUserModel(), 'email', 'name');
-        $auth->tryLogin('admin', 'admin'); // wrong password field
-        $this->assertFalse($auth->isLoggedIn());
-
-        // @todo Need some tests for cache session expireTime property and cache expiration
         if ($cacheEnabled) {
             $auth = new Auth([
                 'check' => false,
@@ -125,13 +109,32 @@ class AuthTest extends GenericTestCase
         }
     }
 
+    public function testAuth(): void
+    {
+        $this->_testAuth(false);
+    }
+
     public function testAuthWithCache(): void
     {
         $this->_testAuth(true);
     }
 
-    public function testAuthNoCache(): void
+    public function testAuthCustomLoginAndPasswordFieldName(): void
     {
-        $this->_testAuth(false);
+        $this->setupDefaultDb();
+
+        $auth = new Auth(['check' => false]);
+
+        $auth->setModel($this->createUserModel(), 'name', 'password');
+        $auth->tryLogin('admin', 'admin'); // there is no "name" = 'admin'
+        $this->assertFalse($auth->isLoggedIn());
+
+        $auth->setModel($this->createUserModel(), 'name', 'password');
+        $auth->tryLogin('Administrator', 'admin');
+        $this->assertTrue($auth->isLoggedIn());
+
+        $auth->setModel($this->createUserModel(), 'email', 'name');
+        $this->expectException(\Exception::class);
+        $auth->tryLogin('admin', 'admin'); // wrong password field
     }
 }
