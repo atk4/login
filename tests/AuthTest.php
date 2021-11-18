@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Atk4\Login\Tests;
 
 use Atk4\Login\Auth;
-use Atk4\Login\Model\AccessRule;
-use Atk4\Login\Model\Role;
 
 class AuthTest extends GenericTestCase
 {
@@ -17,10 +15,10 @@ class AuthTest extends GenericTestCase
         $u = $this->createUserModel();
         $this->assertSame(2, count($u->export()));
 
-        $r = new Role($this->db, ['table' => 'login_role']);
+        $r = $this->createRoleModel();
         $this->assertSame(2, count($r->export()));
 
-        $a = new AccessRule($this->db, ['table' => 'login_access_rule']);
+        $a = $this->createAccessRuleModel();
         $this->assertSame(3, count($a->export()));
 
         // password field should not be visible in UI by default
