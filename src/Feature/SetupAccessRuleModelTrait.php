@@ -6,14 +6,8 @@ namespace Atk4\Login\Feature;
 
 use Atk4\Data\Model;
 use Atk4\Login\Form\Control;
-use Atk4\Login\Model\AccessRule;
-use Atk4\Login\Model\User;
 
-/*
- * Adding this trait to your atk4/login models will properly setup these models for your application. Additionally execute
- * $this->setupModel() from your models init() method after you define model fields.
- */
-trait SetupModelTrait
+trait SetupAccessRuleModelTrait
 {
     public function setupAccessRuleModel(): void
     {
@@ -56,30 +50,5 @@ trait SetupModelTrait
                 $m->setNull('actions');
             }
         });
-    }
-
-    public function setupRoleModel(): void
-    {
-        $this->getField('name')->required = true;
-        $this->setUnique('name');
-    }
-
-    public function setupUserModel(): void
-    {
-        $this->getField('name')->required = true;
-        $this->getField('email')->required = true;
-        $this->setUnique('email');
-        $this->getField('password')->required = true;
-        $this->getField('password')->ui['visible'] = false;
-
-        // all AccessRules for all user roles
-        // @TODO in future when there can be multiple, then merge them together
-        $this->hasMany('AccessRules', [
-            'model' => function ($m) {
-                return $m->ref('role_id')->ref('AccessRules');
-            },
-            'our_field' => 'role_id',
-            'their_field' => 'role_id',
-        ]);
     }
 }

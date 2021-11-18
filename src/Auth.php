@@ -44,7 +44,7 @@ class Auth
      * Contains information about a current user. Unlike Model this will
      * contain a record loaded from session cache.
      *
-     * @var Model
+     * @var User
      */
     public $user;
 
@@ -165,6 +165,8 @@ class Auth
     /**
      * Specify a model for a user check here.
      *
+     * @param User $model
+     *
      * @return $this
      */
     public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
@@ -231,7 +233,6 @@ class Auth
         // first logout
         $this->logout();
 
-        /** @var User $userModel */
         $userModel = new $this->user($this->user->persistence);
 
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
@@ -317,7 +318,7 @@ class Auth
             $menu = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $userPage = $this->getApp()->add($this->preferencePage);
+                $userPage = VirtualPage::assertInstanceOf($this->getApp()->add($this->preferencePage));
                 $this->setPreferencePage($userPage);
 
                 $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
@@ -344,14 +345,18 @@ class Auth
 
     /**
      * Displays only login form in app.
+     *
+     * @return never
      */
     public function displayLoginForm(array $seed = []): void
     {
-        $this->getApp()->catch_runaway_callbacks = false;
-        $this->getApp()->html = null;
-        $this->getApp()->initLayout([Narrow::class]);
-        $this->getApp()->title = $this->getApp()->title . ' - Log-in Required';
-        $this->getApp()->add(array_merge(
+        $app = $this->getApp();
+
+        $app->catch_runaway_callbacks = false;
+        $app->html = null;
+        $app->initLayout([Narrow::class]);
+        $app->title = $app->title . ' - Login Required';
+        $app->add(array_merge(
             $this->formLoginSeed,
             [
                 'auth' => $this,
@@ -360,8 +365,8 @@ class Auth
             ],
             $seed
         ));
-        $this->getApp()->layout->template->set('title', $this->getApp()->title);
-        $this->getApp()->run();
-        $this->getApp()->callExit();
+        $app->layout->template->set('title', $app->title);
+        $app->run();
+        $app->callExit();
     }
 }

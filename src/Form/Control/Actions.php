@@ -22,7 +22,7 @@ class Actions extends GenericDropdown
             ];
         };
 
-        parent::setModel($model, $fields);
+        parent::setModel($model);
     }
 
     /**

@@ -26,12 +26,12 @@ abstract class GenericDropdown extends Dropdown
         // prepare values for this dropdown - these will be fields from model of AccessRule->model
         $class = $this->form->model->get('model');
         if (!$class) {
-            return;
+            return null;
         }
         if (!class_exists($class)) {
             // ignore if model object can't be created because in some situations model class can be outside of this scope
-            //throw new Exception('Can not create model with class name: '.$class);
-            return;
+            //throw new Exception('Can not create model with class name: ' . $class);
+            return null;
         }
 
         $model = new $class($this->form->model->persistence);

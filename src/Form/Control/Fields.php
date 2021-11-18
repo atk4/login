@@ -22,7 +22,7 @@ class Fields extends GenericDropdown
             ];
         };
 
-        parent::setModel($model, $fields);
+        parent::setModel($model);
     }
 
     /**

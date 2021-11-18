@@ -8,9 +8,8 @@ use Atk4\Data\Model;
 // Features of User model
 use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Feature\SendEmailActionTrait;
-use Atk4\Login\Feature\SetupModelTrait;
+use Atk4\Login\Feature\SetupUserModelTrait;
 use Atk4\Login\Feature\SignupTrait;
-use Atk4\Login\Feature\UniqueFieldValueTrait;
 use Atk4\Login\Field\Password;
 
 /**
@@ -20,9 +19,8 @@ class User extends Model
 {
     use PasswordManagementTrait;
     use SendEmailActionTrait;
-    use SetupModelTrait;
+    use SetupUserModelTrait;
     use SignupTrait;
-    use UniqueFieldValueTrait;
 
     public $table = 'login_user';
     public $caption = 'User';
@@ -39,7 +37,6 @@ class User extends Model
         $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])
             ->addTitle();
 
-        // traits
         $this->setupUserModel();
         $this->initSignup();
         $this->initSendEmailAction();

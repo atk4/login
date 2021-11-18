@@ -20,10 +20,10 @@ class Login extends Form
     /** @var array "Dashboard" page */
     public $linkSuccess = ['dashboard'];
 
-    /** @var Auth object */
+    /** @var Auth|null object */
     public $auth;
 
-    /** @var false|string show cookie warning? */
+    /** @var string|false show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
     protected function init(): void
