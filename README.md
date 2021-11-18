@@ -34,7 +34,6 @@ Here are all the classes implemented:
     -   Adds log-out link
     -   Adds Preferences page
 -   Flexible ACL support
--   Field\Password - password hashing, safety, generation and validation
 -   Model\User - basic user entity that can be extended
 -   LoginForm - username/password login form
 -   RegisterForm - registration form
@@ -161,10 +160,12 @@ Things to try:
 
 #### Password
 
-Field 'password' is using a custom field class `Password`.  It appears as a regular password, but will be hashed before storing into the database. You can use this field in any model like this:
+Field 'password' is using a custom field class `Password`. Stored value is always a hash,
+use `Password::hashPassword()` + `Password::set()` methods to set the value or use
+`Password::setPassword()` method to set the password directly. You can use this field in any model like this:
 
 ``` php
-$model->addField('mypass', [\Atk4\Login\Field\Password::class]);
+$model->addField('password', [\Atk4\Login\Field\Password::class]);
 ```
 
 Also the password will not be stored in session cache and will not be accessible directly.

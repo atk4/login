@@ -109,7 +109,7 @@ class AuthTest extends GenericTestCase
             $auth = new Auth([
                 'check' => false,
                 'cacheEnabled' => $cacheEnabled,
-                'cacheOptions' => ['expireTime' => 2], // 2 seconds
+                'cacheOptions' => ['expireTime' => 0.05], // 50 milliseconds
             ]);
 
             $auth->setModel($this->createUserModel());
@@ -118,8 +118,8 @@ class AuthTest extends GenericTestCase
             $auth->setModel($this->createUserModel());
             $this->assertTrue($auth->isLoggedIn());
 
-            // now sleep 3 seconds (cache should expire) and try again
-            sleep(3);
+            // now sleep more than expireTime (cache should expire) and try again
+            usleep(60_000);
             $auth->setModel($this->createUserModel());
             $this->assertFalse($auth->isLoggedIn());
         }

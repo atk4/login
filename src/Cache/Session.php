@@ -20,7 +20,7 @@ class Session // implements CacheInterface
     /**
      * Cached data expires in X seconds. False to never expire.
      *
-     * @var int|false
+     * @var float|false
      */
     public $expireTime = false;
 
@@ -68,7 +68,7 @@ class Session // implements CacheInterface
     {
         $key = $this->getKey();
 
-        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key . '-at'] + $this->expireTime < time())) {
+        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key . '-at'] + $this->expireTime < microtime(true))) {
             $_SESSION[$key] = [];
         }
 
@@ -84,7 +84,7 @@ class Session // implements CacheInterface
     {
         $key = $this->getKey();
         $_SESSION[$key] = $data;
-        $_SESSION[$key . '-at'] = time();
+        $_SESSION[$key . '-at'] = microtime(true);
 
         return $this;
     }

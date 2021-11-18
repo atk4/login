@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login;
 
 use Atk4\Core\DebugTrait;
+use Atk4\Data\Field\Password;
 use Atk4\Data\Model;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
@@ -56,11 +57,12 @@ class UserAdmin extends View
             //$form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
-                return $f->jsInput()->val(Field\Password::assertInstanceOf($userEntity->getField('password'))->suggestPassword());
+                return $f->jsInput()->val(Password::assertInstanceOf($userEntity->getField('password'))->generatePassword());
             });
 
             $form->onSubmit(function ($form) use ($v, $userEntity) {
-                $userEntity->set('password', $form->model->get('visible_password'));
+                Password::assertInstanceOf($userEntity->getField('password'))
+                    ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();
 
                 return [

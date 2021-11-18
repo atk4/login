@@ -49,7 +49,7 @@ class Register extends Form
             }
 
             // check if passwords match
-            if (!$form->model->getField('password')->verifyPassword($form->model->get('password2'))) {
+            if (!$form->model->getField('password')->verifyPassword($form->model, $form->model->get('password2'))) {
                 return $form->error('password2', 'Passwords does not match');
             }
 

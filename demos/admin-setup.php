@@ -9,7 +9,6 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Button;
-use Atk4\Ui\Console;
 use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 use Atk4\Ui\View;
@@ -53,13 +52,13 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
             'name' => 'Standard User',
             'email' => 'user',
             'role' => 'User Role',
-            'password' => 'user',
+            'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy', // user
         ],
         [
             'name' => 'Administrator',
             'email' => 'admin',
             'role' => 'Admin Role',
-            'password' => 'admin',
+            'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', // admin
         ],
     ]);
     $c->notice('User: admin/admin created.');

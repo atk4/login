@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Model;
 
+use Atk4\Data\Field\Password;
 use Atk4\Data\Model;
-// Features of User model
 use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Feature\SendEmailActionTrait;
 use Atk4\Login\Feature\SetupUserModelTrait;
 use Atk4\Login\Feature\SignupTrait;
-use Atk4\Login\Field\Password;
 
 /**
  * Example user data model.

@@ -23,13 +23,7 @@ parameters:
     checkMissingIterableValueType: false # TODO
 
     ignoreErrors:
-        - '~^Unsafe usage of new static\(\)\.$~'
-
-        # TODO
-        -
-          message: '~^Method Atk4\\Data\\Field::get\(\) invoked with 0 parameters, 1 required\.$~'
-          count: 4
-          path: src/Field/Password.php
+        #- '~^Unsafe usage of new static\(\)\.$~'
 
         # TODO these rules are generated, this ignores should be fixed in the code
         -

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Feature;
 
+use Atk4\Data\Field\Password;
 use Atk4\Data\Model\UserAction;
-use Atk4\Login\Field\Password;
 
 /**
  * Enables your User model to perform various actions with the passwords.
@@ -40,7 +40,7 @@ trait PasswordManagementTrait
      */
     public function generate_random_password(int $length = 8): string
     {
-        return (new Password())->suggestPassword($length);
+        return (new Password())->generatePassword($length);
     }
 
     /**
@@ -53,11 +53,12 @@ trait PasswordManagementTrait
      */
     public function reset_password(int $length = 8): string
     {
-        $fieldPassword = 'password';
+        $passwordField = Password::assertInstanceOf($this->getField('password'));
 
         $password = $this->generate_random_password($length);
 
-        $this->save([$fieldPassword => $password]);
+        $passwordField->setPassword($this, $password);
+        $this->save();
 
         // if we have SendEmailAction in this model, then send new password by email
         if ($this->hasUserAction('sendEmail')) {
