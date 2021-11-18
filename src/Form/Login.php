@@ -58,7 +58,7 @@ class Login extends Form
                     return $this->getApp()->jsRedirect($this->linkSuccess);
                 }
 
-                return $form->error('password', 'Email or Password is incorrect');
+                return $form->error('password', 'Email or password is incorrect');
             });
         }
     }

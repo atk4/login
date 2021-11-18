@@ -165,7 +165,7 @@ use `Password::hashPassword()` + `Password::set()` methods to set the value or u
 `Password::setPassword()` method to set the password directly. You can use this field in any model like this:
 
 ``` php
-$model->addField('password', [\Atk4\Login\Field\Password::class]);
+$model->addField('password', [\Atk4\Data\Field\PasswordField::class]);
 ```
 
 Also the password will not be stored in session cache and will not be accessible directly.

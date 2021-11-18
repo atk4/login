@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests\Feature;
 
-use Atk4\Data\Field\Password;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Login\Tests\GenericTestCase;
 
 class SignupTest extends GenericTestCase
@@ -22,7 +22,7 @@ class SignupTest extends GenericTestCase
             [
                 'name' => 'New user',
                 'email' => 'test',
-                'password' => Password::assertInstanceOf($m->getField('password'))->hashPassword('testpass'),
+                'password' => PasswordField::assertInstanceOf($m->getField('password'))->hashPassword('testpass'),
             ]
         );
 

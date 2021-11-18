@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Feature;
 
-use Atk4\Data\Field\Password;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model\UserAction;
 
 /**
@@ -40,7 +40,7 @@ trait PasswordManagementTrait
      */
     public function generate_random_password(int $length = 8): string
     {
-        return (new Password())->generatePassword($length);
+        return (new PasswordField())->generatePassword($length);
     }
 
     /**
@@ -53,7 +53,7 @@ trait PasswordManagementTrait
      */
     public function reset_password(int $length = 8): string
     {
-        $passwordField = Password::assertInstanceOf($this->getField('password'));
+        $passwordField = PasswordField::assertInstanceOf($this->getField('password'));
 
         $password = $this->generate_random_password($length);
 

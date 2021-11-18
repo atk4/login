@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests\Feature;
 
-use Atk4\Data\Field\Password;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Feature\PasswordManagementTrait;
@@ -45,9 +45,9 @@ class PasswordManagementTest extends GenericTestCase
         };
 
         $this->assertIsString($pass = $entity->executeUserAction('reset_password', 4));
-        $this->assertTrue(Password::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
+        $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
         $entity->reload();
-        $this->assertTrue(Password::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
+        $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
 
         // check password strength
         $this->assertIsString($entity->executeUserAction('check_password_strength', 'qwerty', ['strength' => 3])); // bad

@@ -11,7 +11,7 @@ use Atk4\Core\Factory;
 use Atk4\Core\HookTrait;
 use Atk4\Core\InitializerTrait;
 use Atk4\Core\TrackableTrait;
-use Atk4\Data\Field\Password;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
@@ -239,7 +239,7 @@ class Auth
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
         if ($userEntity->loaded()) {
             // verify if the password matches
-            $passwordField = Password::assertInstanceOf($userEntity->getField($this->fieldPassword));
+            $passwordField = PasswordField::assertInstanceOf($userEntity->getField($this->fieldPassword));
             if ($passwordField->verifyPassword($userEntity, $password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
