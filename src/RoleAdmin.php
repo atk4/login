@@ -35,7 +35,8 @@ class RoleAdmin extends Crud
             Header::addTo($v, [$role->getTitle() . ' Permissions']);
 
             $crud = Crud::addTo($v);
-            $crud->setModel($role->ref('AccessRules'));
+            //$crud->setModel($role->ref('AccessRules')); // this way it adds wrong table alias in field condition - ATK bug (withTitle + table_alias)
+            $crud->setModel((new AccessRule($role->persistence))->addCondition('role_id', $id));
 
             $crud->onFormAddEdit(function ($f) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
