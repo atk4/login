@@ -8,7 +8,7 @@ use Atk4\Core\AppScopeTrait;
 use Atk4\Core\DynamicMethodTrait;
 use Atk4\Core\Factory;
 use Atk4\Core\HookTrait;
-use Atk4\Data\Schema\Migration;
+use Atk4\Data\Schema\Migrator;
 use Atk4\Ui\Console;
 
 /**
@@ -28,7 +28,7 @@ class MigratorConsole extends Console
     public const HOOK_AFTER_MIGRATION = self::class . '@afterMigration';
 
     /** @var string Name of migrator class to use */
-    public $migrator_class = Migration::class;
+    public $migrator_class = Migrator::class;
 
     /**
      * Provided with array of models, perform migration for each of them.
