@@ -8,6 +8,13 @@ use Atk4\Login\Auth;
 
 class AuthTest extends GenericTestCase
 {
+    protected function tearDown(): void
+    {
+        $_SESSION = [];
+
+        parent::tearDown();
+    }
+
     public function testDb(): void
     {
         $this->setupDefaultDb();
@@ -32,7 +39,7 @@ class AuthTest extends GenericTestCase
         $this->assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
-    public function testAuth(bool $cacheEnabled = true): void
+    private function _testAuth(bool $cacheEnabled): void
     {
         $this->setupDefaultDb();
 
@@ -118,8 +125,13 @@ class AuthTest extends GenericTestCase
         }
     }
 
+    public function testAuthWithCache(): void
+    {
+        $this->_testAuth(true);
+    }
+
     public function testAuthNoCache(): void
     {
-        $this->testAuth(false);
+        $this->_testAuth(false);
     }
 }
