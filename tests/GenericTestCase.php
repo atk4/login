@@ -61,7 +61,7 @@ abstract class GenericTestCase extends BaseTestCase
 
     private static function getClassByStandardModelClass(string $modelClass): string
     {
-        return get_class([
+        return get_class(([
             User::class => function () {
                 return new class() extends User {
                     public $table = '';
@@ -98,7 +98,7 @@ abstract class GenericTestCase extends BaseTestCase
                     }
                 };
             },
-        ][$modelClass]());
+        ][$modelClass])());
     }
 
     private function createModelByStandardModelClass(string $modelClass): Model

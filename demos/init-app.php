@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Demos;
 
+use Atk4\Data\Persistence;
+
 date_default_timezone_set('UTC');
 
 require_once __DIR__ . '/init-autoloader.php';
@@ -24,7 +26,7 @@ if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framewo
 }
 
 try {
-    /** @var \Atk4\Data\Persistence\Sql $db */
+    /** @var Persistence\Sql $db */
     require_once __DIR__ . '/init-db.php';
     $app->db = $db;
     unset($db);
