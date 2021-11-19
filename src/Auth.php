@@ -11,6 +11,7 @@ use Atk4\Core\Factory;
 use Atk4\Core\HookTrait;
 use Atk4\Core\InitializerTrait;
 use Atk4\Core\TrackableTrait;
+use Atk4\Data\Exception;
 use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
@@ -172,6 +173,10 @@ class Auth
      */
     public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
     {
+        if ($this->user !== null) {
+            throw new Exception('Model already set');
+        }
+
         $this->user = $model->createEntity();
 
         if ($fieldLogin !== null) {

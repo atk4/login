@@ -17,6 +17,13 @@ abstract class GenericTestCase extends BaseTestCase
         parent::setUp();
     }
 
+    protected function tearDown(): void
+    {
+        $_SESSION = [];
+
+        parent::tearDown();
+    }
+
     protected function setupDefaultDb(): void
     {
         $this->setDb([
