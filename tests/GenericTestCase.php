@@ -27,18 +27,18 @@ abstract class GenericTestCase extends BaseTestCase
     protected function setupDefaultDb(): void
     {
         $this->setDb([
-            self::getTableByStandardModelClass(User::class) => [
-                1 => ['id' => 1, 'name' => 'Standard User', 'email' => 'user', 'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy', 'role_id' => 1], // user/user
-                2 => ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', 'role_id' => 2], // admin/admin
-            ],
             self::getTableByStandardModelClass(Role::class) => [
-                1 => ['id' => 1, 'name' => 'User Role'],
-                2 => ['id' => 2, 'name' => 'Admin Role'],
+                ['id' => 1, 'name' => 'User Role'],
+                ['id' => 2, 'name' => 'Admin Role'],
+            ],
+            self::getTableByStandardModelClass(User::class) => [
+                ['id' => 1, 'name' => 'Standard User', 'email' => 'user', 'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy' /* user */, 'role_id' => 1],
+                ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O' /* admin */, 'role_id' => 2],
             ],
             self::getTableByStandardModelClass(AccessRule::class) => [
-                1 => ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                2 => ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                3 => ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => 'vat_number,active', 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
             ],
         ]);
     }
@@ -46,8 +46,8 @@ abstract class GenericTestCase extends BaseTestCase
     private static function getTableByStandardModelClass(string $modelClass): string
     {
         return [
-            User::class => 'unit_user',
             Role::class => 'unit_role',
+            User::class => 'unit_user',
             AccessRule::class => 'unit_access_rule',
         ][$modelClass];
     }
@@ -69,8 +69,8 @@ abstract class GenericTestCase extends BaseTestCase
     private static function getClassByStandardModelClass(string $modelClass): string
     {
         return get_class(([
-            User::class => function () {
-                return new class() extends User {
+            Role::class => function () {
+                return new class() extends Role {
                     public $table = '';
 
                     protected function init(): void
@@ -81,8 +81,8 @@ abstract class GenericTestCase extends BaseTestCase
                     }
                 };
             },
-            Role::class => function () {
-                return new class() extends Role {
+            User::class => function () {
+                return new class() extends User {
                     public $table = '';
 
                     protected function init(): void
@@ -115,14 +115,14 @@ abstract class GenericTestCase extends BaseTestCase
         return new $class($this->db);
     }
 
-    protected function createUserModel(): User
-    {
-        return $this->createModelByStandardModelClass(User::class); // @phpstan-ignore-line
-    }
-
     protected function createRoleModel(): Role
     {
         return $this->createModelByStandardModelClass(Role::class); // @phpstan-ignore-line
+    }
+
+    protected function createUserModel(): User
+    {
+        return $this->createModelByStandardModelClass(User::class); // @phpstan-ignore-line
     }
 
     protected function createAccessRuleModel(): AccessRule
