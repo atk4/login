@@ -12,7 +12,6 @@ use Atk4\Ui\Header;
 /** @var App $app */
 require __DIR__ . '/init-app.php';
 
-// @phpstan-ignore-next-line
 $app->html = null;
 $app->initLayout([Narrow::class]);
 Header::addTo($app, ['New user sign-up form']);

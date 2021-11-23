@@ -6,12 +6,12 @@ namespace Atk4\Login\Tests\Feature;
 
 use Atk4\Data\Model;
 use Atk4\Data\ValidationException;
-use Atk4\Login\Feature\UniqueFieldValue;
-use Atk4\Login\Tests\Generic;
+use Atk4\Login\Feature\UniqueFieldValueTrait;
+use Atk4\Login\Tests\GenericTestCase;
 
-class UniqueFieldValueTest extends Generic
+class UniqueFieldValueTest extends GenericTestCase
 {
-    protected function setupDefaultDb()
+    protected function setupDefaultDb(): void
     {
         $this->setDb([
             'test' => [
@@ -20,10 +20,10 @@ class UniqueFieldValueTest extends Generic
         ]);
     }
 
-    protected function getTestModel()
+    protected function createTestModel(): Model
     {
-        $c = new class() extends Model {
-            use UniqueFieldValue;
+        return new class($this->db, ['table' => 'test']) extends Model {
+            use UniqueFieldValueTrait;
 
             public $table = 'test';
 
@@ -34,14 +34,12 @@ class UniqueFieldValueTest extends Generic
                 $this->setUnique('name');
             }
         };
-
-        return new $c($this->db, ['table' => 'test']);
     }
 
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
-        $m = $this->getTestModel();
+        $m = $this->createTestModel();
 
         $entity = $m->createEntity();
         $entity->save(['name' => 'Test2']);

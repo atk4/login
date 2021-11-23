@@ -10,7 +10,7 @@ use Atk4\Data\Model\UserAction;
  * Adding this trait to your user model will allow users to send emails. Additionally execute
  * $this->initSendEmailAction() from your init() method.
  */
-trait SendEmailAction
+trait SendEmailActionTrait
 {
     /**
      * Adds sendEmail action.

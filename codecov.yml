@@ -2,6 +2,7 @@ ignore:
   - src/Behat
   - demos
   - docs
+  - tools
 comment: false
 coverage:
   status:

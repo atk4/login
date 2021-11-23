@@ -11,7 +11,7 @@ use Atk4\Core\SessionTrait;
 /**
  * Session cache for authentication controller.
  */
-class Session // implementes CacheInterface
+class Session // implements CacheInterface
 {
     use DiContainerTrait;
     use NameTrait;
@@ -20,14 +20,14 @@ class Session // implementes CacheInterface
     /**
      * Cached data expires in X seconds. False to never expire.
      *
-     * @var int|false
+     * @var float|false
      */
     public $expireTime = false;
 
     /**
      * Cache key. Set this if you want to use multiple cache objects at same time.
      *
-     * @var string
+     * @var string|null
      */
     public $key;
 
@@ -58,7 +58,7 @@ class Session // implementes CacheInterface
     {
         $this->init();
 
-        return $this->key ?? $this->name ?? static::class;
+        return static::class . ':' . ($this->key ?? $this->name);
     }
 
     /**
@@ -68,7 +68,7 @@ class Session // implementes CacheInterface
     {
         $key = $this->getKey();
 
-        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key . '-at'] + $this->expireTime < time())) {
+        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key . '-at'] + $this->expireTime < microtime(true))) {
             $_SESSION[$key] = [];
         }
 
@@ -84,7 +84,7 @@ class Session // implementes CacheInterface
     {
         $key = $this->getKey();
         $_SESSION[$key] = $data;
-        $_SESSION[$key . '-at'] = time();
+        $_SESSION[$key . '-at'] = microtime(true);
 
         return $this;
     }

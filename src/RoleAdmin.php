@@ -23,7 +23,7 @@ class RoleAdmin extends Crud
     /**
      * Initialize User Admin and add all the UI pieces.
      */
-    public function setModel(Model $role, $fields = null): Model
+    public function setModel(Model $role, array $fields = null): void
     {
         parent::setModel($role);
 
@@ -47,7 +47,5 @@ class RoleAdmin extends Crud
                 // @todo Also it would be good to group all_visible + visible_fields field together in one group/line. Same for editable fields and actions.
             });
         });
-
-        return $this->model;
     }
 }

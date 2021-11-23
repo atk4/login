@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
-use Atk4\Login\Feature\SetupModel;
+use Atk4\Login\Feature\SetupAccessRuleModelTrait;
 
 /**
  * White-list access control rules.
  */
 class AccessRule extends Model
 {
-    use SetupModel;
+    use SetupAccessRuleModelTrait;
 
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
@@ -21,7 +21,8 @@ class AccessRule extends Model
     {
         parent::init();
 
-        $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])->withTitle();
+        $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])
+            ->addTitle();
 
         $this->addField('model'); // model class name
 
@@ -57,7 +58,6 @@ class AccessRule extends Model
         // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
         $this->addField('conditions');
 
-        // traits
         $this->setupAccessRuleModel();
     }
 }

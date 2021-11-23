@@ -6,7 +6,6 @@ namespace Atk4\Login;
 
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
-use Atk4\Data\Persistence;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -37,7 +36,9 @@ class Acl
             //throw new Exception('User should be logged in!');
         }
 
-        return $user->ref('AccessRules')->addCondition('model', get_class($model));
+        $res = $user->ref('AccessRules')->addCondition('model', get_class($model));
+
+        return $res; // @phpstan-ignore-line
     }
 
     /**
@@ -45,7 +46,7 @@ class Acl
      *
      * Extend this method if you wish.
      */
-    public function applyRestrictions(Persistence $p, Model $m)
+    public function applyRestrictions(Model $m): void
     {
         foreach ($this->getRules($m) as $rule) {
             // extract as arrays
@@ -76,7 +77,7 @@ class Acl
              *  this will work in future when we will have json encoded condition structure stored in here
              *  for now let's comment this out
             if ($rule['conditions']) {
-                $this->applyConditions($p, $m, $rule['conditions']);
+                $this->applyConditions($m, $rule['conditions']);
             }
             */
         }
@@ -87,7 +88,7 @@ class Acl
      *
      * @param mixed $conditions
      */
-    public function applyConditions(Persistence $p, Model $m, $conditions)
+    public function applyConditions(Model $m, $conditions): void
     {
         $m->addCondition($conditions);
     }

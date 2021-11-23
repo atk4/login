@@ -11,10 +11,11 @@ use Atk4\Core\Factory;
 use Atk4\Core\HookTrait;
 use Atk4\Core\InitializerTrait;
 use Atk4\Core\TrackableTrait;
+use Atk4\Data\Exception;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
-use Atk4\Login\Field\Password;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Layout\Admin;
@@ -31,7 +32,7 @@ class Auth
     use DiContainerTrait;
     use HookTrait;
     use InitializerTrait {
-        init as _init;
+        init as private _init;
     }
     use TrackableTrait;
 
@@ -45,7 +46,7 @@ class Auth
      * Contains information about a current user. Unlike Model this will
      * contain a record loaded from session cache.
      *
-     * @var Model
+     * @var User
      */
     public $user;
 
@@ -166,14 +167,16 @@ class Auth
     /**
      * Specify a model for a user check here.
      *
-     * @param Model  $model
-     * @param string $fieldLogin
-     * @param string $fieldPassword
+     * @param User $model
      *
      * @return $this
      */
-    public function setModel($model, string $fieldLogin = null, string $fieldPassword = null)
+    public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
     {
+        if ($this->user !== null) {
+            throw new Exception('Model already set');
+        }
+
         $this->user = $model->createEntity();
 
         if ($fieldLogin !== null) {
@@ -214,8 +217,10 @@ class Auth
      */
     protected function loadFromCache(): void
     {
+        if (isset($this->cache->getData()[$this->user->id_field])) {
+            $this->user = $this->user->getModel()->load($this->cache->getData()[$this->user->id_field]);
+        }
         $this->user->setMulti($this->cache->getData());
-        $this->user->setId($this->cache->getData()[$this->user->id_field] ?? null);
     }
 
     /**
@@ -234,14 +239,13 @@ class Auth
         // first logout
         $this->logout();
 
-        /** @var User $userModel */
         $userModel = new $this->user($this->user->persistence);
 
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
         if ($userEntity->loaded()) {
             // verify if the password matches
-            $pw_field = $userEntity->getField($this->fieldPassword);
-            if (method_exists($pw_field, 'verify') && $pw_field->verify($password)) {
+            $passwordField = PasswordField::assertInstanceOf($userEntity->getField($this->fieldPassword));
+            if ($passwordField->verifyPassword($userEntity, $password)) {
                 $this->hook(self::HOOK_LOGGED_IN, [$userEntity]);
                 // save user record in cache
                 if ($this->cacheEnabled) {
@@ -285,9 +289,11 @@ class Auth
     {
         $persistence ??= $this->user->persistence;
         $acl->auth = $this;
-        $acl->applyRestrictions($this->user->persistence, $this->user);
+        $acl->applyRestrictions($this->user);
 
-        $persistence->onHook(Persistence::HOOK_AFTER_ADD, \Closure::fromCallable([$acl, 'applyRestrictions']));
+        $persistence->onHook(Persistence::HOOK_AFTER_ADD, function (Persistence $p, Model $m) use ($acl) {
+            $acl->applyRestrictions($m);
+        });
 
         return $this;
     }
@@ -318,7 +324,7 @@ class Auth
             $menu = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $userPage = $this->getApp()->add($this->preferencePage);
+                $userPage = VirtualPage::assertInstanceOf($this->getApp()->add($this->preferencePage));
                 $this->setPreferencePage($userPage);
 
                 $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
@@ -345,14 +351,18 @@ class Auth
 
     /**
      * Displays only login form in app.
+     *
+     * @return never
      */
     public function displayLoginForm(array $seed = []): void
     {
-        $this->getApp()->catch_runaway_callbacks = false;
-        $this->getApp()->html = null;
-        $this->getApp()->initLayout([Narrow::class]);
-        $this->getApp()->title = $this->getApp()->title . ' - Log-in Required';
-        $this->getApp()->add(array_merge(
+        $app = $this->getApp();
+
+        $app->catch_runaway_callbacks = false;
+        $app->html = null;
+        $app->initLayout([Narrow::class]);
+        $app->title = $app->title . ' - Login Required';
+        $app->add(array_merge(
             $this->formLoginSeed,
             [
                 'auth' => $this,
@@ -361,8 +371,8 @@ class Auth
             ],
             $seed
         ));
-        $this->getApp()->layout->template->set('title', $this->getApp()->title);
-        $this->getApp()->run();
-        $this->getApp()->callExit();
+        $app->layout->template->set('title', $app->title);
+        $app->run();
+        $app->callExit();
     }
 }

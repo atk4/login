@@ -9,7 +9,6 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Button;
-use Atk4\Ui\Console;
 use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 use Atk4\Ui\View;
@@ -30,32 +29,38 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
     $c->notice('Populating data...');
 
     $rule = new AccessRule($c->getApp()->db);
-    $rule->each(function ($m) {$m->delete(); });
+    foreach ($rule as $m) {
+        $m->delete();
+    }
 
     $role = new Role($c->getApp()->db);
-    $role->each(function ($m) {$m->delete(); })
-        ->import([
-            ['name' => 'User Role'],
-            ['name' => 'Admin Role'],
-        ]);
+    foreach ($role as $m) {
+        $m->delete();
+    }
+    $role->import([
+        ['name' => 'User Role'],
+        ['name' => 'Admin Role'],
+    ]);
     $c->debug('  Import roles.. OK');
 
     $user = new User($c->getApp()->db);
-    $user->each(function ($m) {$m->delete(); })
-        ->import([
-            [
-                'name' => 'Standard User',
-                'email' => 'user',
-                'role' => 'User Role',
-                'password' => 'user',
-            ],
-            [
-                'name' => 'Administrator',
-                'email' => 'admin',
-                'role' => 'Admin Role',
-                'password' => 'admin',
-            ],
-        ]);
+    foreach ($user as $m) {
+        $m->delete();
+    }
+    $user->import([
+        [
+            'name' => 'Standard User',
+            'email' => 'user',
+            'role' => 'User Role',
+            'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy', // user
+        ],
+        [
+            'name' => 'Administrator',
+            'email' => 'admin',
+            'role' => 'Admin Role',
+            'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', // admin
+        ],
+    ]);
     $c->notice('User: admin/admin created.');
     $c->notice('User: user/user created.');
     $c->debug('  Import users.. OK');
@@ -81,13 +86,15 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
     $c->debug('  Import roles.. OK');
 
     $client = new Client($c->getApp()->db);
-    $client->each(function ($m) {$m->delete(); })
-        ->import([
-            ['name' => 'John Doe', 'vat_number' => 'GB1234567890', 'balance' => 1234.56, 'active' => true],
-            ['name' => 'Jane Doe', 'vat_number' => null, 'balance' => 50, 'active' => true],
-            ['name' => 'Pokemon', 'vat_number' => 'LV-13141516', 'balance' => 100.65, 'active' => true],
-            ['name' => 'Captain Jack', 'vat_number' => null, 'balance' => -600, 'active' => false],
-        ]);
+    foreach ($client as $m) {
+        $m->delete();
+    }
+    $client->import([
+        ['name' => 'John Doe', 'vat_number' => 'GB1234567890', 'balance' => 1234.56, 'active' => true],
+        ['name' => 'Jane Doe', 'vat_number' => null, 'balance' => 50, 'active' => true],
+        ['name' => 'Pokemon', 'vat_number' => 'LV-13141516', 'balance' => 100.65, 'active' => true],
+        ['name' => 'Captain Jack', 'vat_number' => null, 'balance' => -600, 'active' => false],
+    ]);
     $c->debug('  Import clients.. OK');
 
     $c->notice('Data imported');

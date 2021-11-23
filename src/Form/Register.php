@@ -27,23 +27,16 @@ class Register extends Form
         $form->buttonSave->iconRight = 'right arrow';
     }
 
-    /**
-     * Sets user model.
-     *
-     * @param array $fields
-     *
-     * @return Model
-     */
-    public function setModel(Model $user, $fields = null)
+    public function setModel(Model $user, array $fields = null): void
     {
-        parent::setModel($user, false);
+        parent::setModel($user, []);
 
         $form = $this;
-        $form->addControl('name', null, ['required' => 'true']);
-        $form->addControl('email', null, ['required' => 'true']);
-        $form->addControl('password', null, ['type' => 'password', 'required' => true])
+        $form->addControl('name', [], ['required' => 'true']);
+        $form->addControl('email', [], ['required' => 'true']);
+        $form->addControl('password', [], ['type' => 'string', 'required' => true])
             ->setInputAttr('autocomplete', 'new-password');
-        $form->addControl('password2', null, ['type' => 'password', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
+        $form->addControl('password2', [], ['type' => 'string', 'required' => true, 'caption' => 'Repeat Password', 'never_persist' => true])
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
@@ -56,7 +49,7 @@ class Register extends Form
             }
 
             // check if passwords match
-            if ($form->model->get('password') !== $form->model->get('password2')) {
+            if (!$form->model->getField('password')->verifyPassword($form->model, $form->model->get('password2'))) {
                 return $form->error('password2', 'Passwords does not match');
             }
 
@@ -65,7 +58,5 @@ class Register extends Form
 
             return $form->success('Account has been created');
         });
-
-        return $form->model;
     }
 }

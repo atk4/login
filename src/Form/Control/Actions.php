@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Form\Control;
 
+use Atk4\Data\Model;
+
 /**
  * Form field to choose one or multiple model actions.
  */
-class Actions extends Generic
+class Actions extends GenericDropdown
 {
-    public function setModel($model, $fields = null)
+    public function setModel(Model $model, array $fields = null): void
     {
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($action) {
@@ -20,7 +22,7 @@ class Actions extends Generic
             ];
         };
 
-        return parent::setModel($model, $fields);
+        parent::setModel($model);
     }
 
     /**

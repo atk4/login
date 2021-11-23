@@ -4,34 +4,35 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests\Feature;
 
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
-use Atk4\Login\Feature\PasswordManagement;
+use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Model\User;
-use Atk4\Login\Tests\Generic;
+use Atk4\Login\Tests\GenericTestCase;
 
-class PasswordManagementTest extends Generic
+class PasswordManagementTest extends GenericTestCase
 {
-    public function testGenerateRandomPassword()
+    public function testGenerateRandomPassword(): void
     {
         $class = new class() extends Model {
-            use PasswordManagement;
+            use PasswordManagementTrait;
         };
         $model = new $class(new Persistence\Array_());
         $this->assertIsString($model->generate_random_password(4));
     }
 
-    public function testBasic()
+    public function testBasic(): void
     {
         $this->setupDefaultDb();
-        $model = $this->getUserModel();
+        $model = $this->createUserModel();
 
         $this->assertTrue($model->hasUserAction('generate_random_password'));
         $this->assertTrue($model->hasUserAction('reset_password'));
         $this->assertTrue($model->hasUserAction('check_password_strength'));
 
         // simply generate password and return it
-        $this->assertIsString($model->executeUserAction('generate_random_password', 4));
+        $this->assertIsString($model->executeUserAction('generate_random_password', 8));
 
         // generate new password and set model record password field and save it and email if possible
         $entity = $model->load(1);
@@ -43,10 +44,10 @@ class PasswordManagementTest extends Generic
             $this->assertIsString($args[2]);
         };
 
-        $this->assertIsString($pass = $entity->executeUserAction('reset_password', 4));
-        $this->assertTrue($entity->getField('password')->verify($pass));
+        $this->assertIsString($pass = $entity->executeUserAction('reset_password', 8));
+        $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
         $entity->reload();
-        $this->assertTrue($entity->getField('password')->verify($pass));
+        $this->assertTrue(PasswordField::assertInstanceOf($entity->getField('password'))->verifyPassword($entity, $pass));
 
         // check password strength
         $this->assertIsString($entity->executeUserAction('check_password_strength', 'qwerty', ['strength' => 3])); // bad

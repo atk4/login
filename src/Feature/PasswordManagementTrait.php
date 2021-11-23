@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Feature;
 
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model\UserAction;
-use Atk4\Login\Field\Password;
 
 /**
  * Enables your User model to perform various actions with the passwords.
  */
-trait PasswordManagement
+trait PasswordManagementTrait
 {
-    /**
-     * This must be consistent with config.yaml.
-     */
-    public function initPasswordManagement()
+    public function initPasswordManagement(): void
     {
         $this->addUserAction('generate_random_password', [
             'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'system' => true,
             'args' => [
-                'length' => ['type' => 'int'],
-                'words' => ['type' => 'int'],
+                'length' => ['type' => 'integer'],
             ],
         ]);
         $this->addUserAction('reset_password', [
             'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
             'args' => [
-                'length' => ['type' => 'int'],
-                'words' => ['type' => 'int'],
+                'length' => ['type' => 'integer'],
             ],
         ]);
         $this->addUserAction('check_password_strength', [
@@ -43,9 +38,9 @@ trait PasswordManagement
     /**
      * Generate random password for the user, returns it.
      */
-    public function generate_random_password(int $length = 4, int $words = 1): string
+    public function generate_random_password(int $length = 8): string
     {
-        return (new Password())->suggestPassword($length, $words);
+        return (new PasswordField())->generatePassword($length);
     }
 
     /**
@@ -56,16 +51,14 @@ trait PasswordManagement
      *       if different fieldPassword are set in Auth controller.
      *       This has to be fixed somehow.
      */
-    public function reset_password(int $length = null, int $words = null): string
+    public function reset_password(int $length = 8): string
     {
-        $fieldPassword = 'password';
+        $passwordField = PasswordField::assertInstanceOf($this->getField('password'));
 
-        $password = $this->generate_random_password(
-            $length ?: 4,
-            $words ?: 1
-        );
+        $password = $this->generate_random_password($length);
 
-        $this->save([$fieldPassword => $password]);
+        $passwordField->setPassword($this, $password);
+        $this->save();
 
         // if we have SendEmailAction in this model, then send new password by email
         if ($this->hasUserAction('sendEmail')) {

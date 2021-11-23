@@ -20,10 +20,10 @@ class Login extends Form
     /** @var array "Dashboard" page */
     public $linkSuccess = ['dashboard'];
 
-    /** @var Auth object */
+    /** @var Auth|null object */
     public $auth;
 
-    /** @var false|string show cookie warning? */
+    /** @var string|false show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
     protected function init(): void
@@ -36,7 +36,7 @@ class Login extends Form
         $form->buttonSave->addClass('large fluid');
         $form->buttonSave->iconRight = 'right arrow';
 
-        $form->addControl($this->auth->fieldLogin, null, ['required' => true]);
+        $form->addControl($this->auth->fieldLogin, [], ['required' => true]);
         $p = $form->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
@@ -58,7 +58,7 @@ class Login extends Form
                     return $this->getApp()->jsRedirect($this->linkSuccess);
                 }
 
-                return $form->error('password', 'Email or Password is incorrect');
+                return $form->error('password', 'Email or password is incorrect');
             });
         }
     }

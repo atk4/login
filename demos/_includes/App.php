@@ -13,7 +13,9 @@ use Atk4\Ui\Layout;
  */
 class App extends \Atk4\Ui\App
 {
+    /** @var Auth */
     public $auth;
+
     public $title = 'Demo App';
 
     protected function init(): void
@@ -45,7 +47,7 @@ class App extends \Atk4\Ui\App
         }
     }
 
-    public function initAuth($check = true)
+    public function initAuth(bool $check = true): void
     {
         $this->auth = new Auth(['check' => $check, 'pageDashboard' => 'index']);
         $this->auth->setApp($this);
@@ -55,7 +57,7 @@ class App extends \Atk4\Ui\App
         $this->auth->setModel($m);
     }
 
-    public function initAcl()
+    public function initAcl(): void
     {
         // adding this requires user to be logged in, so we can't run this in wrapping app :(
         $this->auth->setAcl(new Acl(), $this->db);

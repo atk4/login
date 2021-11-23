@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login;
 
 use Atk4\Core\DebugTrait;
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
@@ -35,10 +36,8 @@ class UserAdmin extends View
 
     /**
      * Initialize User Admin and add all the UI pieces.
-     *
-     * @return Model
      */
-    public function setModel(Model $user)
+    public function setModel(Model $user): void
     {
         //$user->getUserAction('register_new_user')->system = true;
         $user->getUserAction('add')->system = true;
@@ -54,15 +53,16 @@ class UserAdmin extends View
             $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
-            $f = $form->addControl('visible_password', null, ['required' => true]);
-            //$form->addControl('email_user', null, ['type'=>'boolean', 'caption'=>'Email user their new password']);
+            $f = $form->addControl('visible_password', [], ['required' => true]);
+            //$form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
-                return $f->jsInput()->val($userEntity->getField('password')->suggestPassword());
+                return $f->jsInput()->val(PasswordField::assertInstanceOf($userEntity->getField('password'))->generatePassword());
             });
 
             $form->onSubmit(function ($form) use ($v, $userEntity) {
-                $userEntity->set('password', $form->model->get('visible_password'));
+                PasswordField::assertInstanceOf($userEntity->getField('password'))
+                    ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();
 
                 return [
@@ -98,6 +98,6 @@ class UserAdmin extends View
         })->setAttr('title', 'User Details');
         */
 
-        return parent::setModel($user);
+        parent::setModel($user);
     }
 }

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
-use Atk4\Login\Feature\SetupModel;
-use Atk4\Login\Feature\UniqueFieldValue;
+use Atk4\Login\Feature\SetupRoleModelTrait;
 
 class Role extends Model
 {
-    use SetupModel;
-    use UniqueFieldValue;
+    use SetupRoleModelTrait;
 
     public $table = 'login_role';
     public $caption = 'Role';
@@ -25,7 +23,6 @@ class Role extends Model
         $this->hasMany('Users', ['model' => [User::class], 'our_field' => 'id', 'their_field' => 'role_id']);
         $this->hasMany('AccessRules', ['model' => [AccessRule::class], 'our_field' => 'id', 'their_field' => 'role_id']);
 
-        // traits
         $this->setupRoleModel();
     }
 }
