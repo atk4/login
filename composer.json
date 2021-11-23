@@ -28,8 +28,7 @@
     ],
     "require": {
         "php": ">=7.4 <8.2",
-        "atk4/ui": "dev-align_latest_core as dev-develop",
-        "atk4/data": "dev-add_password_field as dev-develop"
+        "atk4/ui": "dev-develop"
     },
     "require-release": {
         "php": ">=7.4 <8.2",
