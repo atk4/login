@@ -79,7 +79,7 @@ $app->auth->setModel(new User($app->db));
 
 
 // Now manually use login logic
-if (!$app->auth->user->loaded()) {
+if (!$app->auth->user->isLoaded()) {
   \Atk4\Login\LoginForm::addTo($app, ['auth' => $app->auth]);
 }
 ```
@@ -123,7 +123,7 @@ Displays log-in form and associate it with $auth. When form is filled, will atte
 To check if user is currently logged in:
 
 ``` php
-if ($app->auth->model->loaded()) {
+if ($app->auth->model->isLoaded()) {
   // logged-in
 }
 ```

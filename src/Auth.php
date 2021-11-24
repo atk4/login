@@ -228,7 +228,7 @@ class Auth
      */
     public function isLoggedIn(): bool
     {
-        return $this->user->loaded();
+        return $this->user->isLoaded();
     }
 
     /**
@@ -242,7 +242,7 @@ class Auth
         $userModel = new $this->user($this->user->persistence);
 
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
-        if ($userEntity->loaded()) {
+        if ($userEntity->isLoaded()) {
             // verify if the password matches
             $passwordField = PasswordField::assertInstanceOf($userEntity->getField($this->fieldPassword));
             if ($passwordField->verifyPassword($userEntity, $password)) {
