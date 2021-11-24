@@ -30,7 +30,7 @@ class Acl
         /** @var \Atk4\Login\Model\User */
         $user = $this->auth->user;
 
-        if (!$user->loaded()) {
+        if (!$user->isLoaded()) {
             // user is not logged in - let's force him to do so. Alternative is to throw exception, but that's ugly.
             $this->auth->check();
             //throw new Exception('User should be logged in!');
