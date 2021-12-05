@@ -29,14 +29,13 @@ abstract class GenericDropdown extends Dropdown
             return null;
         }
         if (!class_exists($class)) {
-            // ignore if model object can't be created because in some situations model class can be outside of this scope
-            //throw new Exception('Can not create model with class name: ' . $class);
+            // ignore if model class does not exist, in some situations it can be unavailable or be an interface
             return null;
         }
 
         $model = new $class($this->form->model->persistence);
         if (!$model instanceof Model) {
-            throw new Exception('Class should be instance of ' . Model::class);
+            throw new Exception('Class must be instance of ' . Model::class);
         }
 
         return $model;
