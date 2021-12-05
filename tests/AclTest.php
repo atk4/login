@@ -25,7 +25,10 @@ class AclTest extends GenericTestCase
 
         // update ACL setup for our demo client model
         $this->createAccessRuleModel()->delete(2);
-        $this->createAccessRuleModel()->load(1)->save(['model' => AclTestClient::class]);
+        $this->createAccessRuleModel()->load(1)
+            ->save(['model' => AclTestClient::class]);
+        $this->createAccessRuleModel()->load(1)->duplicate()
+            ->save(['model' => AclTestInterface::class]);
     }
 
     protected function createAuthAndLogin(string $user): Auth
@@ -73,11 +76,15 @@ class AclTest extends GenericTestCase
 //        });
 //        $this->assertSame($clientEntity->balance, 1234.56);
 
-        // must work also for extended Model
+        // must also match parent classes
         $clientEntity = (new class($this->db) extends AclTestClient {})->load(1);
         $this->assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
-//        // TODO https://github.com/atk4/login/issues/39 - instanceof relation must be fully supported by ACL
-//        $this->assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
+        $this->assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
+
+        // and interfaces
+        $clientEntity = (new AclTestClient2($this->db))->load(1);
+        $this->assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
+        $this->assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
     }
 }
 
@@ -99,5 +106,26 @@ class AclTestClient extends Model
         $this->addField('vat_number');
         $this->addField('balance', ['type' => 'atk4_money']);
         $this->addField('active', ['type' => 'boolean', 'default' => true]);
+    }
+}
+
+interface AclTestInterface
+{
+}
+
+/**
+ * @property string $vat_number @Atk4\Field()
+ * @property float  $balance    @Atk4\Field()
+ */
+class AclTestClient2 extends Model implements AclTestInterface
+{
+    public $table = 'unit_client';
+
+    protected function init(): void
+    {
+        parent::init();
+
+        $this->addField('vat_number');
+        $this->addField('balance', ['type' => 'atk4_money']);
     }
 }
