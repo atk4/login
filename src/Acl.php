@@ -36,7 +36,12 @@ class Acl
             //throw new Exception('User should be logged in!');
         }
 
-        $res = $user->ref('AccessRules')->addCondition('model', get_class($model));
+        $modelClasses = class_implements($model);
+        $class = get_class($model);
+        do {
+            $modelClasses[] = $class;
+        } while (($class = get_parent_class($class)) !== false);
+        $res = $user->ref('AccessRules')->addCondition('model', 'in', $modelClasses);
 
         return $res; // @phpstan-ignore-line
     }
