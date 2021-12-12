@@ -1,7 +1,8 @@
 {
     "name": "atk4/login",
-    "type": "library",
     "description": "Login and User module for Agile UI",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "user",
         "acl",
@@ -13,8 +14,6 @@
         "data",
         "framework"
     ],
-    "homepage": "https://github.com/atk4/login",
-    "license": "MIT",
     "authors": [
         {
             "name": "Romans Malinovskis",
@@ -26,6 +25,7 @@
             "homepage": "https://mvorisek.cz/"
         }
     ],
+    "homepage": "https://github.com/atk4/login",
     "require": {
         "php": ">=7.4 <8.2",
         "atk4/ui": "dev-develop"
@@ -50,9 +50,8 @@
         "symfony/console": "^4.4.30 || ^5.3.7",
         "symfony/css-selector": "^4.4.24 || ^5.2.9"
     },
-    "config": {
-        "sort-packages": true
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Atk4\\Login\\": "src/"
@@ -63,6 +62,7 @@
             "Atk4\\Login\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "config": {
+        "sort-packages": true
+    }
 }
