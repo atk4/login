@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login;
 
-use Atk4\Core\Exception;
+use Atk4\Data\Exception;
 use Atk4\Data\Model;
 
 /**

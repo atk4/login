@@ -17,7 +17,7 @@ class SignupTest extends GenericTestCase
         $this->assertTrue($m->hasUserAction('register_new_user'));
 
         // as result it makes model loaded (as entity) with new user record
-        $m->executeUserAction(
+        $m->createEntity()->executeUserAction(
             'register_new_user',
             [
                 'name' => 'New user',

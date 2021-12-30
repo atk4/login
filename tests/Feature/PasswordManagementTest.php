@@ -32,7 +32,7 @@ class PasswordManagementTest extends GenericTestCase
         $this->assertTrue($model->hasUserAction('check_password_strength'));
 
         // simply generate password and return it
-        $this->assertIsString($model->executeUserAction('generate_random_password', 8));
+        $this->assertIsString($model->createEntity()->executeUserAction('generate_random_password', 8));
 
         // generate new password and set model record password field and save it and email if possible
         $entity = $model->load(1);
