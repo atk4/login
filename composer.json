@@ -32,7 +32,7 @@
     },
     "require-release": {
         "php": ">=7.4 <8.2",
-        "atk4/ui": "~3.1.0"
+        "atk4/ui": "~3.2.0"
     },
     "require-dev": {
         "behat/behat": "^3.9",
