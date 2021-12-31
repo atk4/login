@@ -50,18 +50,10 @@ class Auth
      */
     public $user;
 
-    /**
-     * Which field to look up user by.
-     *
-     * @var string
-     */
+    /** @var string Which field to look up user by. */
     public $fieldLogin = 'email';
 
-    /**
-     * Password to be verified when authenticating.
-     *
-     * @var string
-     */
+    /** @var string Password to be verified when authenticating. */
     public $fieldPassword = 'password';
 
     /**
@@ -73,32 +65,16 @@ class Auth
      */
     public $check = true;
 
-    /**
-     * Should use some caching (in session for example) or not?
-     *
-     * @var bool
-     */
+    /** @var bool Should use some caching (in session for example) or not? */
     public $cacheEnabled = true;
 
-    /**
-     * Cache class to use.
-     *
-     * @var array
-     */
+    /** @var array Cache class to use. */
     public $cacheClass = [Cache\Session::class];
 
-    /**
-     * Options for cache class.
-     *
-     * @var array
-     */
+    /** @var array Options for cache class. */
     public $cacheOptions = [];
 
-    /**
-     * Cache object.
-     *
-     * @var Session
-     */
+    /** @var Session Cache object. */
     protected $cache;
 
     /**
@@ -109,42 +85,22 @@ class Auth
      */
     public $formLoginSeed = [Form\Login::class];
 
-    /**
-     * @var array Seed that would create VirtualPage for adding Preference page content
-     */
+    /** @var array Seed that would create VirtualPage for adding Preference page content */
     public $preferencePage = [VirtualPage::class];
 
-    /**
-     * Which is the index page? This page should have auth / check.
-     *
-     * @var string
-     */
+    /** @var string Which is the index page? This page should have auth / check. */
     public $pageDashboard;
 
-    /**
-     * User will be sent to exit page when he logs out.
-     *
-     * @var string
-     */
+    /** @var string User will be sent to exit page when he logs out. */
     public $pageExit = 'index';
 
-    /**
-     * Should we add User Menu to Admin layout?
-     *
-     * @var bool
-     */
+    /** @var bool Should we add User Menu to Admin layout? */
     public $hasUserMenu = true;
 
-    /**
-     * Should we display and handle preferences link in user menu?
-     *
-     * @var bool
-     */
+    /** @var bool Should we display and handle preferences link in user menu? */
     public $hasPreferences = true;
 
     /**
-     * Constructor.
-     *
      * @param array $options
      */
     public function __construct($options = [])
@@ -156,9 +112,6 @@ class Auth
         }
     }
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         $this->_init();

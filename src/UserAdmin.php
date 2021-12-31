@@ -24,9 +24,6 @@ class UserAdmin extends View
     /** @var Crud */
     public $crud;
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         parent::init();
