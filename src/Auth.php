@@ -101,8 +101,6 @@ class Auth
     public $hasPreferences = true;
 
     /**
-     * Constructor.
-     *
      * @param array $options
      */
     public function __construct($options = [])
@@ -114,9 +112,6 @@ class Auth
         }
     }
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         $this->_init();

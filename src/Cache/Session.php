@@ -23,9 +23,6 @@ class Session // implements CacheInterface
     /** @var string|null Cache key. Set this if you want to use multiple cache objects at same time. */
     public $key;
 
-    /**
-     * Constructor.
-     */
     public function __construct(array $options = [])
     {
         $this->setDefaults($options);
