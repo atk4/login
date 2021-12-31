@@ -17,18 +17,10 @@ class Session // implements CacheInterface
     use NameTrait;
     use SessionTrait;
 
-    /**
-     * Cached data expires in X seconds. False to never expire.
-     *
-     * @var float|false
-     */
+    /** @var float|false Cached data expires in X seconds. False to never expire. */
     public $expireTime = false;
 
-    /**
-     * Cache key. Set this if you want to use multiple cache objects at same time.
-     *
-     * @var string|null
-     */
+    /** @var string|null Cache key. Set this if you want to use multiple cache objects at same time. */
     public $key;
 
     /**
