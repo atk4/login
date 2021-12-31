@@ -109,9 +109,7 @@ class Auth
      */
     public $formLoginSeed = [Form\Login::class];
 
-    /**
-     * @var array Seed that would create VirtualPage for adding Preference page content
-     */
+    /** @var array Seed that would create VirtualPage for adding Preference page content */
     public $preferencePage = [VirtualPage::class];
 
     /**
