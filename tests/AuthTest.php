@@ -37,7 +37,10 @@ class AuthTest extends GenericTestCase
         $this->setupDefaultDb();
 
         $createAuthFx = function (array $options = []) use ($cacheEnabled) {
-            $auth = new Auth(array_merge(['check' => false, 'cacheEnabled' => $cacheEnabled], $options));
+            $auth = new Auth(
+                $this->createAppForSession(),
+                array_merge(['check' => false, 'cacheEnabled' => $cacheEnabled], $options)
+            );
             $auth->setModel($this->createUserModel());
 
             return $auth;
@@ -121,17 +124,17 @@ class AuthTest extends GenericTestCase
     {
         $this->setupDefaultDb();
 
-        $auth = new Auth(['check' => false]);
+        $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), 'name', null);
         $auth->tryLogin('admin', 'admin'); // there is no "name" = 'admin'
         $this->assertFalse($auth->isLoggedIn());
 
-        $auth = new Auth(['check' => false]);
+        $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), 'name', null);
         $auth->tryLogin('Administrator', 'admin');
         $this->assertTrue($auth->isLoggedIn());
 
-        $auth = new Auth(['check' => false]);
+        $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), null, 'name');
         $this->expectException(\Exception::class);
         $auth->tryLogin('admin', 'admin'); // wrong password field
