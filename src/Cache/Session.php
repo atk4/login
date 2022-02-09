@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Cache;
 
+use Atk4\Core\AppScopeTrait;
 use Atk4\Core\DiContainerTrait;
 use Atk4\Core\NameTrait;
-use Atk4\Core\SessionTrait;
+use Atk4\Ui\App;
+use Atk4\Ui\SessionTrait;
 
 /**
  * Session cache for authentication controller.
  */
 class Session // implements CacheInterface
 {
+    use AppScopeTrait;
     use DiContainerTrait;
     use NameTrait;
     use SessionTrait;
@@ -23,8 +26,10 @@ class Session // implements CacheInterface
     /** @var string|null Cache key. Set this if you want to use multiple cache objects at same time. */
     public $key;
 
-    public function __construct(array $options = [])
+    public function __construct(App $app, array $options = [])
     {
+        $this->setApp($app);
+
         $this->setDefaults($options);
     }
 
@@ -34,7 +39,7 @@ class Session // implements CacheInterface
     public function init(): void
     {
         if (\PHP_SAPI !== 'cli') { // helps with unit tests
-            $this->startSession();
+            $this->getApp()->session->startSession(); // TODO use SessionTrait methods instead
         }
     }
 

@@ -9,6 +9,7 @@ use Atk4\Data\Schema\TestCase as BaseTestCase;
 use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
+use Atk4\Ui\App;
 
 abstract class GenericTestCase extends BaseTestCase
 {
@@ -22,6 +23,14 @@ abstract class GenericTestCase extends BaseTestCase
         $_SESSION = [];
 
         parent::tearDown();
+    }
+
+    protected function createAppForSession(): App
+    {
+        return new App([
+            'catch_exceptions' => false,
+            'always_run' => false,
+        ]);
     }
 
     protected function setupDefaultDb(): void

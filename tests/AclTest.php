@@ -33,7 +33,7 @@ class AclTest extends GenericTestCase
 
     protected function createAuthAndLogin(string $user): Auth
     {
-        $auth = new Auth(['check' => false]);
+        $auth = new Auth($this->createAppForSession(), ['check' => false]);
 
         $auth->setModel($this->createUserModel());
         $auth->tryLogin($user, $user === 'admin' ? 'admin' : 'user');

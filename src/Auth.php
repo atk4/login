@@ -18,6 +18,7 @@ use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
+use Atk4\Ui\App;
 use Atk4\Ui\Layout\Admin;
 use Atk4\Ui\VirtualPage;
 
@@ -103,12 +104,13 @@ class Auth
     /**
      * @param array $options
      */
-    public function __construct($options = [])
+    public function __construct(App $app, $options = [])
     {
+        $this->setApp($app);
         $this->setDefaults($options);
 
         if ($this->cacheEnabled) {
-            $this->cache = Factory::factory($this->cacheClass, $this->cacheOptions);
+            $this->cache = Factory::factory($this->cacheClass, array_merge([1 => $this->getApp()], $this->cacheOptions));
         }
     }
 

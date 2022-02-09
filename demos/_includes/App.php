@@ -49,8 +49,7 @@ class App extends \Atk4\Ui\App
 
     public function initAuth(bool $check = true): void
     {
-        $this->auth = new Auth(['check' => $check, 'pageDashboard' => 'index']);
-        $this->auth->setApp($this);
+        $this->auth = new Auth($this, ['check' => $check, 'pageDashboard' => 'index']);
 
         // Can not setmodel at this stage :(
         $m = new \Atk4\Login\Model\User($this->db);
