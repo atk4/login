@@ -32,9 +32,7 @@ class Auth
     use ContainerTrait;
     use DiContainerTrait;
     use HookTrait;
-    use InitializerTrait {
-        init as private _init;
-    }
+    use InitializerTrait;
     use TrackableTrait;
 
     /** @const string */
@@ -115,11 +113,6 @@ class Auth
         if ($this->cacheEnabled) {
             $this->cache = Factory::factory($this->cacheClass, array_merge([1 => $this->getApp()], $this->cacheOptions));
         }
-    }
-
-    protected function init(): void
-    {
-        $this->_init();
     }
 
     /**
