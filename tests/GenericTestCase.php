@@ -27,10 +27,42 @@ abstract class GenericTestCase extends BaseTestCase
 
     protected function createAppForSession(): App
     {
-        return new App([
+        $app = new App([
             'catch_exceptions' => false,
             'always_run' => false,
         ]);
+
+        $app->session = new class() extends App\SessionManager {
+            /** @var array<string, mixed> */
+            private $data = [];
+            /** @var bool */
+            private $isActive = false;
+
+            protected function isSessionActive(): bool
+            {
+                return $this->isActive;
+            }
+
+            protected function startSession(bool $readAndCloseImmediately): void
+            {
+                $_SESSION = $this->data;
+
+                if (!$readAndCloseImmediately) {
+                    $this->isActive = true;
+                }
+            }
+
+            protected function closeSession(bool $writeBeforeClose): void
+            {
+                if ($writeBeforeClose) {
+                    $this->data = $_SESSION;
+                }
+
+                $this->isActive = false;
+            }
+        };
+
+        return $app;
     }
 
     protected function setupDefaultDb(): void
