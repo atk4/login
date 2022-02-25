@@ -92,6 +92,9 @@ class Auth
     /** @var string Which is the index page? This page should have auth / check. */
     public $pageDashboard;
 
+    /** @var string|null Redirect here after successful login, null to move to the originating URL */
+    public $pageAfterLogin;
+
     /** @var string User will be sent to exit page when he logs out. */
     public $pageExit = 'index';
 
@@ -318,16 +321,16 @@ class Auth
         $app->html = null;
         $app->initLayout([Narrow::class]);
         $app->title = $app->title . ' - Login Required';
+        $app->layout->template->set('title', $app->title);
         $app->add(array_merge(
             $this->formLoginSeed,
             [
                 'auth' => $this,
-                'linkSuccess' => [$this->pageDashboard],
+                'linkSuccess' => [$this->pageAfterLogin],
                 'linkForgot' => false,
             ],
             $seed
         ));
-        $app->layout->template->set('title', $app->title);
         $app->run();
         $app->callExit();
     }
