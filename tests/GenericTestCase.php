@@ -20,7 +20,9 @@ abstract class GenericTestCase extends BaseTestCase
 
     protected function tearDown(): void
     {
-        $_SESSION = [];
+        \Closure::bind(function () {
+            App\SessionManager::$readCache = null;
+        }, null, App\SessionManager::class)();
 
         parent::tearDown();
     }

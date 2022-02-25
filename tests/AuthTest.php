@@ -88,9 +88,7 @@ class AuthTest extends GenericTestCase
             $this->assertTrue($auth->isLoggedIn());
             $this->assertSame('user', $auth->user->get($auth->fieldLogin));
             $this->assertSame('Test User', $auth->user->get('name'));
-        }
 
-        if ($cacheEnabled) {
             $createAuthWithShortExpireTimeFx = function () use ($createAuthFx) {
                 return $createAuthFx([
                     'cacheOptions' => ['expireTime' => 0.05], // 50 milliseconds
