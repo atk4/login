@@ -8,4 +8,4 @@ namespace Atk4\Login\Demos;
 require __DIR__ . '/init-app.php';
 
 $app->auth->logout();
-$app->auth->displayLoginForm();
+$app->auth->displayLoginForm(['linkSuccess' => ['index']]);

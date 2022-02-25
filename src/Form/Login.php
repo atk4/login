@@ -53,9 +53,9 @@ class Login extends Form
 
         $linkSuccess = $this->linkSuccess;
         if ($linkSuccess === [null]) {
-            $linkSuccess = $this->stickyGet('pageAfterLogin');
+            $linkSuccess = $this->stickyGet('returnUrl');
             if ($linkSuccess === null) {
-                $linkSuccess = $this->stickyGet('pageAfterLogin', $_SERVER['REQUEST_URI']);
+                $linkSuccess = $this->stickyGet('returnUrl', $_SERVER['REQUEST_URI']);
             }
         }
 
