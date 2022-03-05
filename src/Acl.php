@@ -30,10 +30,12 @@ class Acl
         /** @var \Atk4\Login\Model\User */
         $user = $this->auth->user;
 
-        $modelClasses = class_implements($model);
+        $modelClasses = array_diff(class_implements($model), class_implements(Model::class));
         $class = get_class($model);
         do {
-            $modelClasses[] = $class;
+            if (!(new \ReflectionClass($class))->isAnonymous()) {
+                $modelClasses[] = $class;
+            }
         } while (($class = get_parent_class($class)) !== false);
         $res = $user->ref('AccessRules')->addCondition('model', 'in', $modelClasses);
 

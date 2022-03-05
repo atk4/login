@@ -51,11 +51,19 @@ class Login extends Form
                 ->set($this->cookieWarning);
         }
 
+        $linkSuccess = $this->linkSuccess;
+        if ($linkSuccess === [null]) {
+            $linkSuccess = $this->stickyGet('returnUrl');
+            if ($linkSuccess === null) {
+                $linkSuccess = $this->stickyGet('returnUrl', $_SERVER['REQUEST_URI']);
+            }
+        }
+
         if ($this->auth) {
-            $this->onSubmit(function ($form) {
+            $this->onSubmit(function ($form) use ($linkSuccess) {
                 // try to log user in
                 if ($this->auth->tryLogin($form->model->get($this->auth->fieldLogin), $form->model->get($this->auth->fieldPassword))) {
-                    return $this->getApp()->jsRedirect($this->linkSuccess);
+                    return $this->getApp()->jsRedirect($linkSuccess);
                 }
 
                 return $form->error('password', 'Email or password is incorrect');
