@@ -32,9 +32,7 @@ class Auth
     use ContainerTrait;
     use DiContainerTrait;
     use HookTrait;
-    use InitializerTrait {
-        init as private _init;
-    }
+    use InitializerTrait;
     use TrackableTrait;
 
     /** @const string */
@@ -92,6 +90,9 @@ class Auth
     /** @var string Which is the index page? This page should have auth / check. */
     public $pageDashboard;
 
+    /** @var string|null Redirect here after successful login, null to move to the originating URL */
+    public $pageAfterLogin;
+
     /** @var string User will be sent to exit page when he logs out. */
     public $pageExit = 'index';
 
@@ -112,11 +113,6 @@ class Auth
         if ($this->cacheEnabled) {
             $this->cache = Factory::factory($this->cacheClass, array_merge([1 => $this->getApp()], $this->cacheOptions));
         }
-    }
-
-    protected function init(): void
-    {
-        $this->_init();
     }
 
     /**
@@ -172,10 +168,11 @@ class Auth
      */
     protected function loadFromCache(): void
     {
-        if (isset($this->cache->getData()[$this->user->id_field])) {
-            $this->user = $this->user->getModel()->load($this->cache->getData()[$this->user->id_field]);
+        $cacheData = $this->cache->getData();
+        if (isset($cacheData[$this->user->id_field])) {
+            $this->user = $this->user->getModel()->load($cacheData[$this->user->id_field]);
         }
-        $this->user->setMulti($this->cache->getData());
+        $this->user->setMulti($cacheData);
     }
 
     /**
@@ -317,16 +314,16 @@ class Auth
         $app->html = null;
         $app->initLayout([Narrow::class]);
         $app->title = $app->title . ' - Login Required';
+        $app->layout->template->set('title', $app->title);
         $app->add(array_merge(
             $this->formLoginSeed,
             [
                 'auth' => $this,
-                'linkSuccess' => [$this->pageDashboard],
+                'linkSuccess' => [$this->pageAfterLogin],
                 'linkForgot' => false,
             ],
             $seed
         ));
-        $app->layout->template->set('title', $app->title);
         $app->run();
         $app->callExit();
     }

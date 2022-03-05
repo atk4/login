@@ -29,18 +29,9 @@ class Session // implements CacheInterface
     public function __construct(App $app, array $options = [])
     {
         $this->setApp($app);
+        $this->name = '__atk4_login';
 
         $this->setDefaults($options);
-    }
-
-    /**
-     * Initialize cache.
-     */
-    public function init(): void
-    {
-        if (\PHP_SAPI !== 'cli') { // helps with unit tests
-            $this->getApp()->session->startSession(); // TODO use SessionTrait methods instead
-        }
     }
 
     /**
@@ -50,8 +41,6 @@ class Session // implements CacheInterface
      */
     public function getKey()
     {
-        $this->init();
-
         return static::class . ':' . ($this->key ?? $this->name);
     }
 
@@ -61,12 +50,12 @@ class Session // implements CacheInterface
     public function getData(): array
     {
         $key = $this->getKey();
-
-        if (!isset($_SESSION[$key]) || ($this->expireTime && $_SESSION[$key . '-at'] + $this->expireTime < microtime(true))) {
-            $_SESSION[$key] = [];
+        $data = $this->recall($key);
+        if ($data === null || ($this->expireTime && $this->recall($key . '-at') + $this->expireTime < microtime(true))) {
+            $data = [];
         }
 
-        return $_SESSION[$key];
+        return $data;
     }
 
     /**
@@ -77,8 +66,8 @@ class Session // implements CacheInterface
     public function setData(array $data)
     {
         $key = $this->getKey();
-        $_SESSION[$key] = $data;
-        $_SESSION[$key . '-at'] = microtime(true);
+        $this->memorize($key, $data);
+        $this->memorize($key . '-at', microtime(true));
 
         return $this;
     }
