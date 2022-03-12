@@ -95,16 +95,13 @@ trait PasswordManagementTrait
         for ($i = 0; $i < $length; ++$i) {
             $ch = $password[$i];
             $code = ord($ch);
-            /* [0-9] */ if ($code >= 48 && $code <= 57) {
+            if ($code >= 48 && $code <= 57) { // [0-9]
                 ++$nNum;
-            }
-            /* [A-Z] */ elseif ($code >= 65 && $code <= 90) {
+            } elseif ($code >= 65 && $code <= 90) { // [A-Z]
                 ++$nUpper;
-            }
-            /* [a-z] */ elseif ($code >= 97 && $code <= 122) {
+            } elseif ($code >= 97 && $code <= 122) { // [a-z]
                 ++$nLower;
-            }
-            /* .     */ else {
+            } else {
                 ++$nSymbol;
             }
         }
@@ -154,19 +151,16 @@ trait PasswordManagementTrait
         for ($i = 0; $i < $length; ++$i) {
             $ch = $pw[$i];
             $code = ord($ch);
-            /* [0-9] */ if ($code >= 48 && $code <= 57) {
+            if ($code >= 48 && $code <= 57) { // [0-9]
                 ++$nNum;
                 $locNum[] = $i;
-            }
-            /* [A-Z] */ elseif ($code >= 65 && $code <= 90) {
+            } elseif ($code >= 65 && $code <= 90) { // [A-Z]
                 ++$nUpper;
                 $locUpper[] = $i;
-            }
-            /* [a-z] */ elseif ($code >= 97 && $code <= 122) {
+            } elseif ($code >= 97 && $code <= 122) { // [a-z]
                 ++$nLower;
                 $locLower[] = $i;
-            }
-            /* .     */ else {
+            } else {
                 ++$nSymbol;
                 $locSymbol[] = $i;
             }
@@ -250,10 +244,10 @@ trait PasswordManagementTrait
      * Find all sequential chars in string $src.
      *
      * Only chars in $charLocs are considered. $charLocs is a list of numbers.
-     * For example if $charLocs is [0,2,3], then only $src[2:3] is a possible
+     * For example if $charLocs is [0, 2, 3], then only $src[2:3] is a possible
      * substring with sequential chars.
      *
-     * @return array [[c,c,c,c], [a,a,a], ...]
+     * @return array [[c, c, c, c], [a, a, a], ...]
      */
     private function findSequence(array $charLocs, string $src): array
     {

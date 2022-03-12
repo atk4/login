@@ -29,17 +29,17 @@ class AccessRule extends Model
         /*
          * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
          *      '*' - equals all_fields=true
-         *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo','bar']
+         *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo', 'bar']
          *
          *      This way it also will be easier to merge permissions from multiple roles together (in future). For example:
-         *          role_1 = 'f1,f2';
-         *          role_2 = 'f2,f4';
+         *          role_1 = 'f1, f2';
+         *          role_2 = 'f2, f4';
          *          role_3 = '*';
-         *          $actual_permissions = array_merge(explode(',',$role_1),explode(',',$role_2),explode(',',$role_3));
-         *          $actual_permissions = ['f1','f2','f4','*'];
+         *          $actual_permissions = array_merge(explode(',', $role_1), explode(',', $role_2), explode(',' , $role_3));
+         *          $actual_permissions = ['f1', 'f2', 'f4', '*'];
          *          and then apply array_search() to find if we allow all fields (*) or not
          *          $all_visible = array_search('*', $actual_permissions) !== false
-         *          $visible_fields = array_diff($actual_fields,['*']);
+         *          $visible_fields = array_diff($actual_fields, ['*']);
          */
 
         // which model fields should be visible

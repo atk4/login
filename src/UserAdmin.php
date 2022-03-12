@@ -36,7 +36,7 @@ class UserAdmin extends View
      */
     public function setModel(Model $user): void
     {
-        //$user->getUserAction('register_new_user')->system = true;
+        // $user->getUserAction('register_new_user')->system = true;
         $user->getUserAction('add')->system = true;
 
         // set model for CRUD
@@ -51,7 +51,7 @@ class UserAdmin extends View
 
             $form = Form::addTo($v);
             $f = $form->addControl('visible_password', [], ['required' => true]);
-            //$form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
+            // $form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
                 return $f->jsInput()->val(PasswordField::assertInstanceOf($userEntity->getField('password'))->generatePassword());
