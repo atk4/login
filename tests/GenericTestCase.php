@@ -30,8 +30,8 @@ abstract class GenericTestCase extends BaseTestCase
     protected function createAppForSession(): App
     {
         $app = new App([
-            'catch_exceptions' => false,
-            'always_run' => false,
+            'catchExceptions' => false,
+            'alwaysRun' => false,
         ]);
 
         $app->session = new class() extends App\SessionManager {

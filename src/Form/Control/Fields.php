@@ -16,9 +16,9 @@ class Fields extends GenericDropdown
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($field) {
             return [
-                'value' => $field->short_name,
+                'value' => $field->shortName,
                 'title' => $field->getCaption(),
-                // 'icon' => ($field->short_name == $field->model->id_field ? 'key' : null), // can not get field->model here :(
+                // 'icon' => ($field->shortName == $field->model->id_field ? 'key' : null), // cannot get field->model here :(
             ];
         };
 

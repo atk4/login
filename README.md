@@ -73,7 +73,7 @@ In the manual mode, no checks will be performed, and you are responsible for aut
 
 ``` php
 $app->auth = new \Atk4\Login\Auth([
-    'check' => false
+    'check' => false,
 ]);
 $app->auth->setModel(new User($app->db));
 
