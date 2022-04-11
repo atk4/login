@@ -16,8 +16,8 @@ class Actions extends GenericDropdown
         // set function for dropdown row rendering
         $this->renderRowFunction = function ($action) {
             return [
-                'value' => $action->short_name,
-                'title' => $action->caption ?: $action->short_name,
+                'value' => $action->shortName,
+                'title' => $action->caption ?: $action->shortName,
                 'icon' => ($action->ui['icon'] ?? null),
             ];
         };

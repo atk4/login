@@ -310,10 +310,10 @@ class Auth
     {
         $app = $this->getApp();
 
-        $app->catch_runaway_callbacks = false;
+        $app->catchRunawayCallbacks = false;
         $app->html = null;
         $app->initLayout([Narrow::class]);
-        $app->title = $app->title . ' - Login Required';
+        $app->title .= ' - Login Required';
         $app->layout->template->set('title', $app->title);
         $app->add(array_merge(
             $this->formLoginSeed,
