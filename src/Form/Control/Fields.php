@@ -18,7 +18,7 @@ class Fields extends GenericDropdown
             return [
                 'value' => $field->shortName,
                 'title' => $field->getCaption(),
-                // 'icon' => ($field->shortName == $field->model->id_field ? 'key' : null), // can not get field->model here :(
+                // 'icon' => ($field->shortName == $field->model->id_field ? 'key' : null), // cannot get field->model here :(
             ];
         };
 
