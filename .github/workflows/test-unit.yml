@@ -155,6 +155,7 @@ jobs:
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-sqlite.cov; fi
 
       - name: "Run tests: MySQL"
+        if: success() || failure()
         env:
           DB_DSN: "mysql:host=mysql;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -166,6 +167,7 @@ jobs:
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mysql.cov; fi
 
       - name: "Run tests: MariaDB"
+        if: success() || failure()
         env:
           DB_DSN: "mysql:host=mariadb;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -177,6 +179,7 @@ jobs:
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mariadb.cov; fi
 
       - name: "Run tests: PostgreSQL"
+        if: success() || failure()
         env:
           DB_DSN: "pgsql:host=postgres;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -188,6 +191,7 @@ jobs:
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-postgres.cov; fi
 
       - name: "Run tests: MSSQL"
+        if: success() || failure()
         env:
           DB_DSN: "sqlsrv:host=mssql;dbname=master;driverOptions[TrustServerCertificate]=1"
           DB_USER: sa
@@ -199,6 +203,7 @@ jobs:
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mssql.cov; fi
 
       - name: "Run tests: Oracle"
+        if: success() || failure()
         env:
           DB_DSN: "oci:dbname=oracle/xe"
           DB_USER: system
@@ -294,14 +299,11 @@ jobs:
       - name: Build/diff HTML files (only for Slow)
         if: matrix.type == 'Chrome Slow'
         run: |
-          for f in $(find template demos -name '*.pug' -o -name '*.html'); do
-            fpug=${f/.[a-z]*/.pug}
-            fhtml=${fpug/.pug/.html}
-            mv "$fhtml" "$fhtml.orig"
-            pug --silent --pretty "$fpug"
-            diff "$fhtml.orig" "$fhtml"
-            rm "$fhtml.orig"
-          done
+          cp -r template template.orig
+          find template -not -type d -not -name '*.pug' -delete
+          (cd template && pug --silent --pretty .)
+          diff -ru template.orig template
+          rm -r template.orig
 
       - name: Install PHP dependencies
         run: |
@@ -319,7 +321,6 @@ jobs:
           php -r '(new PDO("pgsql:host=postgres;dbname=atk4_test", "atk4_test_user", "atk4_pass"))->exec("ALTER ROLE atk4_test_user CONNECTION LIMIT 1");'
           /usr/lib/oracle/setup.sh
           if [ -n "$LOG_COVERAGE" ]; then mkdir coverage && cp tools/CoverageUtil.php demos; fi
-          sed -i "s~'https://raw.githack.com/atk4/ui/develop/public.*~'/vendor/atk4/ui/public',~" vendor/atk4/ui/src/App.php
           ci_wait_until () { timeout 30 sh -c "until { $1 2> /dev/null; }; do sleep 0.02; done" || timeout 15 sh -c "$1" || { echo "health timeout: $1"; exit 1; }; }
           php -S 127.0.0.1:8888 > /dev/null 2>&1 &
           ci_wait_until 'nc -w 1 127.0.0.1 8888'
@@ -337,7 +338,7 @@ jobs:
           vendor/bin/behat -vv --config behat.yml.dist
 
       - name: "Run tests: MySQL (only for coverage or cron)"
-        if: env.LOG_COVERAGE || github.event_name == 'schedule'
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
         env:
           DB_DSN: "mysql:host=mysql;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -348,7 +349,7 @@ jobs:
           vendor/bin/behat -vv --config behat.yml.dist
 
       - name: "Run tests: MariaDB (only for coverage or cron)"
-        if: env.LOG_COVERAGE || github.event_name == 'schedule'
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
         env:
           DB_DSN: "mysql:host=mariadb;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -359,7 +360,7 @@ jobs:
           vendor/bin/behat -vv --config behat.yml.dist
 
       - name: "Run tests: PostgreSQL (only for coverage or cron)"
-        if: env.LOG_COVERAGE || github.event_name == 'schedule'
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
         env:
           DB_DSN: "pgsql:host=postgres;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -370,7 +371,7 @@ jobs:
           vendor/bin/behat -vv --config behat.yml.dist
 
       - name: "Run tests: MSSQL (only for coverage or cron)"
-        if: env.LOG_COVERAGE || github.event_name == 'schedule'
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
         env:
           DB_DSN: "sqlsrv:host=mssql;dbname=master;driverOptions[TrustServerCertificate]=1"
           DB_USER: sa
@@ -381,7 +382,7 @@ jobs:
           vendor/bin/behat -vv --config behat.yml.dist
 
       - name: "Run tests: Oracle (only for coverage or cron)"
-        if: env.LOG_COVERAGE || github.event_name == 'schedule'
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
         env:
           DB_DSN: "oci:dbname=oracle/xe"
           DB_USER: system
