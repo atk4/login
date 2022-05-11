@@ -61,8 +61,8 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
             'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O', // admin
         ],
     ]);
-    $c->notice('User: admin/admin created.');
-    $c->notice('User: user/user created.');
+    $c->notice('User: admin/admin created');
+    $c->notice('User: user/user created');
     $c->debug('  Import users.. OK');
 
     $rule->import([
