@@ -147,7 +147,7 @@ Form::addTo($app)->setModel($app->auth->user);
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-Button::addTo($app, ['Profile', 'primary'])->on('click', Modal::addTo($app)->set(function($p) {
+Button::addTo($app, ['Profile', 'class.primary' => true])->on('click', Modal::addTo($app)->set(function($p) {
     Form::addTo($p)->setModel($p->app->auth->user);
 })->show());
 ```
