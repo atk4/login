@@ -73,7 +73,7 @@ class UserAdmin extends View
         });
 
         /*
-        $column->addModal(['icon' => 'eye'], 'Details', function($v, $id, $userEntity) {
+        $column->addModal(['icon' => 'eye'], 'Details', function ($v, $id, $userEntity) {
             $userEntity = $this->model->load($id);
 
             $c = Columns::addTo($v);
@@ -83,12 +83,12 @@ class UserAdmin extends View
             Header::addTo($left, ['Role "' . $userEntity['role'] . '" Access']);
             $crud = Crud::addTo($left);
             $crud->setModel($userEntity->ref('AccessRules'));
-            $crud->table->onRowClick($right->jsReload(['rule'=>$crud->table->jsRow()->data('id')]));
+            $crud->table->onRowClick($right->jsReload(['rule' => $crud->table->jsRow()->data('id')]));
 
             Header::addTo($right, ['Role Details']);
             $rule = $right->stickyGet('rule');
             if (!$rule) {
-                Message::addTo($right, ['Select role on the left', 'yellow']);
+                Message::addTo($right, ['Select role on the left', 'class.yellow' => true]);
             } else {
                 Crud::addTo($right)->setModel($userEntity->ref('AccessRules')->load($rule));
             }

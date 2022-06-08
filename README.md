@@ -80,7 +80,7 @@ $app->auth->setModel(new User($app->db));
 
 // Now manually use login logic
 if (!$app->auth->user->isLoaded()) {
-  \Atk4\Login\LoginForm::addTo($app, ['auth' => $app->auth]);
+    \Atk4\Login\LoginForm::addTo($app, ['auth' => $app->auth]);
 }
 ```
 
@@ -123,7 +123,7 @@ Displays log-in form and associate it with $auth. When form is filled, will atte
 To check if user is currently logged in:
 
 ``` php
-if ($app->auth->model->isLoaded()) {
+if ($app->auth->user->isLoaded()) {
   // logged-in
 }
 ```
@@ -147,7 +147,7 @@ Form::addTo($app)->setModel($app->auth->user);
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-Button::addTo($app, ['Profile', 'primary'])->on('click', Modal::addTo($app)->set(function($p) {
+Button::addTo($app, ['Profile', 'class.primary' => true])->on('click', Modal::addTo($app)->set(function ($p) {
     Form::addTo($p)->setModel($p->app->auth->user);
 })->show());
 ```
