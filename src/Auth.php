@@ -194,7 +194,7 @@ class Auth
         $userModel = new $this->user($this->user->persistence);
 
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
-        if ($userEntity->isLoaded()) {
+        if ($userEntity !== null) {
             // verify if the password matches
             $passwordField = PasswordField::assertInstanceOf($userEntity->getField($this->fieldPassword));
             if ($passwordField->verifyPassword($userEntity, $password)) {
@@ -209,7 +209,6 @@ class Auth
 
                 return true;
             }
-            $userEntity->unload();
             $this->hook(self::HOOK_BAD_LOGIN, [$email]);
         }
 

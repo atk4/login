@@ -73,7 +73,7 @@ class UserAdmin extends View
         });
 
         /*
-        $column->addModal(['icon' => 'eye'], 'Details', function($v, $id, $userEntity) {
+        $column->addModal(['icon' => 'eye'], 'Details', function ($v, $id, $userEntity) {
             $userEntity = $this->model->load($id);
 
             $c = Columns::addTo($v);
