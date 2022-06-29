@@ -26,6 +26,6 @@ class SignupTest extends GenericTestCase
             ]
         );
 
-        $this->assertSame(1, count((new $m($m->persistence))->addCondition('email', 'test')->export()));
+        $this->assertSame(1, count((new $m($m->getPersistence()))->addCondition('email', 'test')->export()));
     }
 }

@@ -46,7 +46,7 @@ class MigratorConsole extends Console
             foreach ($models as $model) {
                 if (!is_object($model)) {
                     $model = Factory::factory((array) $model);
-                    $console->getApp()->db->add($model);
+                    $model->setPersistence($console->getApp()->db);
                 }
 
                 (new $this->migrator_class($model))->dropIfExists()->create(); // recreate table

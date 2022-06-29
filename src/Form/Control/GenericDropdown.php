@@ -33,7 +33,7 @@ abstract class GenericDropdown extends Dropdown
             return null;
         }
 
-        $model = new $class($this->form->model->persistence);
+        $model = new $class($this->form->model->getPersistence());
         if (!$model instanceof Model) {
             throw new Exception('Class must be instance of ' . Model::class);
         }

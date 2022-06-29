@@ -191,7 +191,7 @@ class Auth
         // first logout
         $this->logout();
 
-        $userModel = new $this->user($this->user->persistence);
+        $userModel = new $this->user($this->user->getPersistence());
 
         $userEntity = $userModel->tryLoadBy($this->fieldLogin, $email);
         if ($userEntity !== null) {
@@ -238,7 +238,7 @@ class Auth
      */
     public function setAcl(Acl $acl, Persistence $persistence = null)
     {
-        $persistence ??= $this->user->persistence;
+        $persistence ??= $this->user->getPersistence();
         $acl->auth = $this;
         $acl->applyRestrictions($this->user);
 
