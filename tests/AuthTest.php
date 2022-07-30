@@ -134,6 +134,7 @@ class AuthTest extends GenericTestCase
 
         $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), null, 'name');
+
         $this->expectException(\Exception::class);
         $auth->tryLogin('admin', 'admin'); // wrong password field
     }
