@@ -98,7 +98,7 @@ abstract class GenericTestCase extends BaseTestCase
     public static function replaceTableAndModelsInRefs(Model $model): void
     {
         $model->table = self::getTableByStandardModelClass(get_parent_class($model)); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/4302
-        foreach ($model->getRefs() as $k => $r) {
+        foreach ($model->getReferences() as $k => $r) {
             if ($r->model instanceof \Closure) {
                 if ($model instanceof User && $k === 'AccessRules') { // safe Closure, reference is build using ->ref()
                     continue;
