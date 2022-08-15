@@ -169,8 +169,8 @@ class Auth
     protected function loadFromCache(): void
     {
         $cacheData = $this->cache->getData();
-        if (isset($cacheData[$this->user->id_field])) {
-            $this->user = $this->user->getModel()->load($cacheData[$this->user->id_field]);
+        if (isset($cacheData[$this->user->idField])) {
+            $this->user = $this->user->getModel()->load($cacheData[$this->user->idField]);
         }
         $this->user->setMulti($cacheData);
     }

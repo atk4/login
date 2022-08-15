@@ -36,7 +36,7 @@ class UserAdmin extends View
      */
     public function setModel(Model $user): void
     {
-        // $user->getUserAction('register_new_user')->system = true;
+        // $user->getUserAction('registerNewUser')->system = true;
         $user->getUserAction('add')->system = true;
 
         // set model for CRUD
@@ -65,7 +65,7 @@ class UserAdmin extends View
                 return [
                     $v->getOwner()->hide(),
                     new JsToast([
-                        'message' => 'Password for ' . $userEntity->get($userEntity->title_field) . ' is changed!',
+                        'message' => 'Password for ' . $userEntity->get($userEntity->titleField) . ' is changed!',
                         'class' => 'success',
                     ]),
                 ];

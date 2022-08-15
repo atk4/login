@@ -21,7 +21,7 @@ class AccessRule extends Model
     {
         parent::init();
 
-        $this->hasOne('role_id', ['model' => [Role::class], 'our_field' => 'role_id', 'their_field' => 'id', 'caption' => 'Role'])
+        $this->hasOne('role_id', ['model' => [Role::class], 'ourField' => 'role_id', 'theirField' => 'id', 'caption' => 'Role'])
             ->addTitle();
 
         $this->addField('model'); // model class name

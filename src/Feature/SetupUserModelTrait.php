@@ -22,8 +22,8 @@ trait SetupUserModelTrait
             'model' => function ($m) {
                 return $m->ref('role_id')->ref('AccessRules');
             },
-            'our_field' => 'role_id',
-            'their_field' => 'role_id',
+            'ourField' => 'role_id',
+            'theirField' => 'role_id',
         ]);
     }
 }

@@ -14,11 +14,11 @@ class SignupTest extends GenericTestCase
         $this->setupDefaultDb();
         $m = $this->createUserModel();
 
-        $this->assertTrue($m->hasUserAction('register_new_user'));
+        $this->assertTrue($m->hasUserAction('registerNewUser'));
 
         // as result it makes model loaded (as entity) with new user record
         $m->createEntity()->executeUserAction(
-            'register_new_user',
+            'registerNewUser',
             [
                 'name' => 'New user',
                 'email' => 'test',

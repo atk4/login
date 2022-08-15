@@ -14,20 +14,20 @@ trait PasswordManagementTrait
 {
     public function initPasswordManagement(): void
     {
-        $this->addUserAction('generate_random_password', [
+        $this->addUserAction('generateRandomPassword', [
             'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'system' => true,
             'args' => [
                 'length' => ['type' => 'integer'],
             ],
         ]);
-        $this->addUserAction('reset_password', [
+        $this->addUserAction('resetPassword', [
             'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
             'args' => [
                 'length' => ['type' => 'integer'],
             ],
         ]);
-        $this->addUserAction('check_password_strength', [
+        $this->addUserAction('checkPasswordStrength', [
             // 'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'args' => [
                 'password' => ['type' => 'string'],
@@ -38,7 +38,7 @@ trait PasswordManagementTrait
     /**
      * Generate random password for the user, returns it.
      */
-    public function generate_random_password(int $length = 8): string
+    public function generateRandomPassword(int $length = 8): string
     {
         return (new PasswordField())->generatePassword($length);
     }
@@ -51,11 +51,11 @@ trait PasswordManagementTrait
      *       if different fieldPassword are set in Auth controller.
      *       This has to be fixed somehow.
      */
-    public function reset_password(int $length = 8): string
+    public function resetPassword(int $length = 8): string
     {
         $passwordField = PasswordField::assertInstanceOf($this->getField('password'));
 
-        $password = $this->generate_random_password($length);
+        $password = $this->generateRandomPassword($length);
 
         $passwordField->setPassword($this, $password);
         $this->save();
@@ -85,7 +85,7 @@ trait PasswordManagementTrait
      *
      * @return string|null
      */
-    public function check_password_strength(string $password, array $settings = ['strength' => 3])
+    public function checkPasswordStrength(string $password, array $settings = ['strength' => 3])
     {
         $length = strlen($password);
         $nUpper = 0;
@@ -106,7 +106,7 @@ trait PasswordManagementTrait
             }
         }
 
-        $strength = intdiv($this->calculate_strength($password), 10);
+        $strength = intdiv($this->calculatePasswordStrength($password), 10);
 
         if (isset($settings['strength']) && $strength < $settings['strength']) {
             return 'Password is not strong enough. Make it longer or use more capitals and symbols.';
@@ -134,7 +134,7 @@ trait PasswordManagementTrait
     /**
      * Calculate score for a password. Credit: https://gist.github.com/xrstf/2926619.
      */
-    private function calculate_strength(string $pw): int
+    private function calculatePasswordStrength(string $pw): int
     {
         $length = strlen($pw);
         $score = $length * 4;

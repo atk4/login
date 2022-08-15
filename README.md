@@ -62,7 +62,7 @@ $app->auth = new \Atk4\Login\Auth([
     'pageExit' => 'goodbye', // where to send user after logout
 
     // Oter options:
-    // 'hasUserMenu' => false,  // will disable interaction with Admin Layout user menu
+    // 'hasUserMenu' => false, // will disable interaction with Admin Layout user menu
 ]);
 $app->auth->setModel(new User($app->db));
 ```
