@@ -23,7 +23,7 @@ trait UniqueFieldValueTrait
             if ($entity->isDirty($fieldName)) {
                 $clonedModel = clone $entity->getModel();
                 if ($entity->getId() !== null) {
-                    $clonedModel->addCondition($entity->id_field, '!=', $entity->getId());
+                    $clonedModel->addCondition($entity->idField, '!=', $entity->getId());
                 }
                 $clonedModel->addCondition($fieldName, $entity->get($fieldName));
                 if ($clonedModel->action('exists')->getOne()) {

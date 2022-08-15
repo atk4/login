@@ -13,11 +13,11 @@ use Atk4\Data\Model\UserAction;
 trait SignupTrait
 {
     /**
-     * Adds register_new_user action.
+     * Adds registerNewUser action.
      */
     public function initSignup(): void
     {
-        $this->addUserAction('register_new_user', ['appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, 'fields' => ['name', 'email', 'password']]);
+        $this->addUserAction('registerNewUser', ['appliesTo' => UserAction::APPLIES_TO_NO_RECORDS, 'fields' => ['name', 'email', 'password']]);
     }
 
     /**
@@ -25,7 +25,7 @@ trait SignupTrait
      *
      * @param array $data Optionally can pass field values of User model
      */
-    public function register_new_user($data = []): void
+    public function registerNewUser($data = []): void
     {
         $this->save($data);
     }
