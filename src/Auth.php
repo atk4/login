@@ -19,13 +19,10 @@ use Atk4\Login\Cache\Session;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\App;
+use Atk4\Ui\Form;
 use Atk4\Ui\Layout\Admin;
 use Atk4\Ui\VirtualPage;
 
-/**
- * Authentication controller. Add this to your application somewhere
- * and it will work wonders.
- */
 class Auth
 {
     use AppScopeTrait;
@@ -290,7 +287,7 @@ class Auth
      */
     public function setPreferencePage(VirtualPage $page): void
     {
-        $f = \Atk4\Ui\Form::addTo($page);
+        $f = Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
         $f->onSubmit(function ($f) {

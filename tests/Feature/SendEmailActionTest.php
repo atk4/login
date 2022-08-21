@@ -26,10 +26,6 @@ class SendEmailActionTest extends GenericTestCase
             $this->assertSame('Email body', $args[2]);
         };
 
-        $entity->executeUserAction(
-            'sendEmail',
-            'Email subject',
-            'Email body'
-        );
+        $entity->executeUserAction('sendEmail', 'Email subject', 'Email body');
     }
 }

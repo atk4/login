@@ -10,9 +10,6 @@ use Atk4\Core\NameTrait;
 use Atk4\Ui\App;
 use Atk4\Ui\SessionTrait;
 
-/**
- * Session cache for authentication controller.
- */
 class Session // implements CacheInterface
 {
     use AppScopeTrait;

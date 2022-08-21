@@ -30,14 +30,12 @@ class Login extends Form
     {
         parent::init();
 
-        $form = $this;
+        $this->buttonSave->set('Sign in');
+        $this->buttonSave->addClass('large fluid');
+        $this->buttonSave->iconRight = 'right arrow';
 
-        $form->buttonSave->set('Sign in');
-        $form->buttonSave->addClass('large fluid');
-        $form->buttonSave->iconRight = 'right arrow';
-
-        $form->addControl($this->auth->fieldLogin, [], ['required' => true]);
-        $p = $form->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
+        $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
+        $p = $this->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])
@@ -46,7 +44,7 @@ class Login extends Form
         }
 
         if ($this->cookieWarning) {
-            View::addTo($form, ['element' => 'p'])
+            View::addTo($this, ['element' => 'p'])
                 ->addStyle('font-style', 'italic')
                 ->set($this->cookieWarning);
         }

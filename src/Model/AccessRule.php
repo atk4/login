@@ -8,7 +8,7 @@ use Atk4\Data\Model;
 use Atk4\Login\Feature\SetupAccessRuleModelTrait;
 
 /**
- * White-list access control rules.
+ * Whitelist access control rules.
  */
 class AccessRule extends Model
 {

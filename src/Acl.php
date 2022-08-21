@@ -23,11 +23,11 @@ class Acl
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @return \Atk4\Login\Model\AccessRule
+     * @return Model\AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var \Atk4\Login\Model\User */
+        /** @var Model\User */
         $user = $this->auth->user;
 
         if (!$user->isLoaded()) {
@@ -80,9 +80,7 @@ class Acl
             }
 
             // add conditions on model
-            /*
-             *  this will work in future when we will have json encoded condition structure stored in here
-             *  for now let's comment this out
+            /* this will work in future when we will have json encoded condition structure stored in here
             if ($rule['conditions']) {
                 $this->applyConditions($m, $rule['conditions']);
             }

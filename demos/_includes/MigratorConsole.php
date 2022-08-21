@@ -11,10 +11,6 @@ use Atk4\Core\HookTrait;
 use Atk4\Data\Schema\Migrator;
 use Atk4\Ui\Console;
 
-/**
- * Makes sure your database is adjusted for one or several models,
- * that you specify.
- */
 class MigratorConsole extends Console
 {
     use AppScopeTrait;

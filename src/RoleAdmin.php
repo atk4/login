@@ -6,15 +6,13 @@ namespace Atk4\Login;
 
 use Atk4\Core\DebugTrait;
 use Atk4\Data\Model;
-use Atk4\Login\Model\AccessRule;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Header;
 use Atk4\Ui\Table\Column\ActionButtons;
 use Atk4\Ui\View;
 
 /**
- * View for Role administration.
- * Includes Role association with AccessRule.
+ * View for Role administration. Includes Role association with AccessRule.
  */
 class RoleAdmin extends Crud
 {

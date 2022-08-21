@@ -14,8 +14,7 @@ use Atk4\Ui\Table\Column\ActionButtons;
 use Atk4\Ui\View;
 
 /**
- * View for User administration.
- * Includes User association with Role.
+ * View for User administration. Includes User association with Role.
  */
 class UserAdmin extends View
 {

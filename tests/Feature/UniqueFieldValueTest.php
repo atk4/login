@@ -30,6 +30,7 @@ class UniqueFieldValueTest extends GenericTestCase
             protected function init(): void
             {
                 parent::init();
+
                 $this->addField('name');
                 $this->setUnique('name');
             }
