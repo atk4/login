@@ -104,9 +104,9 @@ Displays email and 2 password fields (for confirmation). If filled successfully 
 
 ``` php
 \Atk4\Login\LoginForm::addTo($app, [
-  'auth'=>$app->auth,
-  //'successLink'=>['dashboard'],
-  //'forgotLink'=>['forgot'],
+    'auth'=>$app->auth,
+    //'successLink'=>['dashboard'],
+    //'forgotLink'=>['forgot'],
 ]);
 ```
 
@@ -124,7 +124,7 @@ To check if user is currently logged in:
 
 ``` php
 if ($app->auth->user->isLoaded()) {
-  // logged-in
+    // logged-in
 }
 ```
 
