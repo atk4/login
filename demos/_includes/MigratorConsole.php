@@ -29,9 +29,9 @@ class MigratorConsole extends Console
     /**
      * Provided with array of models, perform migration for each of them.
      *
-     * @param array $models
+     * @param array<Model|array> $models
      */
-    public function migrateModels($models): void
+    public function migrateModels(array $models): void
     {
         // run inside callback
         $this->set(function ($console) use ($models) {
@@ -41,7 +41,7 @@ class MigratorConsole extends Console
 
             foreach ($models as $model) {
                 if (!is_object($model)) {
-                    $model = Factory::factory((array) $model);
+                    $model = Factory::factory($model);
                     $model->setPersistence($console->getApp()->db);
                 }
 
