@@ -6,6 +6,8 @@ namespace Atk4\Login;
 
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\User;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -23,11 +25,11 @@ class Acl
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @return Model\AccessRule
+     * @return AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var Model\User */
+        /** @var User */
         $user = $this->auth->user;
 
         if (!$user->isLoaded()) {

@@ -39,9 +39,9 @@ class PasswordManagementTest extends GenericTestCase
         // replace callback so we can catch it
         $entity->getUserAction('sendEmail')->callback = function () {
             $args = func_get_args();
-            $this->assertInstanceOf(User::class, $args[0]);
-            $this->assertStringContainsString('reset', $args[1]);
-            $this->assertIsString($args[2]);
+            static::assertInstanceOf(User::class, $args[0]);
+            static::assertStringContainsString('reset', $args[1]);
+            static::assertIsString($args[2]);
         };
 
         static::assertIsString($pass = $entity->executeUserAction('resetPassword', 8));

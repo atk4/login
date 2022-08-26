@@ -11,6 +11,5 @@ use Atk4\Ui\Layout;
  */
 class Narrow extends Layout
 {
-    /** @var string default template */
     public $defaultTemplate = __DIR__ . '/../../template/layout/narrow.html';
 }

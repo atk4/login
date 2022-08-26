@@ -13,7 +13,6 @@ parameters:
 
         # relax strict rules
         - '~^Only booleans are allowed in .+, .+ given( on the (left|right) side)?\.~'
-        - '~^Variable (static )?(property access|method call) on .+\.~'
 
         # TODO these rules are generated, this ignores should be fixed in the code
         -
@@ -46,5 +45,9 @@ parameters:
           path: src/UserAdmin.php
         -
           message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
+          count: 1
+          path: src/UserAdmin.php
+        -
+          message: '~^Call to an undefined method Atk4\\Ui\\View::hide\(\)\.$~'
           count: 1
           path: src/UserAdmin.php

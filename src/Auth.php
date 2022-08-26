@@ -16,6 +16,7 @@ use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Login\Cache\Session;
+use Atk4\Login\Form as LoginForm;
 use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\App;
@@ -79,7 +80,7 @@ class Auth
      *
      * @var array
      */
-    public $formLoginSeed = [Form\Login::class];
+    public $formLoginSeed = [LoginForm\Login::class];
 
     /** @var array Seed that would create VirtualPage for adding Preference page content */
     public $preferencePage = [VirtualPage::class];
@@ -272,7 +273,7 @@ class Auth
             $menu = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {
-                $userPage = VirtualPage::assertInstanceOf($this->getApp()->add($this->preferencePage));
+                $userPage = VirtualPage::addToWithCl($this->getApp(), $this->preferencePage);
                 $this->setPreferencePage($userPage);
 
                 $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
@@ -311,15 +312,11 @@ class Auth
         $app->initLayout([Narrow::class]);
         $app->title .= ' - Login Required';
         $app->layout->template->set('title', $app->title);
-        $app->add(array_merge(
-            $this->formLoginSeed,
-            [
-                'auth' => $this,
-                'linkSuccess' => [$this->pageAfterLogin],
-                'linkForgot' => false,
-            ],
-            $seed
-        ));
+        $app->add(Factory::factory($this->formLoginSeed, array_merge([
+            'auth' => $this,
+            'linkSuccess' => [$this->pageAfterLogin],
+            'linkForgot' => false,
+        ], $seed)));
         $app->run();
         $app->callExit();
     }

@@ -13,7 +13,7 @@ class Actions extends GenericDropdown
         $this->renderRowFunction = function ($action) {
             return [
                 'value' => $action->shortName,
-                'title' => $action->caption ?: $action->shortName,
+                'title' => $action->caption ?? $action->shortName,
                 'icon' => ($action->ui['icon'] ?? null),
             ];
         };

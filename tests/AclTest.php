@@ -74,7 +74,7 @@ class AclTest extends GenericTestCase
 //        $this->invokeAndAssertAclException(function () use ($clientEntity) {
 //            $clientEntity->save([$clientEntity->fieldName()->balance => 100]);
 //        });
-//        $this->assertSame($clientEntity->balance, 1234.56);
+//        static::assertSame($clientEntity->balance, 1234.56);
 
         // must also match parent classes
         $clientEntity = (new class($this->db) extends AclTestClient {})->load(1);
