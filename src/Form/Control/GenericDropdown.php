@@ -6,12 +6,12 @@ namespace Atk4\Login\Form\Control;
 
 use Atk4\Data\Model;
 use Atk4\Ui\Exception;
-use Atk4\Ui\Form\Control\Dropdown;
+use Atk4\Ui\Form;
 
 /**
  * Form field to choose one or multiple entities.
  */
-abstract class GenericDropdown extends Dropdown
+abstract class GenericDropdown extends Form\Control\Dropdown
 {
     /** @var bool Dropdown with multiselect */
     public $isMultiple = true;

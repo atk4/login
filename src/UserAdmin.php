@@ -10,7 +10,7 @@ use Atk4\Data\Model;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
 use Atk4\Ui\JsToast;
-use Atk4\Ui\Table\Column\ActionButtons;
+use Atk4\Ui\Table;
 use Atk4\Ui\View;
 
 /**
@@ -42,10 +42,10 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
-        $column = $this->crud->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
+        $column = $this->crud->table->addColumn(null, [Table\Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $column->addModal(['icon' => 'key'], 'Change Password', function ($v, $id) {
+        $column->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
             $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
@@ -72,7 +72,7 @@ class UserAdmin extends View
         });
 
         /*
-        $column->addModal(['icon' => 'eye'], 'Details', function ($v, $id, $userEntity) {
+        $column->addModal(['icon' => 'eye'], 'Details', function (View $v, $id, $userEntity) {
             $userEntity = $this->model->load($id);
 
             $c = Columns::addTo($v);

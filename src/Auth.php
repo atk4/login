@@ -20,7 +20,7 @@ use Atk4\Login\Layout\Narrow;
 use Atk4\Login\Model\User;
 use Atk4\Ui\App;
 use Atk4\Ui\Form;
-use Atk4\Ui\Layout\Admin;
+use Atk4\Ui\Layout;
 use Atk4\Ui\VirtualPage;
 
 class Auth
@@ -268,7 +268,7 @@ class Auth
     public function addUserMenu(): void
     {
         // add admin menu
-        if ($this->hasUserMenu && $this->getApp()->layout instanceof Admin) {
+        if ($this->hasUserMenu && $this->getApp()->layout instanceof Layout\Admin) {
             $menu = $this->getApp()->layout->menuRight->addMenu($this->user->getTitle());
 
             if ($this->hasPreferences) {

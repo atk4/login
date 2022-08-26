@@ -6,7 +6,6 @@ namespace Atk4\Login\Form;
 
 use Atk4\Login\Auth;
 use Atk4\Ui\Form;
-use Atk4\Ui\Form\Control;
 use Atk4\Ui\View;
 
 /**
@@ -35,7 +34,7 @@ class Login extends Form
         $this->buttonSave->iconRight = 'right arrow';
 
         $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
-        $p = $this->addControl($this->auth->fieldPassword, [Control\Password::class], ['required' => true]);
+        $p = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
             $p->addAction(['icon' => 'question'])

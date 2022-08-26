@@ -214,8 +214,7 @@ trait PasswordManagementTrait
         if ($length > 2) {
             // consecutive letters and numbers
             foreach (['/[a-z]{2,}/', '/[A-Z]{2,}/', '/[0-9]{2,}/'] as $re) {
-                preg_match_all($re, $pw, $matches, \PREG_SET_ORDER);
-                if (!empty($matches)) {
+                if (preg_match_all($re, $pw, $matches, \PREG_SET_ORDER)) {
                     foreach ($matches as $match) {
                         $score -= (strlen($match[0]) - 1) * 2;
                     }
@@ -262,17 +261,17 @@ trait PasswordManagementTrait
             $charDistance = ord($charNext) - ord($charHere);
             if ($distance === 1 && $charDistance === 1) {
                 // We find a pair of sequential chars!
-                if (empty($sequence)) {
+                if ($sequence === []) {
                     $sequence = [$charHere, $charNext];
                 } else {
                     $sequence[] = $charNext;
                 }
-            } elseif (!empty($sequence)) {
+            } elseif ($sequence !== []) {
                 $sequences[] = $sequence;
                 $sequence = [];
             }
         }
-        if (!empty($sequence)) {
+        if ($sequence !== []) {
             $sequences[] = $sequence;
         }
 
