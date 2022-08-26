@@ -14,7 +14,7 @@ class SendEmailActionTest extends GenericTestCase
         $this->setupDefaultDb();
         $m = $this->createUserModel();
 
-        $this->assertTrue($m->hasUserAction('sendEmail'));
+        static::assertTrue($m->hasUserAction('sendEmail'));
 
         $entity = $m->load(1);
 

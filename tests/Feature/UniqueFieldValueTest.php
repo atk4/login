@@ -44,7 +44,7 @@ class UniqueFieldValueTest extends GenericTestCase
 
         $entity = $m->createEntity();
         $entity->save(['name' => 'Test2']);
-        $this->assertSame(2, count($m->export()));
+        static::assertCount(2, $m->export());
 
         $this->expectException(ValidationException::class);
 
