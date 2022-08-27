@@ -6,6 +6,8 @@ namespace Atk4\Login;
 
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
+use Atk4\Login\Model\AccessRule;
+use Atk4\Login\Model\User;
 
 /**
  * Access Control Layer. Create one and pass it to your Auth controller.
@@ -23,11 +25,11 @@ class Acl
     /**
      * Returns AccessRules model for logged in user and in model scope.
      *
-     * @return \Atk4\Login\Model\AccessRule
+     * @return AccessRule
      */
     public function getRules(Model $model)
     {
-        /** @var \Atk4\Login\Model\User */
+        /** @var User */
         $user = $this->auth->user;
 
         if (!$user->isLoaded()) {
@@ -80,9 +82,7 @@ class Acl
             }
 
             // add conditions on model
-            /*
-             *  this will work in future when we will have json encoded condition structure stored in here
-             *  for now let's comment this out
+            /* this will work in future when we will have json encoded condition structure stored in here
             if ($rule['conditions']) {
                 $this->applyConditions($m, $rule['conditions']);
             }

@@ -6,18 +6,14 @@ namespace Atk4\Login\Form\Control;
 
 use Atk4\Data\Model;
 
-/**
- * Form field to choose one or multiple model actions.
- */
 class Actions extends GenericDropdown
 {
     public function setModel(Model $model, array $fields = null): void
     {
-        // set function for dropdown row rendering
         $this->renderRowFunction = function ($action) {
             return [
                 'value' => $action->shortName,
-                'title' => $action->caption ?: $action->shortName,
+                'title' => $action->caption ?? $action->shortName,
                 'icon' => ($action->ui['icon'] ?? null),
             ];
         };
@@ -25,9 +21,6 @@ class Actions extends GenericDropdown
         parent::setModel($model);
     }
 
-    /**
-     * Renders view.
-     */
     protected function renderView(): void
     {
         $model = $this->getModel();

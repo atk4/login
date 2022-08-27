@@ -8,9 +8,6 @@ use Atk4\Login\Acl;
 use Atk4\Login\Auth;
 use Atk4\Ui\Layout;
 
-/**
- * Example implementation of your Authenticated application.
- */
 class App extends \Atk4\Ui\App
 {
     /** @var Auth */
@@ -24,7 +21,7 @@ class App extends \Atk4\Ui\App
 
         $this->initLayout([Layout\Admin::class]);
 
-        // Construct menu
+        // construct menu
         $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
         $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
@@ -51,7 +48,7 @@ class App extends \Atk4\Ui\App
     {
         $this->auth = new Auth($this, ['check' => $check, 'pageDashboard' => 'index']);
 
-        // Cannot setmodel at this stage :(
+        // cannot set model at this stage :(
         $m = new \Atk4\Login\Model\User($this->db);
         $this->auth->setModel($m);
     }

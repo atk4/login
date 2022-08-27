@@ -6,15 +6,13 @@ namespace Atk4\Login;
 
 use Atk4\Core\DebugTrait;
 use Atk4\Data\Model;
-use Atk4\Login\Model\AccessRule;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Header;
-use Atk4\Ui\Table\Column\ActionButtons;
+use Atk4\Ui\Table;
 use Atk4\Ui\View;
 
 /**
- * View for Role administration.
- * Includes Role association with AccessRule.
+ * View for Role administration. Includes Role association with AccessRule.
  */
 class RoleAdmin extends Crud
 {
@@ -28,7 +26,7 @@ class RoleAdmin extends Crud
         parent::setModel($role);
 
         // Add new table column used for actions
-        $column = $this->table->addColumn(null, [ActionButtons::class, 'caption' => '']);
+        $column = $this->table->addColumn(null, [Table\Column\ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
             $role = $role->load($id);

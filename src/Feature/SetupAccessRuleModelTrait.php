@@ -24,7 +24,6 @@ trait SetupAccessRuleModelTrait
                 // And this new class should be separated to let's say AccessRule/Model class so we can
                 // also have AccessRule/Interface or AccessRule/View or AccessRule/Page class in future
                 // with different config properties
-
             }
         });
         */

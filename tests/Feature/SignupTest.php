@@ -14,18 +14,15 @@ class SignupTest extends GenericTestCase
         $this->setupDefaultDb();
         $m = $this->createUserModel();
 
-        $this->assertTrue($m->hasUserAction('registerNewUser'));
+        static::assertTrue($m->hasUserAction('registerNewUser'));
 
         // as result it makes model loaded (as entity) with new user record
-        $m->createEntity()->executeUserAction(
-            'registerNewUser',
-            [
-                'name' => 'New user',
-                'email' => 'test',
-                'password' => PasswordField::assertInstanceOf($m->getField('password'))->hashPassword('testpass'),
-            ]
-        );
+        $m->createEntity()->executeUserAction('registerNewUser', [
+            'name' => 'New user',
+            'email' => 'test',
+            'password' => PasswordField::assertInstanceOf($m->getField('password'))->hashPassword('testpass'),
+        ]);
 
-        $this->assertSame(1, count((new $m($m->getPersistence()))->addCondition('email', 'test')->export()));
+        static::assertCount(1, (new $m($m->getPersistence()))->addCondition('email', 'test')->export());
     }
 }

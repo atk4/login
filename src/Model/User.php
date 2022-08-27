@@ -11,9 +11,6 @@ use Atk4\Login\Feature\SendEmailActionTrait;
 use Atk4\Login\Feature\SetupUserModelTrait;
 use Atk4\Login\Feature\SignupTrait;
 
-/**
- * Example user data model.
- */
 class User extends Model
 {
     use PasswordManagementTrait;

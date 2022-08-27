@@ -20,27 +20,24 @@ class Register extends Form
     {
         parent::init();
 
-        $form = $this;
-
-        $form->buttonSave->set('Register');
-        $form->buttonSave->addClass('large fluid');
-        $form->buttonSave->iconRight = 'right arrow';
+        $this->buttonSave->set('Register');
+        $this->buttonSave->addClass('large fluid');
+        $this->buttonSave->iconRight = 'right arrow';
     }
 
     public function setModel(Model $user, array $fields = null): void
     {
         parent::setModel($user, []);
 
-        $form = $this;
-        $form->addControl('name', [], ['required' => true]);
-        $form->addControl('email', [], ['required' => true]);
-        $form->addControl('password', [], ['type' => 'string', 'required' => true])
+        $this->addControl('name', [], ['required' => true]);
+        $this->addControl('email', [], ['required' => true]);
+        $this->addControl('password', [], ['type' => 'string', 'required' => true])
             ->setInputAttr('autocomplete', 'new-password');
-        $form->addControl('password2', [], ['type' => 'string', 'neverPersist' => true, 'required' => true, 'caption' => 'Repeat Password'])
+        $this->addControl('password2', [], ['type' => 'string', 'neverPersist' => true, 'required' => true, 'caption' => 'Repeat Password'])
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
-        $form->onSubmit(function ($form) {
+        $this->onSubmit(function ($form) {
             // Look if user already exist?
             $model = $this->model->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->model->get($this->auth->fieldLogin));

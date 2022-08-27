@@ -100,7 +100,7 @@ $c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
     $c->notice('Data imported');
 });
 
-$c1->migrateModels([Role::class, User::class, AccessRule::class, Client::class]);
+$c1->migrateModels([[Role::class], [User::class], [AccessRule::class], [Client::class]]);
 
 // button to execute migration
 $b = Button::addTo($v, ['Run migration', 'icon' => 'check']);
