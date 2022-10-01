@@ -10,7 +10,7 @@ class Actions extends GenericDropdown
 {
     public function setModel(Model $model, array $fields = null): void
     {
-        $this->renderRowFunction = function ($action) {
+        $this->renderRowFunction = function (Model $action) {
             return [
                 'value' => $action->shortName,
                 'title' => $action->caption ?? $action->shortName,

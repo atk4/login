@@ -37,7 +37,7 @@ class Register extends Form
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
-        $this->onSubmit(function ($form) {
+        $this->onSubmit(function (self $form) {
             // Look if user already exist?
             $model = $this->model->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->model->get($this->auth->fieldLogin));

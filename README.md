@@ -39,7 +39,7 @@ Here are all the classes implemented:
 -   RegisterForm - registration form
 -   Auth - authentication controller, verify and record logged state
 -   UserAdmin - UI for user administration
--   Layout\Narrow - SemanticUI-based narrow responsive layout login/registration forms
+-   Layout\Narrow - Fomantic-UI based narrow responsive layout login/registration forms
 -   Templates for forms an messages
 -   Demos for all of the above
 
@@ -104,9 +104,9 @@ Displays email and 2 password fields (for confirmation). If filled successfully 
 
 ``` php
 \Atk4\Login\LoginForm::addTo($app, [
-    'auth'=>$app->auth,
-    //'successLink'=>['dashboard'],
-    //'forgotLink'=>['forgot'],
+    'auth' => $app->auth,
+    // 'successLink' => ['dashboard'],
+    // 'forgotLink' => ['forgot'],
 ]);
 ```
 
@@ -147,8 +147,8 @@ Form::addTo($app)->setModel($app->auth->user);
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
 
 ``` php
-Button::addTo($app, ['Profile', 'class.primary' => true])->on('click', Modal::addTo($app)->set(function ($p) {
-    Form::addTo($p)->setModel($p->app->auth->user);
+Button::addTo($app, ['Profile', 'class.primary' => true])->on('click', Modal::addTo($app)->set(function (View $p) {
+    Form::addTo($p)->setModel($p->getApp()->auth->user);
 })->show());
 ```
 

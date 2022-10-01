@@ -13,11 +13,6 @@ use Atk4\Ui\App;
 
 abstract class GenericTestCase extends BaseTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     protected function tearDown(): void
     {
         \Closure::bind(function () {

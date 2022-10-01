@@ -57,7 +57,7 @@ class Login extends Form
         }
 
         if ($this->auth) {
-            $this->onSubmit(function ($form) use ($linkSuccess) {
+            $this->onSubmit(function (self $form) use ($linkSuccess) {
                 // try to log user in
                 if ($this->auth->tryLogin($form->model->get($this->auth->fieldLogin), $form->model->get($this->auth->fieldPassword))) {
                     return $this->getApp()->jsRedirect($linkSuccess);

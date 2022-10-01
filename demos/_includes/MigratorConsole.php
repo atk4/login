@@ -18,10 +18,7 @@ class MigratorConsole extends Console
     use DynamicMethodTrait;
     use HookTrait;
 
-    /** @const string */
     public const HOOK_BEFORE_MIGRATION = self::class . '@beforeMigration';
-
-    /** @const string */
     public const HOOK_AFTER_MIGRATION = self::class . '@afterMigration';
 
     /** @var class-string */
@@ -35,7 +32,7 @@ class MigratorConsole extends Console
     public function migrateModels(array $models): void
     {
         // run inside callback
-        $this->set(function ($console) use ($models) {
+        $this->set(function (self $console) use ($models) {
             $this->hook(self::HOOK_BEFORE_MIGRATION);
 
             $console->notice('Preparing to migrate models');
