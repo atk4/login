@@ -9,7 +9,7 @@ use Atk4\Data\Model;
 
 class Actions extends GenericDropdown
 {
-    public function setModel(Model $model, array $fields = null): void
+    public function setModel(Model $model): void
     {
         $this->renderRowFunction = function (Field $field) {
             return [
