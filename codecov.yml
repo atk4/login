@@ -1,7 +1,3 @@
-ignore:
-  - src/Behat
-  - docs
-  - tools
 comment: false
 coverage:
   status:
