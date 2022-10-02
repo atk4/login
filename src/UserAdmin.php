@@ -50,13 +50,13 @@ class UserAdmin extends View
 
             $form = Form::addTo($v);
             $f = $form->addControl('visible_password', [], ['required' => true]);
-            // $form->addControl('email_user', [], ['type'=>'boolean', 'caption' => 'Email user their new password']);
+            // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
             $f->addAction(['icon' => 'random'])->on('click', function () use ($f, $userEntity) {
                 return $f->jsInput()->val(PasswordField::assertInstanceOf($userEntity->getField('password'))->generatePassword());
             });
 
-            $form->onSubmit(function ($form) use ($v, $userEntity) {
+            $form->onSubmit(function (Form $form) use ($v, $userEntity) {
                 PasswordField::assertInstanceOf($userEntity->getField('password'))
                     ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();

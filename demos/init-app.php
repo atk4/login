@@ -5,25 +5,29 @@ declare(strict_types=1);
 namespace Atk4\Login\Demos;
 
 use Atk4\Data\Persistence;
+use Atk4\Ui\Behat\CoverageUtil;
+use Atk4\Ui\Exception;
 
 date_default_timezone_set('UTC');
 
 require_once __DIR__ . '/init-autoloader.php';
 
 // collect coverage for HTTP tests 1/2
-if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
-    require_once __DIR__ . '/CoverageUtil.php';
-    \CoverageUtil::start();
+$coverageSaveFx = null;
+if (is_dir(__DIR__ . '/../coverage') && !CoverageUtil::isCalledFromPhpunit()) {
+    CoverageUtil::startFromPhpunitConfig(__DIR__ . '/..');
+    $coverageSaveFx = function (): void {
+        CoverageUtil::saveData(__DIR__ . '/../coverage');
+    };
 }
 
 $app = new App();
 
 // collect coverage for HTTP tests 2/2
-if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
-    $app->onHook(\Atk4\Ui\App::HOOK_BEFORE_EXIT, function () {
-        \CoverageUtil::saveData();
-    });
+if ($coverageSaveFx !== null) {
+    $app->onHook(App::HOOK_BEFORE_EXIT, $coverageSaveFx);
 }
+unset($coverageSaveFx);
 
 try {
     /** @var Persistence\Sql $db */
@@ -31,7 +35,7 @@ try {
     $app->db = $db;
     unset($db);
 } catch (\Throwable $e) {
-    throw new \Atk4\Ui\Exception('Database error: ' . $e->getMessage());
+    throw new Exception('Database error: ' . $e->getMessage());
 }
 
 $app->invokeInit();

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Form\Control;
 
+use Atk4\Data\Field;
 use Atk4\Data\Model;
 
 class Actions extends GenericDropdown
 {
-    public function setModel(Model $model, array $fields = null): void
+    public function setModel(Model $model): void
     {
-        $this->renderRowFunction = function ($action) {
+        $this->renderRowFunction = function (Field $field) {
             return [
-                'value' => $action->shortName,
-                'title' => $action->caption ?? $action->shortName,
-                'icon' => ($action->ui['icon'] ?? null),
+                'value' => $field->shortName,
+                'title' => $field->caption ?? $field->shortName,
+                'icon' => $field->ui['icon'] ?? null,
             ];
         };
 

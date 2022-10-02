@@ -33,10 +33,7 @@ class Auth
     use InitializerTrait;
     use TrackableTrait;
 
-    /** @const string */
     public const HOOK_LOGGED_IN = self::class . '@loggedIn';
-
-    /** @const string */
     public const HOOK_BAD_LOGIN = self::class . '@badLogin';
 
     /**
@@ -142,7 +139,7 @@ class Auth
 
         // update cache after changes saved in user model
         if ($this->cacheEnabled) {
-            $this->user->onHook(Model::HOOK_AFTER_SAVE, function ($m) {
+            $this->user->onHook(Model::HOOK_AFTER_SAVE, function (Model $m) {
                 $this->cache->setData($m->get());
             });
         }
@@ -291,7 +288,7 @@ class Auth
         $f = Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
-        $f->onSubmit(function ($f) {
+        $f->onSubmit(function (Form $f) {
             $f->model->save();
 
             return $f->success('User preferences saved.');

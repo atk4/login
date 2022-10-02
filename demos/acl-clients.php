@@ -9,7 +9,7 @@ use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 
 /** @var App $app */
-include __DIR__ . '/init-app.php';
+require_once __DIR__ . '/init-app.php';
 
 Header::addTo($app, [
     'Client list for ACL testing',

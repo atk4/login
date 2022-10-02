@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Form;
 
+use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Login\Auth;
 use Atk4\Ui\Form;
@@ -37,7 +38,7 @@ class Register extends Form
             ->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
-        $this->onSubmit(function ($form) {
+        $this->onSubmit(function (self $form) {
             // Look if user already exist?
             $model = $this->model->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->model->get($this->auth->fieldLogin));
@@ -46,7 +47,7 @@ class Register extends Form
             }
 
             // check if passwords match
-            if (!$form->model->getField('password')->verifyPassword($form->model, $form->model->get('password2'))) {
+            if (!PasswordField::assertInstanceOf($form->model->getField('password'))->verifyPassword($form->model, $form->model->get('password2'))) {
                 return $form->error('password2', 'Passwords does not match');
             }
 

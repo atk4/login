@@ -9,12 +9,13 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 use Atk4\Ui\Button;
+use Atk4\Ui\Console;
 use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 use Atk4\Ui\View;
 
 /** @var App $app */
-require __DIR__ . '/init-app.php';
+require_once __DIR__ . '/init-app.php';
 
 Header::addTo($app, ['Setup demo database']);
 
@@ -25,7 +26,7 @@ Message::addTo($v, ['type' => 'warning'])->set('Be aware that running this migra
 $c1 = MigratorConsole::addTo($v, ['event' => false]);
 
 // after migration import data
-$c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function ($c) {
+$c1->onHook(MigratorConsole::HOOK_AFTER_MIGRATION, function (Console $c): void {
     $c->notice('Populating data...');
 
     $rule = new AccessRule($c->getApp()->db);

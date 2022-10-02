@@ -9,7 +9,7 @@ use Atk4\Login\RoleAdmin;
 use Atk4\Ui\Header;
 
 /** @var App $app */
-include __DIR__ . '/init-app.php';
+require_once __DIR__ . '/init-app.php';
 
 Header::addTo($app)->set('Roles');
 

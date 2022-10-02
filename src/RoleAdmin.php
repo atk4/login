@@ -7,6 +7,7 @@ namespace Atk4\Login;
 use Atk4\Core\DebugTrait;
 use Atk4\Data\Model;
 use Atk4\Ui\Crud;
+use Atk4\Ui\Form;
 use Atk4\Ui\Header;
 use Atk4\Ui\Table;
 use Atk4\Ui\View;
@@ -35,7 +36,7 @@ class RoleAdmin extends Crud
             $crud = Crud::addTo($v);
             $crud->setModel($role->ref('AccessRules'));
 
-            $crud->onFormAddEdit(function ($f) {
+            $crud->onFormAddEdit(function (Form $f) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
                 $f->setControlsDisplayRules(['visible_fields' => ['all_visible' => 'isNotChecked']]);
                 $f->setControlsDisplayRules(['editable_fields' => ['all_editable' => 'isNotChecked']]);
