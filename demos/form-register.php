@@ -10,7 +10,7 @@ use Atk4\Login\Model\User;
 use Atk4\Ui\Header;
 
 /** @var App $app */
-require __DIR__ . '/init-app.php';
+require_once __DIR__ . '/init-app.php';
 
 $app->html = null;
 $app->initLayout([Narrow::class]);

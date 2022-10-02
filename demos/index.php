@@ -10,7 +10,7 @@ use Atk4\Ui\Message;
 use Atk4\Ui\View;
 
 /** @var App $app */
-require __DIR__ . '/init-app.php';
+require_once __DIR__ . '/init-app.php';
 
 Header::addTo($app, ['Welcome to Auth Add-on demo app']);
 
