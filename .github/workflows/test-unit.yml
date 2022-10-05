@@ -303,7 +303,7 @@ jobs:
         run: |
           cp -r template template.orig
           find template -not -type d -not -name '*.pug' -delete
-          (cd template && pug --silent --pretty .)
+          (cd template && pug --doctype html --pretty --silent .)
           diff -ru template.orig template
           rm -r template.orig
 
