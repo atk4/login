@@ -19,7 +19,7 @@ class PasswordManagementTest extends GenericTestCase
             use PasswordManagementTrait;
         };
         $model = new $class(new Persistence\Array_());
-        static::assertIsString($model->generateRandomPassword(4));
+        static::assertSame(4, strlen($model->generateRandomPassword(4)));
     }
 
     public function testBasic(): void

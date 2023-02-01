@@ -213,7 +213,7 @@ trait PasswordManagementTrait
         }
         if ($length > 2) {
             // consecutive letters and numbers
-            foreach (['/[a-z]{2,}/', '/[A-Z]{2,}/', '/[0-9]{2,}/'] as $re) {
+            foreach (['~[a-z]{2,}~', '~[A-Z]{2,}~', '~[0-9]{2,}~'] as $re) {
                 if (preg_match_all($re, $pw, $matches, \PREG_SET_ORDER)) {
                     foreach ($matches as $match) {
                         $score -= (strlen($match[0]) - 1) * 2;

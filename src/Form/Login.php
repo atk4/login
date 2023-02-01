@@ -44,7 +44,7 @@ class Login extends Form
 
         if ($this->cookieWarning) {
             View::addTo($this, ['element' => 'p'])
-                ->addStyle('font-style', 'italic')
+                ->setStyle('font-style', 'italic')
                 ->set($this->cookieWarning);
         }
 

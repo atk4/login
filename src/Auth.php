@@ -120,7 +120,7 @@ class Auth
     public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
     {
         if ($this->user !== null) {
-            throw new Exception('Model already set');
+            throw new Exception('Model is already set');
         }
 
         $this->user = $model->createEntity();
