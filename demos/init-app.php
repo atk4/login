@@ -38,4 +38,4 @@ try {
     throw new Exception('Database error: ' . $e->getMessage());
 }
 
-$app->invokeInit();
+$app->init();

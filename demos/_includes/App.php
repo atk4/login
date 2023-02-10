@@ -15,10 +15,8 @@ class App extends \Atk4\Ui\App
 
     public $title = 'Demo App';
 
-    protected function init(): void
+    public function init(): void
     {
-        parent::init();
-
         $this->initLayout([Layout\Admin::class]);
 
         // construct menu
