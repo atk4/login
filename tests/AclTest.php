@@ -44,6 +44,9 @@ class AclTest extends GenericTestCase
         return $auth;
     }
 
+    /**
+     * @param \Closure(): void $fx
+     */
     protected function invokeAndAssertAclException(\Closure $fx): void
     {
         $e = null;
