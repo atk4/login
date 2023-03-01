@@ -43,18 +43,18 @@ class Register extends Form
             $model = $this->model->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->model->get($this->auth->fieldLogin));
             if ($entity !== null) {
-                return $form->error($this->auth->fieldLogin, 'User with this email already exist');
+                return $form->jsError($this->auth->fieldLogin, 'User with this email already exist');
             }
 
             // check if passwords match
             if (!PasswordField::assertInstanceOf($form->model->getField('password'))->verifyPassword($form->model, $form->model->get('password2'))) {
-                return $form->error('password2', 'Passwords does not match');
+                return $form->jsError('password2', 'Passwords does not match');
             }
 
             // save user
             $form->model->save();
 
-            return $form->success('Account has been created');
+            return $form->jsSuccess('Account has been created');
         });
     }
 }
