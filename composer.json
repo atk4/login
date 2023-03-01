@@ -33,7 +33,7 @@
     },
     "require-release": {
         "php": ">=7.4 <8.3",
-        "atk4/ui": "~4.0.0"
+        "atk4/ui": "~5.0.0"
     },
     "require-dev": {
         "behat/mink-extension": "^2.3.1",

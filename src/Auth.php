@@ -291,7 +291,7 @@ class Auth
         $f->onSubmit(function (Form $f) {
             $f->model->save();
 
-            return $f->success('User preferences saved.');
+            return $f->jsSuccess('User preferences saved.');
         });
     }
 

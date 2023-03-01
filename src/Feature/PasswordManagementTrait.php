@@ -83,6 +83,8 @@ trait PasswordManagementTrait
      *  - len: 0 (minimum length)
      *  - upper: 0 (minimum upper characters)
      *
+     * @param array<string, mixed> $settings
+     *
      * @return string|null
      */
     public function checkPasswordStrength(string $password, array $settings = ['strength' => 3])
@@ -246,7 +248,9 @@ trait PasswordManagementTrait
      * For example if $charLocs is [0, 2, 3], then only $src[2:3] is a possible
      * substring with sequential chars.
      *
-     * @return array [[c, c, c, c], [a, a, a], ...]
+     * @param list<int> $charLocs
+     *
+     * @return list<list<non-empty-string>> [[c, c, c, c], [a, a, a], ...]
      */
     private function findSequence(array $charLocs, string $src): array
     {
@@ -260,7 +264,7 @@ trait PasswordManagementTrait
             $distance = $next - $here;
             $charDistance = ord($charNext) - ord($charHere);
             if ($distance === 1 && $charDistance === 1) {
-                // We find a pair of sequential chars!
+                // we find a pair of sequential chars
                 if ($sequence === []) {
                     $sequence = [$charHere, $charNext];
                 } else {
