@@ -22,7 +22,7 @@ Button::addTo($v, ['Setup demo SQLite database', 'icon' => 'cogs'])->link(['admi
 // Info
 if ($app->auth->isLoggedIn()) {
     $a = Message::addTo($app, ['type' => 'info'])->set('Currently logged in: ' . $app->auth->user->getTitle());
-    Button::addTo($a, ['Logout', 'icon' => 'sign out'])->link([$app->auth->pageDashboard, 'logout' => true]);
+    Button::addTo($a, ['Logout', 'icon' => 'sign out'])->link([$app->auth->pageDashboard, 'logout' => 1]);
 } else {
     $a = Message::addTo($app, ['type' => 'info'])->set('Currently there is no user logged in');
     Button::addTo($a, ['Login', 'icon' => 'key'])->link(['form-login']);

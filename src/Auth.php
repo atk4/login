@@ -276,7 +276,7 @@ class Auth
                 $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
             }
 
-            $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
+            $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => 1]);
         }
     }
 

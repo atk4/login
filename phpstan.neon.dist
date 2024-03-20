@@ -15,39 +15,27 @@ parameters:
         - '~^Only booleans are allowed in .+, .+ given( on the (left|right) side)?\.~'
 
         # TODO these rules are generated, this ignores should be fixed in the code
-        -
-          message: '~^Access to an undefined property Atk4\\Ui\\Layout::\$menuLeft\.$~'
-          count: 5
-          path: demos/_includes/App.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
-          count: 1
-          path: src/Form/Login.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::setInputAttr\(\)\.$~'
-          count: 2
-          path: src/Form/Register.php
-        -
-          message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
-          count: 1
-          path: src/Model/AccessRule.php
-        -
-          message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
-          count: 1
-          path: src/Model/User.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\Table\\Column::addModal\(\)\.$~'
-          count: 1
-          path: src/RoleAdmin.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\Table\\Column::addModal\(\)\.$~'
-          count: 1
-          path: src/UserAdmin.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
-          count: 1
-          path: src/UserAdmin.php
-        -
-          message: '~^Call to an undefined method Atk4\\Ui\\View::jsHide\(\)\.$~'
-          count: 1
-          path: src/UserAdmin.php
+        #-
+        #  message: '~^Access to an undefined property Atk4\\Ui\\Layout::\$menuLeft\.$~'
+        #  count: 5
+        #  path: demos/_includes/App.php
+        #-
+        #  message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
+        #  count: 1
+        #  path: src/Model/AccessRule.php
+        #-
+        #  message: '~^Call to an undefined method Atk4\\Data\\Reference\\HasOne::addTitle\(\)\.$~'
+        #  count: 1
+        #  path: src/Model/User.php
+        #-
+        #  message: '~^Call to an undefined method Atk4\\Ui\\Table\\Column::addModal\(\)\.$~'
+        #  count: 1
+        #  path: src/UserAdmin.php
+        #-
+        #  message: '~^Call to an undefined method Atk4\\Ui\\Form\\Control::addAction\(\)\.$~'
+        #  count: 1
+        #  path: src/UserAdmin.php
+        #-
+        #  message: '~^Call to an undefined method Atk4\\Ui\\View::jsHide\(\)\.$~'
+        #  count: 1
+        #  path: src/UserAdmin.php
