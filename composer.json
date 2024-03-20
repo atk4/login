@@ -39,6 +39,7 @@
         "atk4/behat-mink-selenium2-driver": "^1.6.2",
         "behat/mink-extension": "^2.3.1",
         "ergebnis/composer-normalize": "^2.13",
+        "ergebnis/phpunit-slow-test-detector": "^2.9",
         "friendsofphp/php-cs-fixer": "^3.0",
         "johnkary/phpunit-speedtrap": "^3.3",
         "phpstan/extension-installer": "^1.1",
