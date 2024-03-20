@@ -10,15 +10,15 @@
         </testsuite>
     </testsuites>
     <extensions>
-        <bootstrap class="Ergebnis\PHPUnit\SlowTestDetector\Extension" />
+        <extension class="Ergebnis\PHPUnit\SlowTestDetector\Extension" />
     </extensions>
-    <source>
-        <include>
-            <directory>src</directory>
-            <directory>tests</directory>
-        </include>
-    </source>
     <coverage>
+        <source>
+            <include>
+                <directory>src</directory>
+                <directory>tests</directory>
+            </include>
+        </source>
         <report>
             <php outputFile="coverage/phpunit.cov" />
         </report>
