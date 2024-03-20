@@ -297,14 +297,11 @@ class Auth
 
     /**
      * Displays only login form in app.
-     *
-     * @return never
      */
     public function displayLoginForm(array $seed = []): void
     {
         $app = $this->getApp();
 
-        $app->catchRunawayCallbacks = false;
         $app->html = null;
         $app->initLayout([Narrow::class]);
         $app->title .= ' - Login Required';

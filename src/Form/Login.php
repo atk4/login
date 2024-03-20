@@ -34,6 +34,8 @@ class Login extends Form
         $this->buttonSave->iconRight = 'right arrow';
 
         $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
+
+        /** @var Form\Control\Password */
         $p = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {

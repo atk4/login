@@ -13,6 +13,7 @@ use Atk4\Ui\Console;
 use Atk4\Ui\Header;
 use Atk4\Ui\Message;
 use Atk4\Ui\View;
+use Atk4\Ui\Js\JsBlock;
 
 /** @var App $app */
 require_once __DIR__ . '/init-app.php';
@@ -106,8 +107,8 @@ $c1->migrateModels([[Role::class], [User::class], [AccessRule::class], [Client::
 // button to execute migration
 $b = Button::addTo($v, ['Run migration', 'icon' => 'check']);
 $b->on('click', function () use ($c1, $b) {
-    return [
+    return new JsBlock([
         $c1->jsExecute(),
         $b->js()->hide(),
-    ];
+    ]);
 });

@@ -29,8 +29,8 @@ class App extends \Atk4\Ui\App
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
         $g = $this->layout->menuLeft->addGroup(['Admin']);
-        $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
-        $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+        $g->addItem(['Users', 'icon' => 'users'], ['admin-users']);
+        $g->addItem(['Roles', 'icon' => 'tasks'], ['admin-roles']);
 
         $g = $this->layout->menuLeft->addGroup(['App demo with ACL']);
         $g->addItem(['Client list (for ACL testing)', 'icon' => 'table'], ['acl-clients']);

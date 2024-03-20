@@ -14,7 +14,7 @@ $app->initLayout([\Atk4\Ui\Layout\Admin::class]);
 $app->db = new \Atk4\Data\Persistence($dsn);
 
 // ADD THIS CODE:
-$app->auth = new \Atk4\Login\Auth();
+$app->auth = new \Atk4\Login\Auth($app);
 $app->auth->setModel(new \Atk4\Login\Model\User($app->db));
 
 // The rest of YOUR UI code will now be protected
@@ -56,7 +56,7 @@ For a more advanced usage, you can either tweak Automated mode or use individual
 When you initialize 'Auth' class you may inject property values:
 
 ```php
-$app->auth = new \Atk4\Login\Auth([
+$app->auth = new \Atk4\Login\Auth($app, [
     'hasPreferences' => false, // do not show Preferences page/form
     'pageDashboard' => 'dashboard', // name of the page, where user arrives after login
     'pageExit' => 'goodbye', // where to send user after logout
@@ -72,7 +72,7 @@ $app->auth->setModel(new User($app->db));
 In the manual mode, no checks will be performed, and you are responsible for authenticating user yourself. This works best if you have a more complex auth logic.
 
 ``` php
-$app->auth = new \Atk4\Login\Auth([
+$app->auth = new \Atk4\Login\Auth($app, [
     'check' => false,
 ]);
 $app->auth->setModel(new User($app->db));

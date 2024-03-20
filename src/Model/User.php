@@ -10,6 +10,7 @@ use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Feature\SendEmailActionTrait;
 use Atk4\Login\Feature\SetupUserModelTrait;
 use Atk4\Login\Feature\SignupTrait;
+use Atk4\Ui\Form\Control\Password;
 
 class User extends Model
 {
@@ -26,8 +27,8 @@ class User extends Model
         parent::init();
 
         $this->addField('name');
-        $this->addField('email');
-        $this->addField('password', [PasswordField::class]);
+        $this->addField('email', ['caption' => 'Email/Login']);
+        $this->addField('password', [PasswordField::class, 'ui' => ['form' => [Password::class]]]);
 
         // currently user can have only one role. In future it should be n:n relation
         $this->hasOne('role_id', ['model' => [Role::class], 'ourField' => 'role_id', 'theirField' => 'id', 'caption' => 'Role'])

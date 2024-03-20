@@ -14,7 +14,7 @@ use Atk4\Ui\Form;
 abstract class GenericDropdown extends Form\Control\Dropdown
 {
     /** @var bool Dropdown with multiselect */
-    public $isMultiple = true;
+    public $multiple = true;
 
     /**
      * Get AccessRule->model and initialize it.
