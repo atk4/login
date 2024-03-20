@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Demos;
 
-use Atk4\Data\Persistence;
 use Atk4\Core\Exception;
+use Atk4\Data\Persistence;
 
 // to use MySQL database:
 //   1. copy this file to "db.php"

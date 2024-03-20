@@ -11,7 +11,7 @@ class Actions extends GenericDropdown
 {
     public function setModel(Model $model): void
     {
-        $this->renderRowFunction = function (Field $field) {
+        $this->renderRowFunction = static function (Field $field) {
             return [
                 'value' => $field->shortName,
                 'title' => $field->caption ?? $field->shortName,

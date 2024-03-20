@@ -7,6 +7,8 @@ namespace Atk4\Login\Demos;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Data\Schema\Migrator;
+use Atk4\Login\Model\Role;
+use Atk4\Login\Model\User;
 
 require_once __DIR__ . '/../init-autoloader.php';
 
@@ -51,9 +53,9 @@ $model->addField('conditions', ['type' => 'boolean']);
 
 (new Migrator($model))->create();
 $model->import([
-    ['id' => 1, 'role_id' => 1, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-    ['id' => 2, 'role_id' => 2, 'model' => \Atk4\Login\Model\User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-    ['id' => 3, 'role_id' => 2, 'model' => \Atk4\Login\Model\Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+    ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => 1, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
 ]);
 
 $model = new Model($db, ['table' => 'demo_client']);

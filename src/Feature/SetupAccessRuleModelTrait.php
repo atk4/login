@@ -38,7 +38,7 @@ trait SetupAccessRuleModelTrait
         $this->getField('conditions')->type = 'text';
 
         // cleanup data
-        $this->onHook(Model::HOOK_BEFORE_SAVE, function (self $m) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, static function (self $m) {
             if ($m->get('all_visible')) {
                 $m->setNull('visible_fields');
             }
