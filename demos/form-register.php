@@ -16,6 +16,6 @@ $app->html = null;
 $app->initLayout([Narrow::class]);
 Header::addTo($app, ['New user sign-up form']);
 
-$f = Form\Register::addTo($app, ['auth' => $app->auth, /*'linkSuccess' => ['index']*/]);
+$f = Form\Register::addTo($app, ['auth' => $app->auth/* , 'linkSuccess' => ['index']*/]);
 $m = new User($app->db);
 $f->setModel($m->createEntity());
