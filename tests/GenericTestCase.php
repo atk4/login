@@ -86,9 +86,9 @@ abstract class GenericTestCase extends BaseTestCase
                 ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O' /* admin */, 'role_id' => 2],
             ],
             self::getTableByModelClass(AccessRule::class) => [
-                ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => 'vat_number,active', 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => 0, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
-                ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => 1, 'editable_fields' => null, 'all_actions' => 1, 'actions' => null, 'conditions' => null],
+                ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => false, 'editable_fields' => 'vat_number,active', 'all_actions' => true, 'actions' => null, 'conditions' => null],
+                ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => false, 'editable_fields' => null, 'all_actions' => true, 'actions' => null, 'conditions' => null],
+                ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => true, 'editable_fields' => null, 'all_actions' => true, 'actions' => null, 'conditions' => null],
             ],
         ]);
     }
