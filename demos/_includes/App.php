@@ -16,7 +16,6 @@ class App extends \Atk4\Ui\App
 
     public $title = 'Demo App';
 
-    #[\Override]
     public function init(): void
     {
         $this->initLayout([Layout\Admin::class]);
