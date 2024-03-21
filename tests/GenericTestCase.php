@@ -10,6 +10,7 @@ use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\Role;
 use Atk4\Login\Model\User;
 use Atk4\Ui\App;
+use Atk4\Ui\Tests\CreateAppTrait;
 
 abstract class GenericTestCase extends BaseTestCase
 {

@@ -62,7 +62,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Atk4\\Login\\Tests\\": "tests/"
+            "Atk4\\Login\\Tests\\": "tests/",
+            "Atk4\\Ui\\Tests\\": "vendor/atk4/ui/tests/"
         }
     },
     "config": {
