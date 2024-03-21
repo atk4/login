@@ -18,12 +18,21 @@ class AccessRule extends Model
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
 
+    /** @var array<mixed> Default Role model. */
+    protected array $_roleModelSeed = [Role::class];
+
+    #[\Override]
     protected function init(): void
     {
         parent::init();
 
         /** @var HasOneSql */
-        $r = $this->hasOne('role_id', ['model' => [Role::class], 'ourField' => 'role_id', 'theirField' => 'id', 'caption' => 'Role']);
+        $r = $this->hasOne('role_id', [
+            'model' => Model::fromSeed($this->_roleModelSeed),
+            'ourField' => 'role_id',
+            'theirField' => 'id',
+            'caption' => 'Role',
+        ]);
         $r->addTitle();
 
         $this->addField('model'); // model class name

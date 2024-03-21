@@ -9,6 +9,7 @@ use Atk4\Data\Model;
 
 class Actions extends GenericDropdown
 {
+    #[\Override]
     public function setModel(Model $model): void
     {
         $this->renderRowFunction = static function (Field $field) {
@@ -22,6 +23,7 @@ class Actions extends GenericDropdown
         parent::setModel($model);
     }
 
+    #[\Override]
     protected function renderView(): void
     {
         $model = $this->getModel();

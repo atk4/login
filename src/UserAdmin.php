@@ -25,6 +25,7 @@ class UserAdmin extends View
     /** @var Crud */
     public $crud;
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -35,6 +36,7 @@ class UserAdmin extends View
     /**
      * Initialize User Admin and add all the UI pieces.
      */
+    #[\Override]
     public function setModel(Model $user): void
     {
         // $user->getUserAction('registerNewUser')->system = true;

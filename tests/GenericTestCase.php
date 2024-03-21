@@ -25,6 +25,7 @@ abstract class GenericTestCase extends BaseTestCase
         AccessRule::class => 'login_access_rule',
     ];
 
+    #[\Override]
     protected function tearDown(): void
     {
         \Closure::bind(static function () {

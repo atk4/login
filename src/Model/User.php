@@ -23,6 +23,10 @@ class User extends Model
     public $table = 'login_user';
     public $caption = 'User';
 
+    /** @var array<mixed> Default Role model. */
+    protected array $_roleModelSeed = [Role::class];
+
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -33,7 +37,12 @@ class User extends Model
 
         // currently user can have only one role. In future it should be n:n relation
         /** @var HasOneSql */
-        $r = $this->hasOne('role_id', ['model' => [Role::class], 'ourField' => 'role_id', 'theirField' => 'id', 'caption' => 'Role']);
+        $r = $this->hasOne('role_id', [
+            'model' => Model::fromSeed($this->_roleModelSeed),
+            'ourField' => 'role_id',
+            'theirField' => 'id',
+            'caption' => 'Role',
+        ]);
         $r->addTitle();
 
         $this->setupUserModel();
