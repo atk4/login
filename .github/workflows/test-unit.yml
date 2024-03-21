@@ -47,24 +47,20 @@ jobs:
       - name: Install PHP dependencies
         run: |
           if [ "${{ matrix.type }}" != "Phpunit" ] && [ "${{ matrix.type }}" != "StaticAnalysis" ]; then composer remove --no-interaction --no-update phpunit/phpunit ergebnis/phpunit-slow-test-detector --dev; fi
-          if [ "${{ matrix.type }}" != "CodingStyle" ]; then composer remove --no-interaction --no-update friendsofphp/php-cs-fixer ergebnis/composer-normalize --dev && composer --no-interaction --no-update require jdorn/sql-formatter; fi
-          if [ "${{ matrix.type }}" != "StaticAnalysis" ]; then composer remove --no-interaction --no-update phpstan/\* --dev; fi
+          if [ "${{ matrix.type }}" != "CodingStyle" ]; then composer remove --no-interaction --no-update friendsofphp/php-cs-fixer ergebnis/composer-normalize --dev; fi
+          if [ "${{ matrix.type }}" != "StaticAnalysis" ]; then composer remove --no-interaction --no-update phpstan/\* behat/\* --dev; fi
           composer update --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
       - name: "Run tests: SQLite (only for Phpunit)"
         if: startsWith(matrix.type, 'Phpunit')
         run: |
+          php demos/_demo-data/create-db.php
           vendor/bin/phpunit --exclude-group none --no-coverage --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-
-      - name: "Run tests: SQLite Hintable (only for Phpunit)"
-        if: matrix.type == 'Phpunit'
-        run: |
-          sed -i 's~"psr-4": {~"psr-4": { "Mvorisek\\\\Atk4\\\\Hintable\\\\Tests\\\\": "vendor/mvorisek/atk4-hintable/tests/",~' composer.json && composer dump
-          vendor/bin/phpunit --configuration vendor/mvorisek/atk4-hintable/phpunit.xml.dist --bootstrap vendor/autoload.php --no-coverage --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
 
       - name: Check Coding Style (only for CodingStyle)
         if: matrix.type == 'CodingStyle'
         run: |
+          if [ "$(find demos/ -name '*.php' -print0 | xargs -0 grep -L "namespace Atk4\\\\Login\\\\Demos[;\\\\]" | tee /dev/fd/2)" ]; then echo 'All demos/ files must have namespace declared' && (exit 1); fi
           vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --diff --verbose
           composer config --unset version && composer config --unset require-release
           composer validate --strict --no-check-lock && composer normalize --dry-run --no-check-lock
@@ -94,14 +90,11 @@ jobs:
       mysql:
         image: mysql
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=atk4_pass_root -e MYSQL_USER=atk4_test_user -e MYSQL_PASSWORD=atk4_pass -e MYSQL_DATABASE=atk4_test
-      mysql56:
-        image: mysql:5.6
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=atk4_pass_root -e MYSQL_USER=atk4_test_user -e MYSQL_PASSWORD=atk4_pass -e MYSQL_DATABASE=atk4_test
       mariadb:
         image: mariadb
         options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=atk4_pass_root -e MYSQL_USER=atk4_test_user -e MYSQL_PASSWORD=atk4_pass -e MYSQL_DATABASE=atk4_test
       postgres:
-        image: postgres:12-alpine
+        image: postgres:alpine
         env:
           POSTGRES_USER: atk4_test_user
           POSTGRES_PASSWORD: atk4_pass
@@ -141,17 +134,16 @@ jobs:
       - name: Install PHP dependencies
         run: |
           if [ "${{ matrix.type }}" != "Phpunit" ] && [ "${{ matrix.type }}" != "Phpunit Lowest" ] && [ "${{ matrix.type }}" != "Phpunit Burn" ]; then composer remove --no-interaction --no-update phpunit/phpunit ergebnis/phpunit-slow-test-detector --dev; fi
-          if [ "${{ matrix.type }}" != "CodingStyle" ]; then composer remove --no-interaction --no-update friendsofphp/php-cs-fixer ergebnis/composer-normalize --dev && composer --no-update --ansi --prefer-dist --no-interaction --no-progress require jdorn/sql-formatter; fi
-          if [ "${{ matrix.type }}" != "StaticAnalysis" ]; then composer remove --no-interaction --no-update phpstan/\* --dev; fi
+          if [ "${{ matrix.type }}" != "CodingStyle" ]; then composer remove --no-interaction --no-update friendsofphp/php-cs-fixer ergebnis/composer-normalize --dev; fi
+          if [ "${{ matrix.type }}" != "StaticAnalysis" ]; then composer remove --no-interaction --no-update phpstan/\* behat/\* --dev; fi
           if [ -n "$LOG_COVERAGE" ]; then composer require --no-interaction --no-install phpunit/phpcov; fi
           composer update --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
           if [ "${{ matrix.type }}" = "Phpunit Lowest" ]; then composer update --ansi --prefer-dist --prefer-lowest --prefer-stable --no-interaction --no-progress --optimize-autoloader; fi
-          if [ "${{ matrix.type }}" = "Phpunit Burn" ]; then sed -i 's~public function runBare(): void~public function runBare(): void { gc_collect_cycles(); $memDiffs = array_fill(0, '"$(if [ \"$GITHUB_EVENT_NAME\" == \"schedule\" ]; then echo 64; else echo 4; fi)"', 0); $emitter = Event\\Facade::emitter(); for ($i = -1; $i < count($memDiffs); ++$i) { $this->_runBare(); if ($this->inIsolation) { $dispatcher = \\Closure::bind(static fn () => $emitter->dispatcher, null, Event\\DispatchingEmitter::class)(); if ($i === -1) { $dispatcherEvents = $dispatcher->flush()->asArray(); } else { $dispatcher->flush(); } foreach ($dispatcherEvents as $event) { $dispatcher->dispatch($event); } } gc_collect_cycles(); $mem = memory_get_usage(); if ($i !== -1) { $memDiffs[$i] = $mem - $memPrev; } $memPrev = $mem; rsort($memDiffs); if (array_sum($memDiffs) >= 4096 * 1024 || $memDiffs[2] > 0) { $e = new AssertionFailedError("Memory leak detected! (" . implode(" + ", array_map(static fn ($v) => number_format($v / 1024, 3, ".", " "), array_filter($memDiffs))) . " KB, " . ($i + 2) . " iterations)"); $this->status = TestStatus::failure($e->getMessage()); $emitter->testFailed($this->valueObjectForEvents(), Event\\Code\\ThrowableBuilder::from($e), Event\\Code\\ComparisonFailureBuilder::from($e)); $this->onNotSuccessfulTest($e); } } } private function _runBare(): void~' vendor/phpunit/phpunit/src/Framework/TestCase.php && cat vendor/phpunit/phpunit/src/Framework/TestCase.php | grep '_runBare('; fi
+          if [ "${{ matrix.type }}" = "Phpunit Burn" ]; then sed -i 's~public function runBare(): void~public function runBare(): void { gc_collect_cycles(); $memDiffs = array_fill(0, '"$(if [ \"$GITHUB_EVENT_NAME\" == \"schedule\" ]; then echo 64; else echo 16; fi)"', 0); $emitter = Event\\Facade::emitter(); for ($i = -1; $i < count($memDiffs); ++$i) { $this->_runBare(); if ($this->inIsolation) { $dispatcher = \\Closure::bind(static fn () => $emitter->dispatcher, null, Event\\DispatchingEmitter::class)(); if ($i === -1) { $dispatcherEvents = $dispatcher->flush()->asArray(); } else { $dispatcher->flush(); } foreach ($dispatcherEvents as $event) { $dispatcher->dispatch($event); } } gc_collect_cycles(); $mem = memory_get_usage(); if ($i !== -1) { $memDiffs[$i] = $mem - $memPrev; } $memPrev = $mem; rsort($memDiffs); if (array_sum($memDiffs) >= 4096 * 1024 || $memDiffs[2] > 0) { $e = new AssertionFailedError("Memory leak detected! (" . implode(" + ", array_map(static fn ($v) => number_format($v / 1024, 3, ".", " "), array_filter($memDiffs))) . " KB, " . ($i + 2) . " iterations)"); $this->status = TestStatus::failure($e->getMessage()); $emitter->testFailed($this->valueObjectForEvents(), Event\\Code\\ThrowableBuilder::from($e), Event\\Code\\ComparisonFailureBuilder::from($e)); $this->onNotSuccessfulTest($e); } } } private function _runBare(): void~' vendor/phpunit/phpunit/src/Framework/TestCase.php && cat vendor/phpunit/phpunit/src/Framework/TestCase.php | grep '_runBare('; fi
 
       - name: Init
         run: |
           php -r '(new PDO("mysql:host=mysql", "root", "atk4_pass_root"))->exec("ALTER USER '"'"'atk4_test_user'"'"'@'"'"'%'"'"' WITH MAX_USER_CONNECTIONS 5");'
-          php -r '(new PDO("mysql:host=mysql56", "root", "atk4_pass_root"))->exec("GRANT USAGE ON *.* TO '"'"'atk4_test_user'"'"'@'"'"'%'"'"' WITH MAX_USER_CONNECTIONS 5");'
           php -r '(new PDO("mysql:host=mariadb", "root", "atk4_pass_root"))->exec("ALTER USER '"'"'atk4_test_user'"'"'@'"'"'%'"'"' WITH MAX_USER_CONNECTIONS 5");'
           php -r '(new PDO("pgsql:host=postgres;dbname=atk4_test", "atk4_test_user", "atk4_pass"))->exec("ALTER ROLE atk4_test_user CONNECTION LIMIT 1");'
           /usr/lib/oracle/setup.sh
@@ -162,49 +154,15 @@ jobs:
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-sqlite.cov; fi
 
-      - name: "Run tests: SQLite 3.25.3"
-        run: |
-          apk add sqlite-dev=3.25.3-r0 --repository=https://dl-cdn.alpinelinux.org/alpine/v3.6/main
-          php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-sqlite325.cov; fi
-
-      # remove once SQLite v3.46.0 or higher is available in stable Alpine release
-      # TODO https://github.com/atk4/data/blob/df7dbb9136/tests/ScopeTest.php#L334
-      - name: "Run tests: SQLite edge"
-        run: |
-          apk add 'sqlite-dev>3.45' --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main
-          php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-sqlite-edge.cov; fi
-
-      - name: "Run tests: MySQL - PDO"
+      - name: "Run tests: MySQL"
         if: success() || failure()
         env:
-          DB_DSN: "pdo_mysql:host=mysql;dbname=atk4_test"
+          DB_DSN: "mysql:host=mysql;dbname=atk4_test"
           DB_USER: atk4_test_user
           DB_PASSWORD: atk4_pass
         run: |
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mysql-pdo.cov; fi
-
-      - name: "Run tests: MySQL - mysqli"
-        if: success() || failure()
-        env:
-          DB_DSN: "mysqli:host=mysql;dbname=atk4_test"
-          DB_USER: atk4_test_user
-          DB_PASSWORD: atk4_pass
-        run: |
-          php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mysql-mysqli.cov; fi
-
-      - name: "Run tests: MySQL 5.6"
-        if: success() || failure()
-        env:
-          DB_DSN: "mysql:host=mysql56;dbname=atk4_test"
-          DB_USER: atk4_test_user
-          DB_PASSWORD: atk4_pass
-        run: |
-          php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mysql56.cov; fi
+          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mysql.cov; fi
 
       - name: "Run tests: MariaDB"
         if: success() || failure()
@@ -236,35 +194,24 @@ jobs:
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mssql.cov; fi
 
-      - name: "Run tests: Oracle - PDO (only for coverage or cron)"
-        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
+      - name: "Run tests: Oracle (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
         env:
-          DB_DSN: "pdo_oci:dbname=oracle/free"
+          DB_DSN: "oci:dbname=oracle/free"
           DB_USER: system
           DB_PASSWORD: atk4_pass
           NLS_LANG: AMERICAN_AMERICA.AL32UTF8
         run: |
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-oracle-pdo.cov; fi
+          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-oracle.cov; fi
 
-      - name: "Run tests: Oracle - OCI8"
-        if: success() || failure()
-        env:
-          DB_DSN: "oci8:dbname=oracle/free"
-          DB_USER: system
-          DB_PASSWORD: atk4_pass
-          NLS_LANG: AMERICAN_AMERICA.AL32UTF8
-        run: |
-          php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
-          if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-oracle-oci8.cov; fi
-
-      - name: Upload coverage logs 1/2 (only for coverage)
+      - name: Upload coverage logs 1/2 (only for latest Phpunit)
         if: env.LOG_COVERAGE
         run: |
           ls -l coverage | wc -l
           php -d memory_limit=2G vendor/bin/phpcov merge coverage/ --clover coverage/merged.xml
 
-      - name: Upload coverage logs 2/2 (only for coverage)
+      - name: Upload coverage logs 2/2 (only for latest Phpunit)
         if: env.LOG_COVERAGE
         uses: codecov/codecov-action@v3
         with:
