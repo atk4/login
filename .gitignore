@@ -6,7 +6,6 @@
 nbproject
 .vscode
 .DS_Store
-.cmd
 
 local
 *.local
@@ -14,6 +13,7 @@ local
 cache
 *.cache
 *.cache.*
+*.cmd
 
 /demos/db.php
 /demos/_demo-data/db.sqlite
