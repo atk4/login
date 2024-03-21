@@ -218,3 +218,183 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           files: coverage/merged.xml
+          
+  behat-test:
+    name: Behat
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mvorisek/image-php:${{ matrix.php }}-selenium
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2']
+        type: ['Chrome', 'Chrome Lowest']
+        include:
+          - php: 'latest'
+            type: 'Firefox'
+          - php: 'latest'
+            type: 'Chrome Slow'
+    env:
+      LOG_COVERAGE: "${{ fromJSON('{true: \"1\", false: \"\"}')[matrix.php == '8.0' && matrix.type == 'Chrome' && (github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')))] }}"
+    services:
+      mysql:
+        image: mysql:8
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=atk4_pass_root -e MYSQL_USER=atk4_test_user -e MYSQL_PASSWORD=atk4_pass -e MYSQL_DATABASE=atk4_test --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+      mariadb:
+        image: mariadb
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=atk4_pass_root -e MYSQL_USER=atk4_test_user -e MYSQL_PASSWORD=atk4_pass -e MYSQL_DATABASE=atk4_test
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: atk4_test_user
+          POSTGRES_PASSWORD: atk4_pass
+          POSTGRES_DB: atk4_test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mssql:
+        image: mcr.microsoft.com/mssql/server
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: atk4_pass
+      oracle:
+        image: gvenzl/oracle-xe:18-slim-faststart
+        env:
+          ORACLE_PASSWORD: atk4_pass
+        options: --health-cmd healthcheck.sh --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure PHP
+        run: |
+          if [ -n "$LOG_COVERAGE" ]; then echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; else rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; fi
+          php --version
+
+      - name: Setup cache 1/2
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup cache 2/2
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-behat-${{ matrix.php }}-${{ matrix.type }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install JS dependencies (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          npm install --loglevel=error -g pug-cli
+
+      - name: Build/diff HTML files (only for Slow)
+        if: matrix.type == 'Chrome Slow'
+        run: |
+          cp -r template template.orig
+          find template -not -type d -not -name '*.pug' -delete
+          (cd template && pug --doctype html --pretty --silent .)
+          diff -ru template.orig template
+          rm -r template.orig
+
+      - name: Install PHP dependencies
+        run: |
+          composer remove --no-interaction --no-update phpunit/phpunit johnkary/phpunit-speedtrap --dev
+          composer remove --no-interaction --no-update friendsofphp/php-cs-fixer --dev
+          composer remove --no-interaction --no-update phpstan/\* --dev
+          if [ -n "$LOG_COVERAGE" ]; then composer require --no-interaction --no-update phpunit/phpcov; fi
+          composer update --ansi --prefer-dist --no-interaction --no-progress --optimize-autoloader
+          if [ "${{ matrix.type }}" = "Chrome Lowest" ]; then composer update --ansi --prefer-dist --prefer-lowest --prefer-stable --no-interaction --no-progress --optimize-autoloader; fi
+
+      - name: Init
+        run: |
+          php -r '(new PDO("mysql:host=mysql", "root", "atk4_pass_root"))->exec("ALTER USER '"'"'atk4_test_user'"'"'@'"'"'%'"'"' WITH MAX_USER_CONNECTIONS 5");'
+          php -r '(new PDO("mysql:host=mariadb", "root", "atk4_pass_root"))->exec("ALTER USER '"'"'atk4_test_user'"'"'@'"'"'%'"'"' WITH MAX_USER_CONNECTIONS 5");'
+          php -r '(new PDO("pgsql:host=postgres;dbname=atk4_test", "atk4_test_user", "atk4_pass"))->exec("ALTER ROLE atk4_test_user CONNECTION LIMIT 1");'
+          /usr/lib/oracle/setup.sh
+          if [ -n "$LOG_COVERAGE" ]; then mkdir coverage; fi
+          ci_wait_until () { timeout 30 sh -c "until { $1 2> /dev/null; }; do sleep 0.02; done" || timeout 15 sh -c "$1" || { echo "health timeout: $1"; exit 1; }; }
+          php -S 127.0.0.1:8888 > /dev/null 2>&1 &
+          ci_wait_until 'nc -w 1 127.0.0.1 8888'
+          if [ -f /etc/alpine-release ]; then addgroup browser && adduser browser -G browser -D -s /bin/sh; else adduser browser --gecos "" --disabled-login -shell /bin/sh > /dev/null; fi
+          { Xvfb -ac :99 -screen 0 1920x1200x24 2> /dev/null & } && export DISPLAY=:99
+          ci_wait_until '[ -e /tmp/.X11-unix/X99 ]'
+          su browser -c 'java -Dwebdriver.chrome.whitelistedIps=127.0.0.1 -jar /opt/selenium-server-standalone.jar -role standalone -host 127.0.0.1 -port 4444 -sessionTimeout 15 -browserTimeout 12 > /dev/null 2>&1 &'
+          ci_wait_until 'nc -w 1 127.0.0.1 4444'
+          if [ "${{ matrix.type }}" = "Firefox" ]; then sed -i "s~chrome~firefox~" behat.yml.dist; fi
+          if [ "${{ matrix.type }}" = "Chrome Slow" ]; then echo 'sleep(1);' >> demos/init-app.php; fi
+
+      - name: "Run tests: SQLite"
+        run: |
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: "Run tests: MySQL (only for coverage or cron)"
+        if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
+        env:
+          DB_DSN: "mysql:host=mysql;dbname=atk4_test"
+          DB_USER: atk4_test_user
+          DB_PASSWORD: atk4_pass
+        run: |
+          sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: "Run tests: MariaDB (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
+        env:
+          DB_DSN: "mysql:host=mariadb;dbname=atk4_test"
+          DB_USER: atk4_test_user
+          DB_PASSWORD: atk4_pass
+        run: |
+          sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: "Run tests: PostgreSQL (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
+        env:
+          DB_DSN: "pgsql:host=postgres;dbname=atk4_test"
+          DB_USER: atk4_test_user
+          DB_PASSWORD: atk4_pass
+        run: |
+          sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: "Run tests: MSSQL (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
+        env:
+          DB_DSN: "sqlsrv:host=mssql;dbname=master;driverOptions[TrustServerCertificate]=1"
+          DB_USER: sa
+          DB_PASSWORD: atk4_pass
+        run: |
+          sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: "Run tests: Oracle (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
+        env:
+          DB_DSN: "oci:dbname=oracle/xe"
+          DB_USER: system
+          DB_PASSWORD: atk4_pass
+          NLS_LANG: AMERICAN_AMERICA.AL32UTF8
+        run: |
+          sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
+          php demos/_demo-data/create-db.php
+          vendor/bin/behat -vv --config behat.yml.dist
+
+      - name: Upload coverage logs 1/2 (only for coverage)
+        if: env.LOG_COVERAGE
+        run: |
+          ls -l coverage | wc -l
+          php -d memory_limit=2G vendor/bin/phpcov merge coverage/ --clover coverage/merged.xml
+
+      - name: Upload coverage logs 2/2 (only for coverage)
+        if: env.LOG_COVERAGE
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          files: coverage/merged.xml,coverage/js/clover.xml
+  
