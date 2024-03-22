@@ -25,6 +25,7 @@ class Login extends Form
     /** @var string|false show cookie warning? */
     public $cookieWarning = 'This website uses web cookie to remember you while you are logged in.';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -34,6 +35,8 @@ class Login extends Form
         $this->buttonSave->iconRight = 'right arrow';
 
         $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
+
+        /** @var Form\Control\Password */
         $p = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {

@@ -13,6 +13,7 @@ use Atk4\Ui\App;
 
 abstract class GenericTestCase extends BaseTestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         \Closure::bind(static function () {

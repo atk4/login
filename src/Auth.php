@@ -297,8 +297,6 @@ class Auth
 
     /**
      * Displays only login form in app.
-     *
-     * @return never
      */
     public function displayLoginForm(array $seed = []): void
     {

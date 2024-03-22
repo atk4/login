@@ -17,11 +17,17 @@ class AccessRule extends Model
     public $table = 'login_access_rule';
     public $caption = 'Access Rule';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
 
-        $this->hasOne('role_id', ['model' => [Role::class], 'ourField' => 'role_id', 'theirField' => 'id', 'caption' => 'Role'])
+        $this->hasOne('role_id', [
+                'model' => [Role::class],
+                'ourField' => 'role_id',
+                'theirField' => 'id',
+                'caption' => 'Role',
+            ])
             ->addTitle();
 
         $this->addField('model'); // model class name

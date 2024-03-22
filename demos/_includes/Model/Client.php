@@ -11,6 +11,7 @@ class Client extends Model
     public $table = 'demo_client';
     public $caption = 'Client';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

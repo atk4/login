@@ -11,6 +11,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class UniqueFieldValueTest extends GenericTestCase
 {
+    #[\Override]
     protected function setupDefaultDb(): void
     {
         $this->setDb([

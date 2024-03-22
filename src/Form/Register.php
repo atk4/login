@@ -17,6 +17,7 @@ class Register extends Form
     /** @var Auth object */
     public $auth;
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -26,6 +27,7 @@ class Register extends Form
         $this->buttonSave->iconRight = 'right arrow';
     }
 
+    #[\Override]
     public function setModel(Model $user, array $fields = null): void
     {
         parent::setModel($user, []);

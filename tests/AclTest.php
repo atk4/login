@@ -10,6 +10,7 @@ use Atk4\Login\Auth;
 
 class AclTest extends GenericTestCase
 {
+    #[\Override]
     protected function setupDefaultDb(): void
     {
         parent::setupDefaultDb();
@@ -101,6 +102,7 @@ class AclTestClient extends Model
 {
     public $table = 'unit_client';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -122,6 +124,7 @@ class AclTestClient2 extends Model implements AclTestInterface
 {
     public $table = 'unit_client';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

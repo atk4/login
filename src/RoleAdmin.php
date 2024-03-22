@@ -22,6 +22,7 @@ class RoleAdmin extends Crud
     /**
      * Initialize User Admin and add all the UI pieces.
      */
+    #[\Override]
     public function setModel(Model $role, array $fields = null): void
     {
         parent::setModel($role);
