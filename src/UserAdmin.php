@@ -11,7 +11,8 @@ use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
 use Atk4\Ui\Js\JsBlock;
 use Atk4\Ui\Js\JsToast;
-use Atk4\Ui\Table;
+use Atk4\Ui\Modal;
+use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
 
 /**
@@ -45,13 +46,16 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
-        $column = $this->crud->table->addColumn(null, [Table\Column\ActionButtons::class, 'caption' => '']);
+        /** @var Column\ActionButtons */
+        $column = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
         $column->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
             $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
+
+            /** @var Form\Control\Input */
             $f = $form->addControl('visible_password', [], ['required' => true]);
             // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
@@ -64,8 +68,11 @@ class UserAdmin extends View
                     ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();
 
+                /** @var Modal */
+                $modal = $v->getOwner();
+
                 return new JsBlock([
-                    $v->getOwner()->jsHide(),
+                    $modal->jsHide(),
                     new JsToast([
                         'message' => 'Password for ' . $userEntity->get($userEntity->titleField) . ' is changed!',
                         'class' => 'success',
