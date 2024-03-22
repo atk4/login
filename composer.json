@@ -33,7 +33,7 @@
     },
     "require-release": {
         "php": ">=7.4 <8.4",
-        "atk4/ui": "~5.1.0"
+        "atk4/ui": "~5.0.0"
     },
     "require-dev": {
         "atk4/behat-mink-selenium2-driver": "^1.6.2",
