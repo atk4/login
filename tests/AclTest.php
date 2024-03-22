@@ -37,7 +37,7 @@ class AclTest extends GenericTestCase
 
         $auth->setModel($this->createUserModel());
         $auth->tryLogin($user, $user === 'admin' ? 'admin' : 'user');
-        static::assertTrue($auth->isLoggedIn());
+        self::assertTrue($auth->isLoggedIn());
 
         $auth->setAcl(new Acl(), $this->db);
 
@@ -55,7 +55,7 @@ class AclTest extends GenericTestCase
         } catch (\Exception $e) {
         }
 
-        static::assertInstanceOf(\Atk4\Core\Exception::class, $e); // TODO should be specific ACL exception
+        self::assertInstanceOf(\Atk4\Core\Exception::class, $e); // TODO should be specific ACL exception
     }
 
     public function testAclBasic(): void
@@ -66,28 +66,28 @@ class AclTest extends GenericTestCase
 
         // "user" user can edit client.vat_number field
         $clientEntity = (new AclTestClient($this->db))->load(1);
-        static::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
+        self::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
         $clientEntity->save([$clientEntity->fieldName()->vat_number => 'new']);
-        static::assertSame($clientEntity->vat_number, 'new');
+        self::assertSame($clientEntity->vat_number, 'new');
 
         // but not client.balance field
-        static::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
+        self::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
         $clientEntity = (new AclTestClient($this->db))->load(1);
-//        // TODO ACL currently work on UI level only, reject edit on data model layer
-//        $this->invokeAndAssertAclException(function () use ($clientEntity) {
-//            $clientEntity->save([$clientEntity->fieldName()->balance => 100]);
-//        });
-//        static::assertSame($clientEntity->balance, 1234.56);
+        //        // TODO ACL currently work on UI level only, reject edit on data model layer
+        //        $this->invokeAndAssertAclException(function () use ($clientEntity) {
+        //            $clientEntity->save([$clientEntity->fieldName()->balance => 100]);
+        //        });
+        //        static::assertSame($clientEntity->balance, 1234.56);
 
         // must also match parent classes
         $clientEntity = (new class($this->db) extends AclTestClient {})->load(1);
-        static::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
-        static::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
+        self::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
+        self::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
 
         // and interfaces
         $clientEntity = (new AclTestClient2($this->db))->load(1);
-        static::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
-        static::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
+        self::assertTrue($clientEntity->getField($clientEntity->fieldName()->vat_number)->isEditable());
+        self::assertFalse($clientEntity->getField($clientEntity->fieldName()->balance)->isEditable());
     }
 }
 
@@ -112,9 +112,7 @@ class AclTestClient extends Model
     }
 }
 
-interface AclTestInterface
-{
-}
+interface AclTestInterface {}
 
 /**
  * @property string $vat_number @Atk4\Field()

@@ -14,12 +14,12 @@ class SendEmailActionTest extends GenericTestCase
         $this->setupDefaultDb();
         $m = $this->createUserModel();
 
-        static::assertTrue($m->hasUserAction('sendEmail'));
+        self::assertTrue($m->hasUserAction('sendEmail'));
 
         $entity = $m->load(1);
 
         // replace callback so we can catch it
-        $entity->getUserAction('sendEmail')->callback = function () {
+        $entity->getUserAction('sendEmail')->callback = static function () {
             $args = func_get_args();
             static::assertInstanceOf(User::class, $args[0]);
             static::assertSame('Email subject', $args[1]);

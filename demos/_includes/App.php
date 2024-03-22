@@ -6,6 +6,7 @@ namespace Atk4\Login\Demos;
 
 use Atk4\Login\Acl;
 use Atk4\Login\Auth;
+use Atk4\Login\Model\User;
 use Atk4\Ui\Layout;
 
 class App extends \Atk4\Ui\App
@@ -47,7 +48,7 @@ class App extends \Atk4\Ui\App
         $this->auth = new Auth($this, ['check' => $check, 'pageDashboard' => 'index']);
 
         // cannot set model at this stage :(
-        $m = new \Atk4\Login\Model\User($this->db);
+        $m = new User($this->db);
         $this->auth->setModel($m);
     }
 
