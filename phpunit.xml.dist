@@ -9,14 +9,16 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <listeners>
-        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
-    </listeners>
-    <coverage>
+    <extensions>
+        <bootstrap class="Ergebnis\PHPUnit\SlowTestDetector\Extension" />
+    </extensions>
+    <source>
         <include>
             <directory>src</directory>
             <directory>tests</directory>
         </include>
+    </source>
+    <coverage>
         <report>
             <php outputFile="coverage/phpunit.cov" />
         </report>

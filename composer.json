@@ -39,7 +39,7 @@
         "atk4/behat-mink-selenium2-driver": "^1.6.2",
         "behat/mink-extension": "^2.3.1",
         "ergebnis/composer-normalize": "^2.13",
-        "johnkary/phpunit-speedtrap": "^3.3",
+        "ergebnis/phpunit-slow-test-detector": "^2.9",
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
@@ -62,7 +62,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Atk4\\Login\\Tests\\": "tests/"
+            "Atk4\\Login\\Tests\\": "tests/",
+            "Atk4\\Ui\\Tests\\": "vendor/atk4/ui/tests/"
         }
     },
     "config": {
