@@ -16,27 +16,27 @@ class App extends \Atk4\Ui\App
 
     public $title = 'Demo App';
 
+    /** @var Layout\Admin */
+    public $layout; // @phpstan-ignore-line
+
     public function init(): void
     {
         $this->initLayout([Layout\Admin::class]);
 
-        /** @var Layout\Admin $layout */
-        $layout = $this->layout;
-
         // construct menu
-        $layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
-        $layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
+        $this->layout->menuLeft->addItem(['Dashboard', 'icon' => 'info'], ['index']);
+        $this->layout->menuLeft->addItem(['Setup demo database', 'icon' => 'cogs'], ['admin-setup']);
 
-        $g = $layout->menuLeft->addGroup(['Forms']);
+        $g = $this->layout->menuLeft->addGroup(['Forms']);
         $g->addItem(['Sign-up form', 'icon' => 'edit'], ['form-register']);
         $g->addItem(['Login form', 'icon' => 'edit'], ['form-login']);
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
-        $g = $layout->menuLeft->addGroup(['Admin']);
+        $g = $this->layout->menuLeft->addGroup(['Admin']);
         $g->addItem(['Users', 'icon' => 'users'], ['admin-users']);
         $g->addItem(['Roles', 'icon' => 'tasks'], ['admin-roles']);
 
-        $g = $layout->menuLeft->addGroup(['App demo with ACL']);
+        $g = $this->layout->menuLeft->addGroup(['App demo with ACL']);
         $g->addItem(['Client list (for ACL testing)', 'icon' => 'table'], ['acl-clients']);
 
         $this->initAuth(false);
