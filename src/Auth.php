@@ -63,7 +63,7 @@ class Auth
     public $cacheEnabled = true;
 
     /** @var array Cache class to use. */
-    public $cacheClass = [Cache\Session::class];
+    public $cacheClass = [Session::class];
 
     /** @var array Options for cache class. */
     public $cacheOptions = [];
@@ -237,7 +237,7 @@ class Auth
         $acl->auth = $this;
         $acl->applyRestrictions($this->user);
 
-        $persistence->onHook(Persistence::HOOK_AFTER_ADD, function (Persistence $p, Model $m) use ($acl) {
+        $persistence->onHook(Persistence::HOOK_AFTER_ADD, static function (Persistence $p, Model $m) use ($acl) {
             $acl->applyRestrictions($m);
         });
 
@@ -288,7 +288,7 @@ class Auth
         $f = Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
-        $f->onSubmit(function (Form $f) {
+        $f->onSubmit(static function (Form $f) {
             $f->model->save();
 
             return $f->jsSuccess('User preferences saved.');
@@ -297,8 +297,6 @@ class Auth
 
     /**
      * Displays only login form in app.
-     *
-     * @return never
      */
     public function displayLoginForm(array $seed = []): void
     {

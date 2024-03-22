@@ -9,9 +9,10 @@ use Atk4\Data\Model;
 
 class Fields extends GenericDropdown
 {
+    #[\Override]
     public function setModel(Model $model): void
     {
-        $this->renderRowFunction = function (Field $field) {
+        $this->renderRowFunction = static function (Field $field) {
             return [
                 'value' => $field->shortName,
                 'title' => $field->getCaption(),
@@ -22,6 +23,7 @@ class Fields extends GenericDropdown
         parent::setModel($model);
     }
 
+    #[\Override]
     protected function renderView(): void
     {
         $model = $this->getModel();

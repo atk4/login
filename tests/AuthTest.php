@@ -13,23 +13,23 @@ class AuthTest extends GenericTestCase
         $this->setupDefaultDb();
 
         $u = $this->createUserModel();
-        static::assertCount(2, $u->export());
+        self::assertCount(2, $u->export());
 
         $r = $this->createRoleModel();
-        static::assertCount(2, $r->export());
+        self::assertCount(2, $r->export());
 
         $a = $this->createAccessRuleModel();
-        static::assertCount(3, $a->export());
+        self::assertCount(3, $a->export());
 
         // password field should not be visible in UI by default
-        static::assertFalse($u->getField('password')->isVisible());
+        self::assertFalse($u->getField('password')->isVisible());
 
         // test traversal
-        static::assertCount(2, (clone $u)->load(2)->ref('AccessRules')->export());
-        static::assertSame(2, (clone $u)->load(2)->ref('role_id')->getId());
-        static::assertCount(2, (clone $r)->load(2)->ref('AccessRules')->export());
-        static::assertCount(1, (clone $r)->load(2)->ref('Users')->export());
-        static::assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
+        self::assertCount(2, (clone $u)->load(2)->ref('AccessRules')->export());
+        self::assertSame(2, (clone $u)->load(2)->ref('role_id')->getId());
+        self::assertCount(2, (clone $r)->load(2)->ref('AccessRules')->export());
+        self::assertCount(1, (clone $r)->load(2)->ref('Users')->export());
+        self::assertSame(2, (clone $a)->load(2)->ref('role_id')->getId());
     }
 
     public function _testAuth(bool $cacheEnabled): void
@@ -48,48 +48,48 @@ class AuthTest extends GenericTestCase
 
         // test Auth without automatic check to avoid UI involvement (login form, user menu etc)
         $auth = $createAuthFx();
-        static::assertFalse($auth->isLoggedIn());
+        self::assertFalse($auth->isLoggedIn());
 
         // wrong login
         $ok = $auth->tryLogin('admin', 'wrong');
-        static::assertFalse($ok);
-        static::assertFalse($auth->isLoggedIn());
+        self::assertFalse($ok);
+        self::assertFalse($auth->isLoggedIn());
 
         // correct login
         $ok = $auth->tryLogin('admin', 'admin');
-        static::assertTrue($ok);
-        static::assertTrue($auth->isLoggedIn());
+        self::assertTrue($ok);
+        self::assertTrue($auth->isLoggedIn());
 
         // logout
         $auth->logout();
-        static::assertFalse($auth->isLoggedIn());
+        self::assertFalse($auth->isLoggedIn());
 
         // now login again, try to change some property, save and check if it's changed in actual DB
         $auth = $createAuthFx();
 
         $auth->tryLogin('user', 'user');
-        static::assertTrue($auth->isLoggedIn());
-        static::assertSame('user', $auth->user->get($auth->fieldLogin));
+        self::assertTrue($auth->isLoggedIn());
+        self::assertSame('user', $auth->user->get($auth->fieldLogin));
         $auth->user->set('name', 'Test User');
-        static::assertSame('Test User', $auth->user->get('name'));
+        self::assertSame('Test User', $auth->user->get('name'));
         $auth->user->save();
-        static::assertSame('Test User', $auth->user->get('name'));
+        self::assertSame('Test User', $auth->user->get('name'));
 
         $auth = $createAuthFx();
         $auth->tryLogin('user', 'user');
-        static::assertTrue($auth->isLoggedIn());
-        static::assertSame('user', $auth->user->get($auth->fieldLogin));
-        static::assertSame('Test User', $auth->user->get('name'));
+        self::assertTrue($auth->isLoggedIn());
+        self::assertSame('user', $auth->user->get($auth->fieldLogin));
+        self::assertSame('Test User', $auth->user->get('name'));
 
         // now create new Auth object, set model and see if it will pick up
         // last logged user from cache
         if ($cacheEnabled) {
             $auth = $createAuthFx();
-            static::assertTrue($auth->isLoggedIn());
-            static::assertSame('user', $auth->user->get($auth->fieldLogin));
-            static::assertSame('Test User', $auth->user->get('name'));
+            self::assertTrue($auth->isLoggedIn());
+            self::assertSame('user', $auth->user->get($auth->fieldLogin));
+            self::assertSame('Test User', $auth->user->get('name'));
 
-            $createAuthWithShortExpireTimeFx = function () use ($createAuthFx) {
+            $createAuthWithShortExpireTimeFx = static function () use ($createAuthFx) {
                 return $createAuthFx([
                     'cacheOptions' => ['expireTime' => 0.05], // 50 milliseconds
                 ]);
@@ -99,12 +99,12 @@ class AuthTest extends GenericTestCase
             $auth->tryLogin('admin', 'admin'); // saves in cache and set timer
 
             $auth = $createAuthWithShortExpireTimeFx();
-            static::assertTrue($auth->isLoggedIn());
+            self::assertTrue($auth->isLoggedIn());
 
             // now sleep more than expireTime (cache should expire) and try again
             usleep(60_000);
             $auth = $createAuthWithShortExpireTimeFx();
-            static::assertFalse($auth->isLoggedIn());
+            self::assertFalse($auth->isLoggedIn());
         }
     }
 
@@ -125,12 +125,12 @@ class AuthTest extends GenericTestCase
         $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), 'name', null);
         $auth->tryLogin('admin', 'admin'); // there is no "name" = 'admin'
-        static::assertFalse($auth->isLoggedIn());
+        self::assertFalse($auth->isLoggedIn());
 
         $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), 'name', null);
         $auth->tryLogin('Administrator', 'admin');
-        static::assertTrue($auth->isLoggedIn());
+        self::assertTrue($auth->isLoggedIn());
 
         $auth = new Auth($this->createAppForSession(), ['check' => false]);
         $auth->setModel($this->createUserModel(), null, 'name');

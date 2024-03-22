@@ -11,6 +11,7 @@ use Atk4\Login\Tests\GenericTestCase;
 
 class UniqueFieldValueTest extends GenericTestCase
 {
+    #[\Override]
     protected function setupDefaultDb(): void
     {
         $this->setDb([
@@ -44,7 +45,7 @@ class UniqueFieldValueTest extends GenericTestCase
 
         $entity = $m->createEntity();
         $entity->save(['name' => 'Test2']);
-        static::assertCount(2, $m->export());
+        self::assertCount(2, $m->export());
 
         $this->expectException(ValidationException::class);
 

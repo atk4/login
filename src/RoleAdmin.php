@@ -22,6 +22,7 @@ class RoleAdmin extends Crud
     /**
      * Initialize User Admin and add all the UI pieces.
      */
+    #[\Override]
     public function setModel(Model $role, array $fields = null): void
     {
         parent::setModel($role);
@@ -29,14 +30,14 @@ class RoleAdmin extends Crud
         // Add new table column used for actions
         $column = $this->table->addColumn(null, [Table\Column\ActionButtons::class, 'caption' => '']);
 
-        $column->addModal(['icon' => 'cogs'], 'Role Permissions', function (View $v, $id) use ($role) {
+        $column->addModal(['icon' => 'cogs'], 'Role Permissions', static function (View $v, $id) use ($role) {
             $role = $role->load($id);
             Header::addTo($v, [$role->getTitle() . ' Permissions']);
 
             $crud = Crud::addTo($v);
             $crud->setModel($role->ref('AccessRules'));
 
-            $crud->onFormAddEdit(function (Form $f) {
+            $crud->onFormAddEdit(static function (Form $f) {
                 // @todo - these lines below don't work. One reason is that there is no rule isNotChecked :) but still not sure it works
                 $f->setControlsDisplayRules(['visible_fields' => ['all_visible' => 'isNotChecked']]);
                 $f->setControlsDisplayRules(['editable_fields' => ['all_editable' => 'isNotChecked']]);

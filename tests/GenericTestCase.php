@@ -13,9 +13,10 @@ use Atk4\Ui\App;
 
 abstract class GenericTestCase extends BaseTestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
-        \Closure::bind(function () {
+        \Closure::bind(static function () {
             App\SessionManager::$readCache = null;
         }, null, App\SessionManager::class)();
 

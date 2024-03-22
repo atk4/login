@@ -6,6 +6,7 @@ namespace Atk4\Login\Demos;
 
 use Atk4\Login\Acl;
 use Atk4\Login\Auth;
+use Atk4\Login\Model\User;
 use Atk4\Ui\Layout;
 
 class App extends \Atk4\Ui\App
@@ -29,8 +30,8 @@ class App extends \Atk4\Ui\App
         $g->addItem(['Forgot password form', 'icon' => 'edit'], ['form-forgot']);
 
         $g = $this->layout->menuLeft->addGroup(['Admin']);
-        $g->addItem(['User Admin', 'icon' => 'users'], ['admin-users']);
-        $g->addItem(['Role Admin', 'icon' => 'tasks'], ['admin-roles']);
+        $g->addItem(['Users', 'icon' => 'users'], ['admin-users']);
+        $g->addItem(['Roles', 'icon' => 'tasks'], ['admin-roles']);
 
         $g = $this->layout->menuLeft->addGroup(['App demo with ACL']);
         $g->addItem(['Client list (for ACL testing)', 'icon' => 'table'], ['acl-clients']);
@@ -47,7 +48,7 @@ class App extends \Atk4\Ui\App
         $this->auth = new Auth($this, ['check' => $check, 'pageDashboard' => 'index']);
 
         // cannot set model at this stage :(
-        $m = new \Atk4\Login\Model\User($this->db);
+        $m = new User($this->db);
         $this->auth->setModel($m);
     }
 

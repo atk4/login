@@ -14,14 +14,23 @@ class Role extends Model
     public $table = 'login_role';
     public $caption = 'Role';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
 
         $this->addField('name');
 
-        $this->hasMany('Users', ['model' => [User::class], 'ourField' => 'id', 'theirField' => 'role_id']);
-        $this->hasMany('AccessRules', ['model' => [AccessRule::class], 'ourField' => 'id', 'theirField' => 'role_id']);
+        $this->hasMany('Users', [
+            'model' => [User::class],
+            'ourField' => 'id',
+            'theirField' => 'role_id',
+        ]);
+        $this->hasMany('AccessRules', [
+            'model' => [AccessRule::class],
+            'ourField' => 'id',
+            'theirField' => 'role_id',
+        ]);
 
         $this->setupRoleModel();
     }

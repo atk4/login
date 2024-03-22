@@ -33,10 +33,8 @@ class Session // implements CacheInterface
 
     /**
      * Return cache key.
-     *
-     * @return mixed
      */
-    public function getKey()
+    public function getKey(): string
     {
         return static::class . ':' . ($this->key ?? $this->name);
     }

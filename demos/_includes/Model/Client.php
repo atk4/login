@@ -11,6 +11,7 @@ class Client extends Model
     public $table = 'demo_client';
     public $caption = 'Client';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -21,7 +22,7 @@ class Client extends Model
         $this->addField('active', ['type' => 'boolean', 'default' => true]);
 
         // custom action
-        $this->addUserAction('test', function (self $m) {
+        $this->addUserAction('test', static function (self $m) {
             return 'Test action run for ' . $m->getTitle() . ' !';
         });
     }
