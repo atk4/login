@@ -6,9 +6,9 @@ namespace Atk4\Login\Tests;
 
 use Atk4\Data\Model;
 use Atk4\Data\Schema\TestCase as BaseTestCase;
-use Atk4\Login\Model\AccessRule;
-use Atk4\Login\Model\Role;
-use Atk4\Login\Model\User;
+use Atk4\Login\Tests\Model\TestAccessRule as AccessRule;
+use Atk4\Login\Tests\Model\TestRole as Role;
+use Atk4\Login\Tests\Model\TestUser as User;
 use Atk4\Ui\App;
 use Atk4\Ui\Tests\CreateAppTrait;
 
@@ -75,8 +75,8 @@ abstract class GenericTestCase extends BaseTestCase
                 ['id' => 2, 'name' => 'Admin Role'],
             ],
             self::getTableByStandardModelClass(User::class) => [
-                ['id' => 1, 'name' => 'Standard User', 'email' => 'user', 'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy' /* user */, 'role_id' => 1],
-                ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O' /* admin */, 'role_id' => 2],
+                ['id' => 1, 'name' => 'Standard User', 'email' => 'user', 'password' => '$2y$10$BwEhcP8f15yOexf077VTHOnySn/mit49ZhpfeBkORQhrsmHr4U6Qy' /* user */, 'role_id' => 1, 'last_login' => null],
+                ['id' => 2, 'name' => 'Administrator', 'email' => 'admin', 'password' => '$2y$10$p34ciRcg9GZyxukkLIaEnenGBao79fTFa4tFSrl7FvqrxnmEGlD4O' /* admin */, 'role_id' => 2, 'last_login' => null],
             ],
             self::getTableByStandardModelClass(AccessRule::class) => [
                 ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => false, 'editable_fields' => 'vat_number,active', 'all_actions' => true, 'actions' => null, 'conditions' => null],
@@ -95,9 +95,10 @@ abstract class GenericTestCase extends BaseTestCase
         ][$modelClass];
     }
 
+    /*
     public static function replaceTableAndModelsInRefs(Model $model): void
     {
-        $model->table = self::getTableByStandardModelClass(get_parent_class($model)); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/4302
+        $model->table = self::getTableByStandardModelClass(get_parent_class($model)); // @xxxphpstan-ignore-line https://github.com/phpstan/phpstan/issues/4302
         foreach ($model->getReferences() as $k => $r) {
             if ($r->model instanceof \Closure) {
                 if ($model instanceof User && $k === 'AccessRules') { // safe Closure, reference is build using ->ref()
@@ -108,9 +109,12 @@ abstract class GenericTestCase extends BaseTestCase
             $r->model[0] = self::getClassByStandardModelClass($r->model[0]);
         }
     }
+    */
 
     private static function getClassByStandardModelClass(string $modelClass): string
     {
+        return $modelClass;
+        /*
         return get_class(([
             Role::class => function () {
                 return new class() extends Role {
@@ -149,6 +153,7 @@ abstract class GenericTestCase extends BaseTestCase
                 };
             },
         ][$modelClass])());
+        */
     }
 
     private function createModelByStandardModelClass(string $modelClass): Model

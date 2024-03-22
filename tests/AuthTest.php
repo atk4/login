@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login\Tests;
 
 use Atk4\Login\Auth;
+use Atk4\Login\Tests\Model\TestUser as User;
 
 class AuthTest extends GenericTestCase
 {
@@ -137,5 +138,30 @@ class AuthTest extends GenericTestCase
 
         $this->expectException(\Exception::class);
         $auth->tryLogin('admin', 'admin'); // wrong password field
+    }
+
+    public function testCustomUserModel(): void
+    {
+        $this->setupDefaultDb();
+
+        $auth = new Auth($this->createAppForSession(), ['check' => false]);
+        $auth->onHook(Auth::HOOK_LOGGED_IN, function(Auth $self, User $m) {
+            $m->save(['last_login' => new \Datetime()]);
+        });
+
+        $auth->setModel($this->createUserModel());
+        $auth->tryLogin('admin', 'admin');
+        self::assertTrue($auth->isLoggedIn());
+
+        // last login time is set
+        $t1 = $auth->user->get('last_login');
+        self::assertInstanceOf('DateTime', $t1);
+
+        // sleep a bit and try again, time changes
+        usleep(60_000);
+        $auth->tryLogin('admin', 'admin');
+        $t2 = $auth->user->get('last_login');
+        self::assertInstanceOf('DateTime', $t2);
+        self::assertNotSame($t1, $t2);
     }
 }
