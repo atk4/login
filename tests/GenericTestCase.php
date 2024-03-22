@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Tests;
 
-use Atk4\Data\Model;
 use Atk4\Data\Schema\TestCase as BaseTestCase;
 use Atk4\Login\Tests\Model\TestAccessRule as AccessRule;
 use Atk4\Login\Tests\Model\TestRole as Role;
@@ -95,86 +94,18 @@ abstract class GenericTestCase extends BaseTestCase
         ][$modelClass];
     }
 
-    /*
-    public static function replaceTableAndModelsInRefs(Model $model): void
-    {
-        $model->table = self::getTableByStandardModelClass(get_parent_class($model)); // @xxxphpstan-ignore-line https://github.com/phpstan/phpstan/issues/4302
-        foreach ($model->getReferences() as $k => $r) {
-            if ($r->model instanceof \Closure) {
-                if ($model instanceof User && $k === 'AccessRules') { // safe Closure, reference is build using ->ref()
-                    continue;
-                }
-            }
-
-            $r->model[0] = self::getClassByStandardModelClass($r->model[0]);
-        }
-    }
-    */
-
-    private static function getClassByStandardModelClass(string $modelClass): string
-    {
-        return $modelClass;
-        /*
-        return get_class(([
-            Role::class => function () {
-                return new class() extends Role {
-                    public $table = '';
-
-                    protected function init(): void
-                    {
-                        parent::init();
-
-                        GenericTestCase::replaceTableAndModelsInRefs($this);
-                    }
-                };
-            },
-            User::class => function () {
-                return new class() extends User {
-                    public $table = '';
-
-                    protected function init(): void
-                    {
-                        parent::init();
-
-                        GenericTestCase::replaceTableAndModelsInRefs($this);
-                    }
-                };
-            },
-            AccessRule::class => function () {
-                return new class() extends AccessRule {
-                    public $table = '';
-
-                    protected function init(): void
-                    {
-                        parent::init();
-
-                        GenericTestCase::replaceTableAndModelsInRefs($this);
-                    }
-                };
-            },
-        ][$modelClass])());
-        */
-    }
-
-    private function createModelByStandardModelClass(string $modelClass): Model
-    {
-        $class = self::getClassByStandardModelClass($modelClass);
-
-        return new $class($this->db);
-    }
-
     protected function createRoleModel(): Role
     {
-        return $this->createModelByStandardModelClass(Role::class); // @phpstan-ignore-line
+        return new Role($this->db);
     }
 
     protected function createUserModel(): User
     {
-        return $this->createModelByStandardModelClass(User::class); // @phpstan-ignore-line
+        return new User($this->db);
     }
 
     protected function createAccessRuleModel(): AccessRule
     {
-        return $this->createModelByStandardModelClass(AccessRule::class); // @phpstan-ignore-line
+        return new AccessRule($this->db);
     }
 }

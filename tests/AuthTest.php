@@ -145,8 +145,8 @@ class AuthTest extends GenericTestCase
         $this->setupDefaultDb();
 
         $auth = new Auth($this->createAppForSession(), ['check' => false]);
-        $auth->onHook(Auth::HOOK_LOGGED_IN, function(Auth $self, User $m) {
-            $m->save(['last_login' => new \Datetime()]);
+        $auth->onHook(Auth::HOOK_LOGGED_IN, static function (Auth $self, User $m) {
+            $m->save(['last_login' => new \DateTime()]);
         });
 
         $auth->setModel($this->createUserModel());

@@ -8,7 +8,7 @@ use Atk4\Login\Model\User;
 
 class TestUser extends User
 {
-	public $table = 'unit_user';
+    public $table = 'unit_user';
     protected array $_roleModelSeed = [TestRole::class];
 
     #[\Override]
