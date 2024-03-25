@@ -16,6 +16,9 @@ class App extends \Atk4\Ui\App
 
     public $title = 'Demo App';
 
+    /** @var Layout\Admin */
+    public $layout; // @phpstan-ignore-line
+
     public function init(): void
     {
         $this->initLayout([Layout\Admin::class]);

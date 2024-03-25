@@ -9,7 +9,7 @@ use Atk4\Data\Model;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
 use Atk4\Ui\Header;
-use Atk4\Ui\Table;
+use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
 
 /**
@@ -28,7 +28,8 @@ class RoleAdmin extends Crud
         parent::setModel($role);
 
         // Add new table column used for actions
-        $column = $this->table->addColumn(null, [Table\Column\ActionButtons::class, 'caption' => '']);
+        /** @var Column\ActionButtons */
+        $column = $this->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         $column->addModal(['icon' => 'cogs'], 'Role Permissions', static function (View $v, $id) use ($role) {
             $role = $role->load($id);

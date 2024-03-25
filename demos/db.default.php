@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Login\Demos;
 
+use Atk4\Core\Exception;
 use Atk4\Data\Persistence;
 
 // to use MySQL database:
@@ -14,7 +15,7 @@ use Atk4\Data\Persistence;
 
 $sqliteFile = __DIR__ . '/_demo-data/db.sqlite';
 if (!file_exists($sqliteFile)) {
-    throw new \Exception('Sqlite database does not exist, create it first');
+    throw new Exception('Sqlite database does not exist, create it first. Call _demo-data/create-db.php file from console.');
 }
 $db = new Persistence\Sql('sqlite:' . $sqliteFile);
 unset($sqliteFile);

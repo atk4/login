@@ -8,13 +8,17 @@ use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Login\Auth;
 use Atk4\Ui\Form;
+use Atk4\Ui\Form\Control;
 
 /**
  * Register form view.
  */
 class Register extends Form
 {
-    /** @var Auth object */
+    /** @var array Page to redirect after succesful creating of user */
+    public $linkSuccess = [null];
+
+    /** @var Auth|null object */
     public $auth;
 
     #[\Override]
@@ -25,6 +29,12 @@ class Register extends Form
         $this->buttonSave->set('Register');
         $this->buttonSave->addClass('large fluid');
         $this->buttonSave->iconRight = 'right arrow';
+
+        if ($this->linkSuccess !== [null]) {
+            $this->onHook(self::HOOK_DISPLAY_SUCCESS, function () {
+                return $this->getApp()->jsRedirect($this->linkSuccess);
+            });
+        }
     }
 
     #[\Override]
@@ -34,10 +44,14 @@ class Register extends Form
 
         $this->addControl('name', [], ['required' => true]);
         $this->addControl('email', [], ['required' => true]);
-        $this->addControl('password', [], ['type' => 'string', 'required' => true])
-            ->setInputAttr('autocomplete', 'new-password');
-        $this->addControl('password2', [], ['type' => 'string', 'neverPersist' => true, 'required' => true, 'caption' => 'Repeat Password'])
-            ->setInputAttr('autocomplete', 'new-password');
+
+        /** @var Control\Input */
+        $p1 = $this->addControl('password', [Control\Password::class], ['type' => 'string', 'required' => true]);
+        $p1->setInputAttr('autocomplete', 'new-password');
+
+        /** @var Control\Input */
+        $p2 = $this->addControl('password2', [Control\Password::class], ['type' => 'string', 'neverPersist' => true, 'required' => true, 'caption' => 'Repeat Password']);
+        $p2->setInputAttr('autocomplete', 'new-password');
 
         // on form submit save new user in persistence
         $this->onSubmit(function (self $form) {

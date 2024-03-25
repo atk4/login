@@ -276,7 +276,7 @@ class Auth
                 $menu->addItem(['Preferences', 'icon' => 'user'], $userPage->getUrl());
             }
 
-            $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => true]);
+            $menu->addItem(['Logout', 'icon' => 'sign out'], [$this->pageDashboard, 'logout' => 1]);
         }
     }
 
@@ -302,7 +302,6 @@ class Auth
     {
         $app = $this->getApp();
 
-        $app->catchRunawayCallbacks = false;
         $app->html = null;
         $app->initLayout([Narrow::class]);
         $app->title .= ' - Login Required';
