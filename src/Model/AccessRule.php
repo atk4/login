@@ -19,7 +19,7 @@ class AccessRule extends Model
     public $caption = 'Access Rule';
 
     /** @var array<mixed> Default Role model. */
-    protected array $_roleModelSeed = [Role::class];
+    protected array $roleModelSeed = [Role::class];
 
     #[\Override]
     protected function init(): void
@@ -28,7 +28,7 @@ class AccessRule extends Model
 
         /** @var HasOneSql */
         $r = $this->hasOne('role_id', [
-            'model' => Model::fromSeed($this->_roleModelSeed),
+            'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
             'theirField' => 'id',
             'caption' => 'Role',

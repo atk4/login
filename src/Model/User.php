@@ -24,7 +24,7 @@ class User extends Model
     public $caption = 'User';
 
     /** @var array<mixed> Default Role model. */
-    protected array $_roleModelSeed = [Role::class];
+    protected array $roleModelSeed = [Role::class];
 
     #[\Override]
     protected function init(): void
@@ -38,7 +38,7 @@ class User extends Model
         // currently user can have only one role. In future it should be n:n relation
         /** @var HasOneSql */
         $r = $this->hasOne('role_id', [
-            'model' => Model::fromSeed($this->_roleModelSeed),
+            'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
             'theirField' => 'id',
             'caption' => 'Role',

@@ -15,10 +15,10 @@ class Role extends Model
     public $caption = 'Role';
 
     /** @var array<mixed> Default User model. */
-    protected array $_userModelSeed = [User::class];
+    protected array $userModelSeed = [User::class];
 
     /** @var array<mixed> Default AccessRule model. */
-    protected array $_accessRuleModelSeed = [AccessRule::class];
+    protected array $accessRuleModelSeed = [AccessRule::class];
 
     #[\Override]
     protected function init(): void
@@ -28,12 +28,12 @@ class Role extends Model
         $this->addField('name');
 
         $this->hasMany('Users', [
-            'model' => Model::fromSeed($this->_userModelSeed),
+            'model' => $this->userModelSeed,
             'ourField' => 'id',
             'theirField' => 'role_id',
         ]);
         $this->hasMany('AccessRules', [
-            'model' => Model::fromSeed($this->_accessRuleModelSeed),
+            'model' => $this->accessRuleModelSeed,
             'ourField' => 'id',
             'theirField' => 'role_id',
         ]);

@@ -29,7 +29,7 @@
     "homepage": "https://github.com/atk4/login",
     "require": {
         "php": ">=7.4 <8.4",
-        "atk4/ui": "dev-develop"
+        "atk4/ui": "~5.0.0"
     },
     "require-release": {
         "php": ">=7.4 <8.4",
@@ -62,9 +62,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Atk4\\Login\\Tests\\": "tests/",
-            "Atk4\\Ui\\Tests\\": "vendor/atk4/ui/tests/"
-        }
+            "Atk4\\Login\\Tests\\": "tests/"
+        },
+        "files": ["vendor/atk4/ui/tests/CreateAppTrait.php"]
     },
     "config": {
         "allow-plugins": {
