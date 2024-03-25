@@ -9,5 +9,5 @@ use Atk4\Login\Model\AccessRule;
 class TestAccessRule extends AccessRule
 {
     public $table = 'unit_access_rule';
-    protected array $_roleModelSeed = [TestRole::class];
+    protected array $roleModelSeed = [TestRole::class];
 }
