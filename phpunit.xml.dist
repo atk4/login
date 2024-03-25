@@ -19,6 +19,10 @@
         </include>
     </source>
     <coverage>
+        <include>
+            <directory>src</directory>
+            <directory>tests</directory>
+        </include>
         <report>
             <php outputFile="coverage/phpunit.cov" />
         </report>
