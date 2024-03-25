@@ -38,7 +38,7 @@ class User extends Model
         // currently user can have only one role. In future it should be n:n relation
         /** @var HasOneSql */
         $r = $this->hasOne('role_id', [
-            'model' => $this->_roleModelSeed,
+            'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
             'theirField' => 'id',
             'caption' => 'Role',

@@ -62,9 +62,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Atk4\\Login\\Tests\\": "tests/",
-            "Atk4\\Ui\\Tests\\": "vendor/atk4/ui/tests/"
-        }
+            "Atk4\\Login\\Tests\\": "tests/"
+        },
+        "files": [
+            "vendor/atk4/ui/tests/CreateAppTrait.php"
+        ]
     },
     "config": {
         "allow-plugins": {
