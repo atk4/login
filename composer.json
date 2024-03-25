@@ -29,7 +29,7 @@
     "homepage": "https://github.com/atk4/login",
     "require": {
         "php": ">=7.4 <8.4",
-        "atk4/ui": "~5.0.0"
+        "atk4/ui": "dev-develop"
     },
     "require-release": {
         "php": ">=7.4 <8.4",
