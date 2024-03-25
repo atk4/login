@@ -45,7 +45,7 @@
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-strict-rules": "^1.3",
-        "phpunit/phpunit": "^9.5.5 || ^10.0"
+        "phpunit/phpunit": "^9.5.5"
     },
     "conflict": {
         "behat/behat": "<3.9",
