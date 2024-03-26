@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
-use Atk4\Data\Reference\HasOneSql;
 use Atk4\Login\Feature\SetupAccessRuleModelTrait;
 
 /**

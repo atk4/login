@@ -6,7 +6,6 @@ namespace Atk4\Login\Model;
 
 use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
-use Atk4\Data\Reference\HasOneSql;
 use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Feature\SendEmailActionTrait;
 use Atk4\Login\Feature\SetupUserModelTrait;
