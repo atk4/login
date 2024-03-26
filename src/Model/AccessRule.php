@@ -26,7 +26,6 @@ class AccessRule extends Model
     {
         parent::init();
 
-        /** @var HasOneSql */
         $r = $this->hasOne('role_id', [
             'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
