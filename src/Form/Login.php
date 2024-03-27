@@ -36,11 +36,10 @@ class Login extends Form
 
         $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
 
-        /** @var Form\Control\Password */
-        $p = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
+        $pwdControl = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
-            $p->addAction(['icon' => 'question'])
+            $pwdControl->addAction(['icon' => 'question'])
                 ->setAttr('title', 'Forgot your password?')
                 ->link($this->linkForgot);
         }

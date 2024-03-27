@@ -46,21 +46,19 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
-        /** @var Column\ActionButtons */
-        $column = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
+        $buttons = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $column->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
+        $buttons->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
             $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
 
-            /** @var Form\Control\Input */
-            $f = $form->addControl('visible_password', [], ['required' => true]);
+            $field = $form->addControl('visible_password', [], ['required' => true]);
             // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
-            $f->addAction(['icon' => 'random'])->on('click', static function () use ($f, $userEntity) {
-                return $f->jsInput()->val(PasswordField::assertInstanceOf($userEntity->getField('password'))->generatePassword());
+            $field->addAction(['icon' => 'random'])->on('click', static function () use ($field, $userEntity) {
+                return $field->jsInput()->val(PasswordField::assertInstanceOf($userEntity->getField('password'))->generatePassword());
             });
 
             $form->onSubmit(static function (Form $form) use ($v, $userEntity) {
@@ -68,11 +66,8 @@ class UserAdmin extends View
                     ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();
 
-                /** @var Modal */
-                $modal = $v->getOwner();
-
                 return new JsBlock([
-                    $modal->jsHide(),
+                    Modal::assertInstanceOf($v->getOwner())->jsHide(),
                     new JsToast([
                         'message' => 'Password for ' . $userEntity->get($userEntity->titleField) . ' is changed!',
                         'class' => 'success',

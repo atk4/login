@@ -6,7 +6,6 @@ namespace Atk4\Login\Model;
 
 use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
-use Atk4\Data\Reference\HasOneSql;
 use Atk4\Login\Feature\PasswordManagementTrait;
 use Atk4\Login\Feature\SendEmailActionTrait;
 use Atk4\Login\Feature\SetupUserModelTrait;
@@ -36,11 +35,9 @@ class User extends Model
         $this->addField('password', [PasswordField::class, 'ui' => ['form' => [Password::class]]]);
 
         // currently user can have only one role. In future it should be n:n relation
-        /** @var HasOneSql */
         $r = $this->hasOne('role_id', [
             'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
-            'theirField' => 'id',
             'caption' => 'Role',
         ]);
         $r->addTitle();

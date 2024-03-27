@@ -29,12 +29,10 @@ class Role extends Model
 
         $this->hasMany('Users', [
             'model' => $this->userModelSeed,
-            'ourField' => 'id',
             'theirField' => 'role_id',
         ]);
         $this->hasMany('AccessRules', [
             'model' => $this->accessRuleModelSeed,
-            'ourField' => 'id',
             'theirField' => 'role_id',
         ]);
 
