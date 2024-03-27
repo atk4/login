@@ -11,6 +11,7 @@ use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
 use Atk4\Ui\Js\JsBlock;
 use Atk4\Ui\Js\JsToast;
+use Atk4\Ui\Modal;
 use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
 
@@ -65,10 +66,8 @@ class UserAdmin extends View
                     ->setPassword($userEntity, $form->model->get('visible_password'));
                 $userEntity->save();
 
-                $modal = $v->getOwner();
-
                 return new JsBlock([
-                    $modal->jsHide(),
+                    Modal::assertInstanceOf($v->getOwner())->jsHide(),
                     new JsToast([
                         'message' => 'Password for ' . $userEntity->get($userEntity->titleField) . ' is changed!',
                         'class' => 'success',

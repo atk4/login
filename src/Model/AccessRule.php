@@ -28,7 +28,6 @@ class AccessRule extends Model
         $r = $this->hasOne('role_id', [
             'model' => $this->roleModelSeed,
             'ourField' => 'role_id',
-            'theirField' => 'id',
             'caption' => 'Role',
         ]);
         $r->addTitle();
