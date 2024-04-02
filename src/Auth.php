@@ -289,7 +289,7 @@ class Auth
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
         $f->setModel($this->user);
         $f->onSubmit(static function (Form $f) {
-            $f->model->save();
+            $f->entity->save();
 
             return $f->jsSuccess('User preferences saved.');
         });
