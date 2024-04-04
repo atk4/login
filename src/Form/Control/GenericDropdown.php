@@ -24,7 +24,7 @@ abstract class GenericDropdown extends Form\Control\Dropdown
     public function getModel()
     {
         // prepare values for this dropdown - these will be fields from model of AccessRule->model
-        $class = $this->form->model->get('model');
+        $class = $this->form->entity->get('model');
         if (!$class) {
             return null;
         }
@@ -33,7 +33,7 @@ abstract class GenericDropdown extends Form\Control\Dropdown
             return null;
         }
 
-        $model = new $class($this->form->model->getModel()->getPersistence());
+        $model = new $class($this->form->entity->getModel()->getPersistence());
         if (!$model instanceof Model) {
             throw new Exception('Class must be instance of ' . Model::class);
         }

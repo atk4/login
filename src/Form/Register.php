@@ -53,19 +53,19 @@ class Register extends Form
         // on form submit save new user in persistence
         $this->onSubmit(function (self $form) {
             // Look if user already exist?
-            $model = $this->model->getModel();
-            $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->model->get($this->auth->fieldLogin));
+            $model = $this->entity->getModel();
+            $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->entity->get($this->auth->fieldLogin));
             if ($entity !== null) {
                 return $form->jsError($this->auth->fieldLogin, 'User with this email already exist');
             }
 
             // check if passwords match
-            if (!PasswordField::assertInstanceOf($form->model->getField('password'))->verifyPassword($form->model, $form->model->get('password2'))) {
+            if (!PasswordField::assertInstanceOf($form->entity->getField('password'))->verifyPassword($form->entity, $form->entity->get('password2'))) {
                 return $form->jsError('password2', 'Passwords does not match');
             }
 
             // save user
-            $form->model->save();
+            $form->entity->save();
 
             return $form->jsSuccess('Account has been created');
         });

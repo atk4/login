@@ -63,7 +63,7 @@ class UserAdmin extends View
 
             $form->onSubmit(static function (Form $form) use ($v, $userEntity) {
                 PasswordField::assertInstanceOf($userEntity->getField('password'))
-                    ->setPassword($userEntity, $form->model->get('visible_password'));
+                    ->setPassword($userEntity, $form->entity->get('visible_password'));
                 $userEntity->save();
 
                 return new JsBlock([
