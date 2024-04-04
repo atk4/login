@@ -6,7 +6,6 @@ namespace Atk4\Login;
 
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
-use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\User;
 
 /**
@@ -23,11 +22,15 @@ class Acl
     public $auth;
 
     /**
-     * Returns AccessRules model for logged in user and in model scope.
-     *
-     * @return AccessRule
+     * Internal property to switch off ACL.
+     * Used for ACL models themself because ACL internally always needs full access to its models.
      */
-    public function getRules(Model $model)
+    private bool $disabled = false;
+
+    /**
+     * Returns array of AccessRules records for logged in user and in particular model scope.
+     */
+    public function getRules(Model $model): array
     {
         /** @var User */
         $user = $this->auth->user;
@@ -45,9 +48,15 @@ class Acl
                 $modelClasses[] = $class;
             }
         } while (($class = get_parent_class($class)) !== false);
-        $res = $user->ref('AccessRules')->addCondition('model', 'in', $modelClasses);
 
-        return $res; // @phpstan-ignore-line
+        // Internally disable ACL for a moment and limit to only required fields to avoid recursion
+        $this->disabled = true;
+        $rules = $user->ref('AccessRules')
+            ->addCondition('model', 'in', $modelClasses)
+            ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions', 'conditions']);
+        $this->disabled = false;
+
+        return $rules;
     }
 
     /**
@@ -57,24 +66,28 @@ class Acl
      */
     public function applyRestrictions(Model $m): void
     {
+        if ($this->disabled) {
+            return;
+        }
+
         foreach ($this->getRules($m) as $rule) {
             // extract as arrays
-            $visible = is_array($rule->get('visible_fields')) ? $rule->get('visible_fields') : explode(',', $rule->get('visible_fields') ?? '');
-            $editable = is_array($rule->get('editable_fields')) ? $rule->get('editable_fields') : explode(',', $rule->get('editable_fields') ?? '');
-            $actions = is_array($rule->get('actions')) ? $rule->get('actions') : explode(',', $rule->get('actions') ?? '');
+            $visible = is_array($rule['visible_fields']) ? $rule['visible_fields'] : explode(',', $rule['visible_fields'] ?? '');
+            $editable = is_array($rule['editable_fields']) ? $rule['editable_fields'] : explode(',', $rule['editable_fields'] ?? '');
+            $actions = is_array($rule['actions']) ? $rule['actions'] : explode(',', $rule['actions'] ?? '');
 
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                if (!$rule->get('all_visible') && $visible) {
+                if (!$rule['all_visible'] && $visible) {
                     $field->ui['visible'] = array_search($name, $visible, true) !== false;
                 }
-                if (!$rule->get('all_editable') && $editable) {
+                if (!$rule['all_editable'] && $editable) {
                     $field->ui['editable'] = array_search($name, $editable, true) !== false;
                 }
             }
 
             // remove not allowed actions
-            if (!$rule->get('all_actions') && $actions) {
+            if (!$rule['all_actions'] && $actions) {
                 $actions_to_remove = array_diff(array_keys($m->getUserActions()), $actions);
                 foreach ($actions_to_remove as $action) {
                     $m->getUserAction($action)->enabled = false;

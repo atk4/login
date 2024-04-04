@@ -35,7 +35,7 @@ class AccessRule extends Model
         $this->addField('model'); // model class name
 
         /*
-         * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
+         * @TODO maybe all_visible and visible_fields can be replaced with just one field visible:
          *      '*' - equals all_fields=true
          *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo', 'bar']
          *
