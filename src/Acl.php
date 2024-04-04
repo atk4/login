@@ -29,6 +29,8 @@ class Acl
 
     /**
      * Returns array of AccessRules records for logged in user and in particular model scope.
+     *
+     * @return array<int, array<string, mixed>>
      */
     public function getRules(Model $model): array
     {
@@ -54,9 +56,27 @@ class Acl
         $rules = $user->ref('AccessRules')
             ->addCondition('model', 'in', $modelClasses)
             ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions', 'conditions']);
+
+        // normalize
+        foreach ($rules as $k => $rule) {
+            $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->normalizeValue($rule, 'visible_fields');
+            $rules[$k]['editable_fields'] = $rule['all_editable'] ? [] : $this->normalizeValue($rule, 'editable_fields');
+            $rules[$k]['actions'] = $rule['all_actions'] ? [] : $this->normalizeValue($rule, 'actions');
+        }
+
         $this->disabled = false;
 
         return $rules;
+    }
+
+    /**
+     * Normalize value.
+     */
+    private function normalizeValue(array $rule, string $field): array
+    {
+        $v = $rule[$field] ?? [];
+
+        return is_array($v) ? $v : explode(',', $v);
     }
 
     /**
@@ -71,24 +91,19 @@ class Acl
         }
 
         foreach ($this->getRules($m) as $rule) {
-            // extract as arrays
-            $visible = is_array($rule['visible_fields']) ? $rule['visible_fields'] : explode(',', $rule['visible_fields'] ?? '');
-            $editable = is_array($rule['editable_fields']) ? $rule['editable_fields'] : explode(',', $rule['editable_fields'] ?? '');
-            $actions = is_array($rule['actions']) ? $rule['actions'] : explode(',', $rule['actions'] ?? '');
-
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                if (!$rule['all_visible'] && $visible) {
-                    $field->ui['visible'] = array_search($name, $visible, true) !== false;
+                if ($rule['visible_fields']) {
+                    $field->ui['visible'] = array_search($name, $rule['visible_fields'], true) !== false;
                 }
-                if (!$rule['all_editable'] && $editable) {
-                    $field->ui['editable'] = array_search($name, $editable, true) !== false;
+                if ($rule['editable_fields']) {
+                    $field->ui['editable'] = array_search($name, $rule['editable_fields'], true) !== false;
                 }
             }
 
             // remove not allowed actions
-            if (!$rule['all_actions'] && $actions) {
-                $actions_to_remove = array_diff(array_keys($m->getUserActions()), $actions);
+            if ($rule['actions']) {
+                $actions_to_remove = array_diff(array_keys($m->getUserActions()), $rule['actions']);
                 foreach ($actions_to_remove as $action) {
                     $m->getUserAction($action)->enabled = false;
                 }
