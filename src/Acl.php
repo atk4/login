@@ -22,7 +22,8 @@ class Acl
     public $auth;
 
     /**
-     * Internal property to switch off ACL.
+     * @internal
+     *
      * Used for ACL models themself because ACL internally always needs full access to its models.
      */
     private bool $disabled = false;
