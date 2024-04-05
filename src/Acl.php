@@ -50,9 +50,8 @@ class Acl
             }
         } while (($class = get_parent_class($class)) !== false);
 
+        $this->skipApplyRestrictionsForRulesExport = true;
         try {
-            $this->skipApplyRestrictionsForRulesExport = true;
-
             $rules = $user->ref('AccessRules')
                 ->addCondition('model', 'in', $modelClasses)
                 ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions', 'conditions']);
