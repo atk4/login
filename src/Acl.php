@@ -69,9 +69,6 @@ class Acl
         return $rules;
     }
 
-    /**
-     * Normalize value.
-     */
     private function normalizeValue(array $rule, string $field): array
     {
         $v = $rule[$field] ?? [];
