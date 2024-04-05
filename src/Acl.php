@@ -31,7 +31,7 @@ class Acl
     /**
      * Returns array of AccessRules records for logged in user and in particular model scope.
      *
-     * @return array<int, array<string, mixed>>
+     * @return array<, array<model: string, all_visible: bool, visible_fields: list<string>, all_editable: bool, editable_fields: list<string>, all_actions: bool, actions: list<string>, conditions: list>>
      */
     public function getRules(Model $model): array
     {
