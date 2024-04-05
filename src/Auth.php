@@ -117,7 +117,7 @@ class Auth
      *
      * @return $this
      */
-    public function setModel(Model $model, string $fieldLogin = null, string $fieldPassword = null)
+    public function setModel(Model $model, ?string $fieldLogin = null, ?string $fieldPassword = null)
     {
         if ($this->user !== null) {
             throw new Exception('Model is already set');
@@ -231,7 +231,7 @@ class Auth
      *
      * @return $this
      */
-    public function setAcl(Acl $acl, Persistence $persistence = null)
+    public function setAcl(Acl $acl, ?Persistence $persistence = null)
     {
         $persistence ??= $this->user->getModel()->getPersistence();
         $acl->auth = $this;
