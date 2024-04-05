@@ -51,9 +51,6 @@ return (new PhpCsFixer\Config())
         'general_phpdoc_annotation_remove' => [
             'annotations' => ['author', 'copyright', 'throws'],
         ],
-        'nullable_type_declaration_for_default_null_value' => [
-            'use_nullable_type_declaration' => false,
-        ],
 
         // fn => without curly brackets is less readable,
         // also prevent bounding of unwanted variables for GC

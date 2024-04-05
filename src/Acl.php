@@ -24,7 +24,7 @@ class Acl
     /**
      * @internal
      *
-     * Used for ACL models themself because ACL internally always needs full access to its models.
+     * Used for ACL models themself because ACL internally always needs full access to its models
      */
     private bool $disabled = false;
 
