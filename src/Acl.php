@@ -6,7 +6,6 @@ namespace Atk4\Login;
 
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
-use Atk4\Login\Model\AccessRule;
 use Atk4\Login\Model\User;
 
 /**
@@ -22,12 +21,14 @@ class Acl
      */
     public $auth;
 
+    private bool $skipApplyRestrictionsForRulesExport = false;
+
     /**
-     * Returns AccessRules model for logged in user and in model scope.
+     * Returns array of AccessRules records for logged in user and in particular model scope.
      *
-     * @return AccessRule
+     * @return list<array{model: class-string<Model>, all_visible: bool, visible_fields: list<string>, all_editable: bool, editable_fields: list<string>, all_actions: bool, actions: list<string>}>
      */
-    public function getRules(Model $model)
+    protected function getRules(Model $model): array
     {
         /** @var User */
         $user = $this->auth->user;
@@ -45,9 +46,33 @@ class Acl
                 $modelClasses[] = $class;
             }
         } while (($class = get_parent_class($class)) !== false);
-        $res = $user->ref('AccessRules')->addCondition('model', 'in', $modelClasses);
 
-        return $res; // @phpstan-ignore-line
+        $this->skipApplyRestrictionsForRulesExport = true;
+        try {
+            $rules = $user->ref('AccessRules')
+                ->addCondition('model', 'in', $modelClasses)
+                ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions']);
+
+            foreach ($rules as $k => $rule) {
+                $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->explodeValue($rule['visible_fields']);
+                $rules[$k]['editable_fields'] = $rule['all_editable'] ? [] : $this->explodeValue($rule['editable_fields']);
+                $rules[$k]['actions'] = $rule['all_actions'] ? [] : $this->explodeValue($rule['actions']);
+            }
+        } finally {
+            $this->skipApplyRestrictionsForRulesExport = false;
+        }
+
+        return $rules;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function explodeValue(?string $v): array
+    {
+        return ($v ?? '') === ''
+            ? []
+            : explode(',', $v);
     }
 
     /**
@@ -57,58 +82,28 @@ class Acl
      */
     public function applyRestrictions(Model $m): void
     {
-        foreach ($this->getRules($m) as $rule) {
-            // extract as arrays
-            $visible = is_array($rule->get('visible_fields')) ? $rule->get('visible_fields') : explode(',', $rule->get('visible_fields') ?? '');
-            $editable = is_array($rule->get('editable_fields')) ? $rule->get('editable_fields') : explode(',', $rule->get('editable_fields') ?? '');
-            $actions = is_array($rule->get('actions')) ? $rule->get('actions') : explode(',', $rule->get('actions') ?? '');
+        if ($this->skipApplyRestrictionsForRulesExport) {
+            return;
+        }
 
+        foreach ($this->getRules($m) as $rule) {
             // set visible and editable fields
             foreach ($m->getFields() as $name => $field) {
-                if (!$rule->get('all_visible') && $visible) {
-                    $field->ui['visible'] = array_search($name, $visible, true) !== false;
+                if ($rule['visible_fields'] !== [] && array_search($name, $rule['visible_fields'], true) === false) {
+                    $field->ui['visible'] = false;
                 }
-                if (!$rule->get('all_editable') && $editable) {
-                    $field->ui['editable'] = array_search($name, $editable, true) !== false;
+                if ($rule['editable_fields'] !== [] && array_search($name, $rule['editable_fields'], true) === false) {
+                    $field->ui['editable'] = false;
                 }
             }
 
             // remove not allowed actions
-            if (!$rule->get('all_actions') && $actions) {
-                $actions_to_remove = array_diff(array_keys($m->getUserActions()), $actions);
+            if ($rule['actions'] !== []) {
+                $actions_to_remove = array_diff(array_keys($m->getUserActions()), $rule['actions']);
                 foreach ($actions_to_remove as $action) {
                     $m->getUserAction($action)->enabled = false;
                 }
             }
-
-            // add conditions on model
-            /* this will work in future when we will have json encoded condition structure stored in here
-            if ($rule['conditions']) {
-                $this->applyConditions($m, $rule['conditions']);
-            }
-            */
         }
     }
-
-    /**
-     * Apply conditions on model.
-     *
-     * @param mixed $conditions
-     */
-    public function applyConditions(Model $m, $conditions): void
-    {
-        $m->addCondition($conditions);
-    }
-
-    // Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.
-    /*
-    public function can($feature)
-    {
-        if (!$this->permissions) {
-            $this->cachePermissions();
-        }
-
-        return $this->permissions[$feature] ?? false;
-    }
-    */
 }

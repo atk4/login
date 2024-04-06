@@ -35,7 +35,7 @@ class AccessRule extends Model
         $this->addField('model'); // model class name
 
         /*
-         * @TODO maybe all_visible and visible_fields can be replaced with just on field visible:
+         * @TODO maybe all_visible and visible_fields can be replaced with just one field visible:
          *      '*' - equals all_fields=true
          *      'foo,bar' - equals visible_fields='foo,bar' or visible_fields=['foo', 'bar']
          *
@@ -61,10 +61,6 @@ class AccessRule extends Model
         // which model actions are allowed
         $this->addField('all_actions', ['type' => 'boolean']);
         $this->addField('actions'); // used if all_actions is false
-
-        // Specify which conditions will be applied on the model, e.g. "status=DRAFT AND sent=true OR status=SENT"
-        // @TODO this will be replaced by JSON structure when Alain will develop such JS widget
-        $this->addField('conditions');
 
         $this->setupAccessRuleModel();
     }

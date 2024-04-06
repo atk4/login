@@ -30,6 +30,8 @@ class Fields extends GenericDropdown
         if ($model) {
             $fields = array_keys($model->getFields());
             $this->values = array_combine($fields, $fields);
+        } else {
+            $this->values = [];
         }
 
         parent::renderView();

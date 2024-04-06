@@ -38,7 +38,7 @@ class Register extends Form
     }
 
     #[\Override]
-    public function setModel(Model $user, array $fields = null): void
+    public function setModel(Model $user, ?array $fields = null): void
     {
         parent::setModel($user, []);
 
