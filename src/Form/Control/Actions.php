@@ -30,6 +30,8 @@ class Actions extends GenericDropdown
         if ($model) {
             $actions = array_keys($model->getUserActions());
             $this->values = array_combine($actions, $actions);
+        } else {
+            $this->values = [];
         }
 
         parent::renderView();

@@ -22,4 +22,7 @@ $app->initAcl();
 Message::addTo($app, ['type' => 'info'])
     ->set('This is how an ACL managed app will look like based on logged in user and his role and permissions.');
 
+Message::addTo($app, ['type' => 'info'])
+    ->set('Currently logged-in user: ' . $app->auth->user->getTitle());
+
 Crud::addTo($app)->setModel(new Model\Client($app->db));
