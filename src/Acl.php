@@ -70,11 +70,13 @@ class Acl
     }
 
     /**
-     * @param mixed $v
+     * @param list<string>|string|null $v
+     *
+     * @return list<string>
      */
     private function normalizeValue($v): array
     {
-        return is_array($v) ? $v : explode(',', $v);
+        return is_array($v) ? $v : explode(',', $v ?? null);
     }
 
     /**
