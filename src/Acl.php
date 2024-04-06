@@ -56,11 +56,10 @@ class Acl
                 ->addCondition('model', 'in', $modelClasses)
                 ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions', 'conditions']);
 
-            // normalize
             foreach ($rules as $k => $rule) {
-                $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->normalizeValue($rule['visible_fields']);
-                $rules[$k]['editable_fields'] = $rule['all_editable'] ? [] : $this->normalizeValue($rule['editable_fields']);
-                $rules[$k]['actions'] = $rule['all_actions'] ? [] : $this->normalizeValue($rule['actions']);
+                $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->explodeValue($rule['visible_fields']);
+                $rules[$k]['editable_fields'] = $rule['all_editable'] ? [] : $this->explodeValue($rule['editable_fields']);
+                $rules[$k]['actions'] = $rule['all_actions'] ? [] : $this->explodeValue($rule['actions']);
             }
         } finally {
             $this->skipApplyRestrictionsForRulesExport = false;
@@ -72,7 +71,7 @@ class Acl
     /**
      * @return list<string>
      */
-    private function normalizeValue(?string $v): array
+    private function explodeValue(?string $v): array
     {
         return ($v ?? '') === ''
             ? []
