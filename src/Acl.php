@@ -21,9 +21,6 @@ class Acl
      */
     public $auth;
 
-    /**
-     * @internal
-     */
     private bool $skipApplyRestrictionsForRulesExport = false;
 
     /**
