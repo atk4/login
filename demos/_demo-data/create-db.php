@@ -49,13 +49,12 @@ $model->addField('all_editable', ['type' => 'boolean']);
 $model->addField('editable_fields', ['type' => 'string']);
 $model->addField('all_actions', ['type' => 'boolean']);
 $model->addField('actions', ['type' => 'string']);
-$model->addField('conditions', ['type' => 'string']);
 
 (new Migrator($model))->create();
 $model->import([
-    ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => false, 'editable_fields' => null, 'all_actions' => true, 'actions' => null, 'conditions' => null],
-    ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => true, 'editable_fields' => null, 'all_actions' => true, 'actions' => null, 'conditions' => null],
-    ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => true, 'editable_fields' => null, 'all_actions' => true, 'actions' => null, 'conditions' => null],
+    ['id' => 1, 'role_id' => 1, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => false, 'editable_fields' => null, 'all_actions' => true, 'actions' => null],
+    ['id' => 2, 'role_id' => 2, 'model' => User::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => true, 'editable_fields' => null, 'all_actions' => true, 'actions' => null],
+    ['id' => 3, 'role_id' => 2, 'model' => Role::class, 'all_visible' => true, 'visible_fields' => null, 'all_editable' => true, 'editable_fields' => null, 'all_actions' => true, 'actions' => null],
 ]);
 
 $model = new Model($db, ['table' => 'demo_client']);

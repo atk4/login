@@ -26,7 +26,7 @@ class Acl
     /**
      * Returns array of AccessRules records for logged in user and in particular model scope.
      *
-     * @return list<array{model: class-string<Model>, all_visible: bool, visible_fields: list<string>, all_editable: bool, editable_fields: list<string>, all_actions: bool, actions: list<string>, conditions: list<string>}>
+     * @return list<array{model: class-string<Model>, all_visible: bool, visible_fields: list<string>, all_editable: bool, editable_fields: list<string>, all_actions: bool, actions: list<string>}>
      */
     protected function getRules(Model $model): array
     {
@@ -51,7 +51,7 @@ class Acl
         try {
             $rules = $user->ref('AccessRules')
                 ->addCondition('model', 'in', $modelClasses)
-                ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions', 'conditions']);
+                ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions']);
 
             foreach ($rules as $k => $rule) {
                 $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->explodeValue($rule['visible_fields']);
@@ -104,24 +104,7 @@ class Acl
                     $m->getUserAction($action)->enabled = false;
                 }
             }
-
-            // add conditions on model
-            /* this will work in future when we will have json encoded condition structure stored in here
-            if ($rule['conditions']) {
-                $this->applyConditions($m, $rule['conditions']);
-            }
-            */
         }
-    }
-
-    /**
-     * Apply conditions on model.
-     *
-     * @param mixed $conditions
-     */
-    public function applyConditions(Model $m, $conditions): void
-    {
-        $m->addCondition($conditions);
     }
 
     // Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.

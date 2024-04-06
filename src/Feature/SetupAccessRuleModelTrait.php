@@ -35,7 +35,6 @@ trait SetupAccessRuleModelTrait
         $this->getField('visible_fields')->ui['form'] = [Control\Fields::class];
         $this->getField('editable_fields')->ui['form'] = [Control\Fields::class];
         $this->getField('actions')->ui['form'] = [Control\Actions::class];
-        $this->getField('conditions')->type = 'text';
 
         // cleanup data
         $this->onHook(Model::HOOK_BEFORE_SAVE, static function (self $m) {
