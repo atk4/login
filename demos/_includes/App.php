@@ -41,6 +41,10 @@ class App extends \Atk4\Ui\App
 
         $this->initAuth(false);
 
+        // Uncomment this line to enable ACL in demo app.
+        // We do not enable it in demo app by default to allow not logged in users to generate demo DB first.
+        // $this->initAcl();
+
         if ($this->auth->isLoggedIn()) {
             $this->auth->addUserMenu();
         }
