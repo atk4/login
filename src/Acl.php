@@ -106,16 +106,4 @@ class Acl
             }
         }
     }
-
-    // Call $app->acl->can('admin'); for example to find out if user is allowed to admin things.
-    /*
-    public function can($feature)
-    {
-        if (!$this->permissions) {
-            $this->cachePermissions();
-        }
-
-        return $this->permissions[$feature] ?? false;
-    }
-    */
 }
