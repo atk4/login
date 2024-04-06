@@ -31,7 +31,7 @@ class Acl
      *
      * @return list<array{model: string, all_visible: bool, visible_fields: list<string>, all_editable: bool, editable_fields: list<string>, all_actions: bool, actions: list<string>, conditions: list<string>}>
      */
-    public function getRules(Model $model): array
+    protected function getRules(Model $model): array
     {
         /** @var User */
         $user = $this->auth->user;
