@@ -76,7 +76,9 @@ class Acl
      */
     private function normalizeValue($v): array
     {
-        return is_array($v) ? $v : explode(',', $v ?? null);
+        return is_array($v)
+            ? $v
+            : explode(',', $v ?? null);
     }
 
     /**
