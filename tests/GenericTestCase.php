@@ -32,7 +32,7 @@ abstract class GenericTestCase extends BaseTestCase
             'alwaysRun' => false,
         ]);
 
-        $app->session = new class() extends App\SessionManager {
+        $app->session = new class extends App\SessionManager {
             /** @var array<string, mixed> */
             private $data = [];
 
