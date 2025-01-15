@@ -14,7 +14,7 @@ use Atk4\Ui\Js\JsToast;
 use Atk4\Ui\Modal;
 use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
-//use Atk4\Ui\View\ModelTrait;
+use Atk4\Ui\View\ModelTrait;
 
 /**
  * View for User administration. Includes User association with Role.
@@ -22,7 +22,7 @@ use Atk4\Ui\View;
 class UserAdmin extends View
 {
     use DebugTrait;
-    //use ModelTrait;
+    use ModelTrait;
 
     /** @var Crud */
     public $crud;
@@ -38,7 +38,6 @@ class UserAdmin extends View
     /**
      * Initialize User Admin and add all the UI pieces.
      */
-    #[\Override]
     public function setModel(Model $user): void
     {
         // $user->getUserAction('registerNewUser')->system = true;
