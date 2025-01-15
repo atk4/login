@@ -287,7 +287,7 @@ class Auth
     {
         $f = Form::addTo($page);
         $f->addHeader(['User Preferences', 'subHeader' => $this->user->getTitle(), 'icon' => 'user']);
-        $f->setModel($this->user, ['name', 'email', 'password']);
+        $f->setEntity($this->user, ['name', 'email', 'password']);
         $f->onSubmit(static function (Form $f) {
             $f->entity->save();
 
