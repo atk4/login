@@ -38,9 +38,9 @@ class Register extends Form
     }
 
     #[\Override]
-    public function setModel(Model $user, ?array $fields = null): void
+    public function setEntity(Model $user, ?array $fields = null): void
     {
-        parent::setModel($user, []);
+        parent::setEntity($user, []);
 
         $this->addControl('name', [], ['required' => true]);
         $this->addControl('email', [], ['required' => true]);
@@ -55,7 +55,7 @@ class Register extends Form
             // Look if user already exist?
             $model = $this->entity->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->entity->get($this->auth->fieldLogin));
-            if ($entity !== null) {
+            if ($entity->loaded()) {
                 return $form->jsError($this->auth->fieldLogin, 'User with this email already exist');
             }
 
