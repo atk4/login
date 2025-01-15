@@ -15,7 +15,7 @@ class PasswordManagementTest extends GenericTestCase
 {
     public function testGenerateRandomPassword(): void
     {
-        $class = new class() extends Model {
+        $class = new class extends Model {
             use PasswordManagementTrait;
         };
         $model = new $class(new Persistence\Array_());

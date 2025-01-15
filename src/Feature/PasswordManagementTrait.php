@@ -15,7 +15,7 @@ trait PasswordManagementTrait
     public function initPasswordManagement(): void
     {
         $this->addUserAction('generateRandomPassword', [
-            'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
+            'appliesTo' => UserAction::APPLIES_TO_NO_RECORD,
             'system' => true,
             'args' => [
                 'length' => ['type' => 'integer'],
@@ -28,7 +28,7 @@ trait PasswordManagementTrait
             ],
         ]);
         $this->addUserAction('checkPasswordStrength', [
-            // 'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
+            // 'appliesTo' => UserAction::APPLIES_TO_NO_RECORD,
             'args' => [
                 'password' => ['type' => 'string'],
             ],
