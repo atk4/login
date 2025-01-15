@@ -18,7 +18,7 @@ trait SignupTrait
     public function initSignup(): void
     {
         $this->addUserAction('registerNewUser', [
-            'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
+            'appliesTo' => UserAction::APPLIES_TO_NO_RECORD,
             'fields' => ['name', 'email', 'password'],
         ]);
     }
