@@ -55,7 +55,7 @@ class Register extends Form
             // Look if user already exist?
             $model = $this->entity->getModel();
             $entity = $model->tryLoadBy($this->auth->fieldLogin, $form->entity->get($this->auth->fieldLogin));
-            if ($entity->loaded()) {
+            if ($entity !== null) {
                 return $form->jsError($this->auth->fieldLogin, 'User with this email already exist');
             }
 

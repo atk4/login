@@ -69,7 +69,7 @@ jobs:
         if: matrix.type == 'StaticAnalysis'
         run: |
           echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini
-          vendor/bin/phpstan analyse
+          vendor/bin/phpstan analyse -v
 
   unit-test:
     name: Unit
@@ -154,8 +154,8 @@ jobs:
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-sqlite.cov; fi
 
-      - name: "Run tests: MySQL"
-        if: success() || failure()
+      - name: "Run tests: MySQL (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
         env:
           DB_DSN: "mysql:host=mysql;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -174,8 +174,8 @@ jobs:
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-mariadb.cov; fi
 
-      - name: "Run tests: PostgreSQL"
-        if: success() || failure()
+      - name: "Run tests: PostgreSQL (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
         env:
           DB_DSN: "pgsql:host=postgres;dbname=atk4_test"
           DB_USER: atk4_test_user
@@ -184,8 +184,8 @@ jobs:
           php -d opcache.enable_cli=1 vendor/bin/phpunit --exclude-group none $(if [ -n "$LOG_COVERAGE" ]; then echo --coverage-text; else echo --no-coverage; fi) --fail-on-warning --fail-on-risky $(if vendor/bin/phpunit --version | grep -q '^PHPUnit 9\.'; then echo -v; else echo --fail-on-notice --fail-on-deprecation --display-notices --display-deprecations --display-warnings --display-errors --display-incomplete --display-skipped; fi)
           if [ -n "$LOG_COVERAGE" ]; then mv coverage/phpunit.cov coverage/phpunit-postgres.cov; fi
 
-      - name: "Run tests: MSSQL"
-        if: success() || failure()
+      - name: "Run tests: MSSQL (only for cron)"
+        if: (success() || failure()) && github.event_name == 'schedule'
         env:
           DB_DSN: "sqlsrv:host=mssql;dbname=master;driverOptions[TrustServerCertificate]=1"
           DB_USER: sa
@@ -213,7 +213,7 @@ jobs:
 
       - name: Upload coverage logs 2/2 (only for latest Phpunit)
         if: env.LOG_COVERAGE
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -284,12 +284,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install JS dependencies (only for Slow)
+      - name: Install JS dependencies (only for Chrome Slow)
         if: matrix.type == 'Chrome Slow'
         run: |
           npm install --loglevel=error -g pug-cli
 
-      - name: Build/diff HTML files (only for Slow)
+      - name: Diff compiled files (only for Chrome Slow)
         if: matrix.type == 'Chrome Slow'
         run: |
           cp -r template template.orig
@@ -328,7 +328,7 @@ jobs:
       - name: "Run tests: SQLite"
         run: |
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: "Run tests: MySQL (only for cron)"
         if: (success() || failure()) && github.event_name == 'schedule'
@@ -339,7 +339,7 @@ jobs:
         run: |
           sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: "Run tests: MariaDB (only for coverage or cron)"
         if: (success() || failure()) && (env.LOG_COVERAGE || github.event_name == 'schedule')
@@ -350,7 +350,7 @@ jobs:
         run: |
           sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: "Run tests: PostgreSQL (only for cron)"
         if: (success() || failure()) && github.event_name == 'schedule'
@@ -361,7 +361,7 @@ jobs:
         run: |
           sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: "Run tests: MSSQL (only for cron)"
         if: (success() || failure()) && github.event_name == 'schedule'
@@ -372,7 +372,7 @@ jobs:
         run: |
           sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: "Run tests: Oracle (only for cron)"
         if: (success() || failure()) && github.event_name == 'schedule'
@@ -384,7 +384,7 @@ jobs:
         run: |
           sed -E "s~(\\\$db = new.+Persistence\\\\Sql)\(.+\);~\\1('$DB_DSN', '$DB_USER', '$DB_PASSWORD');~g" -i demos/db.default.php
           php demos/_demo-data/create-db.php
-          vendor/bin/behat -vv --config behat.yml.dist
+          vendor/bin/behat --strict -vv --config behat.yml.dist
 
       - name: Upload coverage logs 1/2 (only for coverage)
         if: env.LOG_COVERAGE
@@ -394,9 +394,8 @@ jobs:
 
       - name: Upload coverage logs 2/2 (only for coverage)
         if: env.LOG_COVERAGE
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           files: coverage/merged.xml,coverage/js/clover.xml
-  

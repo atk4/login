@@ -88,7 +88,7 @@ if (!$app->auth->user->isLoaded()) {
 
 ``` php
 \Atk4\Login\RegisterForm::addTo($app)
-    ->setModel(new \Atk4\Login\Model\User($app->db));
+    ->setEntity(new \Atk4\Login\Model\User($app->db));
 ```
 
 Displays email and 2 password fields (for confirmation). If filled successfully will create new record for `\Atk4\Login\Model\User`. Will cast email to lowercase before adding. Things to try:
@@ -141,7 +141,7 @@ You may also access user data like this: `$app->auth->model['name']`; Things to 
 This form would allow user to change user data (including password) but only if user is authenticated. To implement profile form use:
 
 ``` php
-Form::addTo($app)->setModel($app->auth->user);
+Form::addTo($app)->setEntity($app->auth->user);
 ```
 
 Demos open profile form in a pop-up window, if you wish to do it, you can use this code:
@@ -149,7 +149,7 @@ Demos open profile form in a pop-up window, if you wish to do it, you can use th
 ``` php
 Button::addTo($app, ['Profile', 'class.primary' => true])
     ->on('click', Modal::addTo($app)->set(function (View $p) {
-        Form::addTo($p)->setModel($p->getApp()->auth->user);
+        Form::addTo($p)->setEntity($p->getApp()->auth->user);
     })->jsShow());
 ```
 
