@@ -15,8 +15,8 @@ use Atk4\Ui\Js\JsToast;
 use Atk4\Ui\Modal;
 use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
-use Atk4\Ui\ViewWithContent;
 use Atk4\Ui\View\ModelTrait;
+use Atk4\Ui\ViewWithContent;
 
 /**
  * View for User administration. Includes User association with Role.
@@ -53,12 +53,12 @@ class UserAdmin extends ViewWithContent
         $buttons = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $buttons->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) use ($user) {
+        $buttons->addModal(['icon' => 'key'], 'Change Password', static function (View $v, $id) use ($user) {
             $userEntity = $user->load($id);
 
             $form = Form::addTo($v);
 
-            /** @var Control\Input  */
+            /** @var Control\Input */
             $field = $form->addControl('visible_password', [], ['required' => true]);
             // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
