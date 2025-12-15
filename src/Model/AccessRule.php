@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Login\Model;
 
 use Atk4\Data\Model;
+use Atk4\Data\Reference;
 use Atk4\Login\Feature\SetupAccessRuleModelTrait;
 
 /**
@@ -25,6 +26,7 @@ class AccessRule extends Model
     {
         parent::init();
 
+        /** @var Reference\HasOneSql */
         $r = $this->hasOne('role_id', [
             'model' => $this->roleModelSeed,
             'ourField' => 'role_id',

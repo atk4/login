@@ -28,6 +28,7 @@ class RoleAdmin extends Crud
         parent::setModel($role);
 
         // Add new table column used for actions
+        /** @var Column\ActionButtons */
         $buttons = $this->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         $buttons->addModal(['icon' => 'cogs'], 'Role Permissions', static function (View $v, $id) use ($role) {

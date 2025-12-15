@@ -9,17 +9,19 @@ use Atk4\Data\Field\PasswordField;
 use Atk4\Data\Model;
 use Atk4\Ui\Crud;
 use Atk4\Ui\Form;
+use Atk4\Ui\Form\Control;
 use Atk4\Ui\Js\JsBlock;
 use Atk4\Ui\Js\JsToast;
 use Atk4\Ui\Modal;
 use Atk4\Ui\Table\Column;
 use Atk4\Ui\View;
+use Atk4\Ui\ViewWithContent;
 use Atk4\Ui\View\ModelTrait;
 
 /**
  * View for User administration. Includes User association with Role.
  */
-class UserAdmin extends View
+class UserAdmin extends ViewWithContent
 {
     use DebugTrait;
     use ModelTrait;
@@ -47,14 +49,16 @@ class UserAdmin extends View
         $this->crud->setModel($user);
 
         // Add new table column used for actions
+        /** @var Column\ActionButtons */
         $buttons = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $buttons->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
-            $userEntity = $this->model->load($id);
+        $buttons->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) use ($user) {
+            $userEntity = $user->load($id);
 
             $form = Form::addTo($v);
 
+            /** @var Control\Input */
             $field = $form->addControl('visible_password', [], ['required' => true]);
             // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
@@ -78,7 +82,7 @@ class UserAdmin extends View
         });
 
         /*
-        $column->addModal(['icon' => 'eye'], 'Details', function (View $v, $id, $userEntity) {
+        $column->addModal(['icon' => 'eye'], 'Details', function (ViewWithContent $v, $id, $userEntity) {
             $userEntity = $this->model->load($id);
 
             $c = Columns::addTo($v);
