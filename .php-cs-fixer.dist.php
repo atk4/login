@@ -1,16 +1,21 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+declare(strict_types=1);
+
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+$finder = Finder::create()
     ->in([__DIR__])
     ->exclude(['vendor']);
 
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        '@PHP7x4Migration:risky' => true,
-        '@PHP7x4Migration' => true,
+        '@PHP74Migration' => true,
+        '@PHP74Migration:risky' => true,
 
         // required by PSR-12
         'concat_space' => [
@@ -38,6 +43,7 @@ return (new PhpCsFixer\Config())
         'blank_line_before_statement' => [
             'statements' => ['break', 'continue', 'declare', 'return', 'throw', 'exit'],
         ],
+        'final_internal_class' => false,
         'combine_consecutive_issets' => false,
         'combine_consecutive_unsets' => false,
         'multiline_whitespace_before_semicolons' => false,
