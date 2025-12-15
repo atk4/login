@@ -58,7 +58,7 @@ class UserAdmin extends ViewWithContent
 
             $form = Form::addTo($v);
 
-            /** @var Control\Input */
+            /** @var Control\Input  */
             $field = $form->addControl('visible_password', [], ['required' => true]);
             // $form->addControl('email_user', [], ['type' => 'boolean', 'caption' => 'Email user their new password']);
 
