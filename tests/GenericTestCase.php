@@ -39,11 +39,13 @@ abstract class GenericTestCase extends BaseTestCase
             /** @var bool */
             private $isActive = false;
 
+            #[\Override]
             protected function isSessionActive(): bool
             {
                 return $this->isActive;
             }
 
+            #[\Override]
             protected function startSession(bool $readAndCloseImmediately): void
             {
                 $_SESSION = $this->data;
@@ -53,6 +55,7 @@ abstract class GenericTestCase extends BaseTestCase
                 }
             }
 
+            #[\Override]
             protected function closeSession(bool $writeBeforeClose): void
             {
                 if ($writeBeforeClose) {

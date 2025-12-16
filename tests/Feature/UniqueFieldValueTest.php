@@ -28,6 +28,7 @@ class UniqueFieldValueTest extends GenericTestCase
 
             public $table = 'test';
 
+            #[\Override]
             protected function init(): void
             {
                 parent::init();
