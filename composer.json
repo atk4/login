@@ -32,11 +32,11 @@
     ],
     "homepage": "https://github.com/atk4/login",
     "require": {
-        "php": ">=7.4 <8.4",
+        "php": ">=7.4 <8.5",
         "atk4/ui": "dev-develop"
     },
     "require-release": {
-        "php": ">=7.4 <8.4",
+        "php": ">=7.4 <8.5",
         "atk4/ui": "~6.0.0"
     },
     "require-dev": {
