@@ -53,8 +53,8 @@ class UserAdmin extends ViewWithContent
         $buttons = $this->crud->table->addColumn(null, [Column\ActionButtons::class, 'caption' => '']);
 
         // Pop-up for resetting password. Will display button for generating random password
-        $buttons->addModal(['icon' => 'key'], 'Change Password', static function (View $v, $id) use ($user) {
-            $userEntity = $user->load($id);
+        $buttons->addModal(['icon' => 'key'], 'Change Password', function (View $v, $id) {
+            $userEntity = $this->model->load($id);
 
             $form = Form::addTo($v);
 
