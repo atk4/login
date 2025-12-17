@@ -6,7 +6,7 @@ namespace Atk4\Login\Form;
 
 use Atk4\Login\Auth;
 use Atk4\Ui\Form;
-use Atk4\Ui\View;
+use Atk4\Ui\ViewWithContent;
 
 /**
  * Login form view.
@@ -36,6 +36,7 @@ class Login extends Form
 
         $this->addControl($this->auth->fieldLogin, [], ['required' => true]);
 
+        /** @var Form\Control\Password */
         $pwdControl = $this->addControl($this->auth->fieldPassword, [Form\Control\Password::class], ['required' => true]);
 
         if ($this->linkForgot) {
@@ -45,7 +46,7 @@ class Login extends Form
         }
 
         if ($this->cookieWarning) {
-            View::addTo($this, ['element' => 'p'])
+            ViewWithContent::addTo($this, ['element' => 'p'])
                 ->setStyle('font-style', 'italic')
                 ->set($this->cookieWarning);
         }
