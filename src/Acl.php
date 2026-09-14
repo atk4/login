@@ -49,14 +49,30 @@ class Acl
 
         $this->skipApplyRestrictionsForRulesExport = true;
         try {
-            $rules = $user->ref('AccessRules')
+            $exportedRules = $user->ref('AccessRules')
                 ->addCondition('model', 'in', $modelClasses)
-                ->export(['model', 'all_visible', 'visible_fields', 'all_editable', 'editable_fields', 'all_actions', 'actions']);
+                ->export([
+                    'model',
+                    'all_visible',
+                    'visible_fields',
+                    'all_editable',
+                    'editable_fields',
+                    'all_actions',
+                    'actions',
+                ]);
 
-            foreach ($rules as $k => $rule) {
-                $rules[$k]['visible_fields'] = $rule['all_visible'] ? [] : $this->explodeValue($rule['visible_fields']);
-                $rules[$k]['editable_fields'] = $rule['all_editable'] ? [] : $this->explodeValue($rule['editable_fields']);
-                $rules[$k]['actions'] = $rule['all_actions'] ? [] : $this->explodeValue($rule['actions']);
+            $rules = [];
+
+            foreach ($exportedRules as $rule) {
+                $rules[] = [
+                    'model' => $rule['model'],
+                    'all_visible' => $rule['all_visible'],
+                    'visible_fields' => $rule['all_visible'] ? [] : $this->explodeValue($rule['visible_fields']),
+                    'all_editable' => $rule['all_editable'],
+                    'editable_fields' => $rule['all_editable'] ? [] : $this->explodeValue($rule['editable_fields']),
+                    'all_actions' => $rule['all_actions'],
+                    'actions' => $rule['all_actions'] ? [] : $this->explodeValue($rule['actions']),
+                ];
             }
         } finally {
             $this->skipApplyRestrictionsForRulesExport = false;
